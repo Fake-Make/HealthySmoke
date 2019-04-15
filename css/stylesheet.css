@@ -184,6 +184,26 @@ ol li {
 }
 
 a {
+	border-bottom: 1px solid #005bc1;
+	color: #005bc1;
+	text-decoration: none;
+}
+
+a:hover {
+	border-bottom-color: #549ef1;
+	color: #549ef1;
+	cursor: pointer;
+	text-decoration-color: #549ef1;
+}
+
+header a {
+	color: #fff;
+	text-decoration: none;
+	border-bottom: 1px solid #fff;
+}
+
+footer a {
+	color: #fff;
 	text-decoration: none;
 	border-bottom: 1px solid #fff;
 }
@@ -198,14 +218,16 @@ button:hover {
 	cursor: pointer;
 }
 
-a:hover {
+header a:hover,
+footer a:hover {
 	border-bottom-color: #ffde00;
 	color: #ffde00;
 	cursor: pointer;
 	text-decoration-color: #ffde00;
 }
 
-a:active {
+header a:active,
+footer a:active {
 	border-bottom-color: #ffae00;
 	color: #ffae00;
 	cursor: pointer;

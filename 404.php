@@ -6,9 +6,9 @@
 	<? require_once("inner/header.php"); ?>
 	<div class="content">
 		<div class="wrapper content__wrapper">
-			<main>
-				<h1 class="invisible">Такой страницы не существует :(</h1>
-				<p>На <a href="index.php">главную</a>.</p>
+			<main class="inside-content">
+				<h1>Ошибка #404: Такой страницы не существует :(</h1>
+				<h2>На <a href="index.php">главную</a>.</h2>
 			</main>
 			<? require_once("inner/sidebar.php") ?>
 		</div>
