@@ -1,5 +1,6 @@
 <?
-	$title = "Информация о доставке — интернет-магазин Company";
+	$title = "Информация о доставке и оплате — интернет-магазин Company";
+	$activePage = "Доставка и оплата";
 	require_once("inner/meta.php");
 ?>
 <body>

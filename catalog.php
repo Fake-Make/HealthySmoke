@@ -1,5 +1,6 @@
 <?
 	$title = "Каталог товаров - Company";
+	$activePage = "Каталог";
 	require_once("inner/meta.php");
 ?>
 <body>

@@ -1,5 +1,6 @@
 <?
 	$title = "Регистрация — интернет-магазин Company";
+	$activePage = "Регистрация";
 	require_once("inner/meta.php");
 ?>
 <body>

@@ -34,11 +34,21 @@
 		<div class="wrapper">
 			<span class="menu-toggler">Меню</span>
 			<ul class="menu-togglable">
-				<li class="header-nav-item"><span><span
-							class="header-nav-item__link header-nav-item__link_current">Главная</span></span></li>
 				<li class="header-nav-item">
-					<span class="header-nav-item__container-for-link"><a class="header-nav-item__link"
-							href="catalog.php">Каталог</a></span>
+					<?
+						if($activePage === "Главная")
+							echo '<span class="header-nav-item__link header-nav-item__link_current">Главная</span>';
+						else
+							echo '<a class="header-nav-item__link" href="index.php">Главная</a>';
+					?>
+				</li>
+				<li class="header-nav-item">
+					<?
+						if($activePage === "Каталог")
+							echo '<span class="header-nav-item__container-for-link"><span class="header-nav-item__link header-nav-item__link_current">Каталог</span></span>';
+						else
+							echo '<span class="header-nav-item__container-for-link"><a class="header-nav-item__link" href="catalog.php">Каталог</a></span>';
+					?>
 					<ul class="sub-menu">
 						<li class="sub-menu__list-item"><a class="sub-menu__link" href="#">Электронные сигареты</a></li>
 						<li class="sub-menu__list-item"><a class="sub-menu__link" href="#">Трубки</a></li>
@@ -50,11 +60,38 @@
 						<li class="sub-menu__list-item"><a class="sub-menu__link" href="#">Подарочные наборы</a></li>
 					</ul>
 				</li>
-				<li class="header-nav-item"><span><a class="header-nav-item__link" href="#">О компании</a></span></li>
-				<li class="header-nav-item"><span><a class="header-nav-item__link" href="#">Новости</a></span></li>
-				<li class="header-nav-item"><span><a class="header-nav-item__link" href="shipment.php">Доставка и
-							оплата</a></span></li>
-				<li class="header-nav-item"><span><a class="header-nav-item__link" href="contacts.php">Контакты</a></span></li>
+				<li class="header-nav-item">
+					<?
+						if($activePage === "О компании")
+							echo '<span class="header-nav-item__link header-nav-item__link_current">О компании</span>';
+						else
+							echo '<a class="header-nav-item__link" href="#">О компании</a>';
+					?>
+				</li>
+				<li class="header-nav-item">
+					<?
+						if($activePage === "Новости")
+							echo '<span class="header-nav-item__link header-nav-item__link_current">Новости</span>';
+						else
+							echo '<a class="header-nav-item__link" href="#">Новости</a>';
+					?>
+				</li>
+				<li class="header-nav-item">
+					<?
+						if($activePage === "Доставка и оплата")
+							echo '<span class="header-nav-item__link header-nav-item__link_current">Доставка и оплата</span>';
+						else
+							echo '<a class="header-nav-item__link" href="shipment.php">Доставка и оплата</a>';
+					?>
+				</li>
+				<li class="header-nav-item">
+					<?
+						if($activePage === "Контакты")
+							echo '<span class="header-nav-item__link header-nav-item__link_current">Контакты</span>';
+						else
+							echo '<a class="header-nav-item__link" href="contacts.php">Контакты</a>';
+					?>
+				</li>
 			</ul>
 		</div>
 	</nav>

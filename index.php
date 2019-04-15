@@ -1,4 +1,7 @@
-<? require_once("inner/meta.php"); ?>
+<?
+	$activePage = "Главная";
+	require_once("inner/meta.php");
+?>
 <body>
 	<? require_once("inner/header.php"); ?>
 	<div class="content">

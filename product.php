@@ -3,6 +3,7 @@
 	$productName = "Product";
 	$productPrice = 20;
 	$title = "$productName — купить за $productPrice руб. в интернет-магазине Company";
+	$activePage = "Каталог";
 	require_once("inner/meta.php");
 ?>
 <body>

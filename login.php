@@ -1,5 +1,6 @@
 <?
 	$title = "Вход — интернет-магазин электронных сигарет Company";
+	$activePage = "Вход";
 	require_once("inner/meta.php");
 ?>
 <body>
