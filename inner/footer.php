@@ -9,12 +9,54 @@
 		</div>
 		<nav class="footer-nav">
 			<ul class="footer-nav__list">
-				<li class="footer-nav__list-item"><span class="footer-nav__link">Главная</span></li>
-				<li class="footer-nav__list-item"><a class="footer-nav__link" href="catalog.php">Каталог</a></li>
-				<li class="footer-nav__list-item"><a class="footer-nav__link" href="#">О компании</a></li>
-				<li class="footer-nav__list-item"><a class="footer-nav__link" href="#">Новости</a></li>
-				<li class="footer-nav__list-item"><a class="footer-nav__link" href="shipment.php">Доставка и оплата</a></li>
-				<li class="footer-nav__list-item"><a class="footer-nav__link" href="contacts.php">Контакты</a></li>
+				<li class="footer-nav__list-item">
+					<?
+						if($activePage === "Главная")
+							echo '<span class="footer-nav__link">Главная</span>';
+						else
+							echo '<a class="footer-nav__link" href="index.php">Главная</a>';
+					?>
+				</li>
+				<li class="footer-nav__list-item">
+					<?
+						if($activePage === "Каталог")
+							echo '<span class="footer-nav__link">Каталог</span>';
+						else
+							echo '<a class="footer-nav__link" href="catalog.php">Каталог</a>';
+					?>
+				</li>
+				<li class="footer-nav__list-item">
+					<?
+						if($activePage === "О компании")
+							echo '<span class="footer-nav__link">О компании</span>';
+						else
+							echo '<a class="footer-nav__link" href="#">О компании</a>';
+					?>
+				</li>
+				<li class="footer-nav__list-item">
+					<?
+						if($activePage === "Новости")
+							echo '<span class="footer-nav__link">Новости</span>';
+						else
+							echo '<a class="footer-nav__link" href="#">Новости</a>';
+					?>
+				</li>
+				<li class="footer-nav__list-item">
+					<?
+						if($activePage === "Доставка и оплата")
+							echo '<span class="footer-nav__link">Доставка и оплата</span>';
+						else
+							echo '<a class="footer-nav__link" href="shipment.php">Доставка и оплата</a>';
+					?>
+				</li>
+				<li class="footer-nav__list-item">
+					<?
+						if($activePage === "Контакты")
+							echo '<span class="footer-nav__link">Контакты</span>';
+						else
+							echo '<a class="footer-nav__link" href="contacts.php">Контакты</a>';
+					?>	
+				</li>
 			</ul>
 		</nav>
 		<div class="developer">
