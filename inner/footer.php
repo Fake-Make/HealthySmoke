@@ -2,8 +2,8 @@
 <footer class="page-footer">
 	<div class="wrapper page-footer__wrapper">
 		<div class="copyright">
-			<span class="copyright__part copyright__lifetime">Copyright ©2007-2010</span>
-			<span class="copyright__part copyright__company-lifetime"><b>© "Company"</b>, 2010</span>
+			<span class="copyright__part copyright__lifetime">Copyright ©2007-<?= date("Y", time()); ?></span>
+			<span class="copyright__part copyright__company-lifetime"><b>© "Company"</b>, <?= date("Y", time()); ?></span>
 			<img class="copyright__image" src="img/logo.png" alt="Company-logo">
 			<span class="copyright__part copyrhigt__company-name">Company</span>
 		</div>
@@ -60,7 +60,7 @@
 			</ul>
 		</nav>
 		<div class="developer">
-			<span class="developer__ref">Разработка сайта - <a class="developer__link" href="#">ITConstruct</a></span>
+			<span class="developer__ref">Разработка сайта - <a class="developer__link" href="http://itconstruct.ru">ITConstruct</a></span>
 			<img class="counter" src="img/counter.png" alt="Page-counter">
 		</div>
 	</div>
