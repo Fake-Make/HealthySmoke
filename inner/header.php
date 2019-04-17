@@ -2,10 +2,12 @@
 <header class="page-header">
 	<div class="wrapper">
 		<aside class="header-top">
-			<div class="header-logo">
-				<img class="header-logo__image" src="img/logo.png" alt="Логотип" width="95" height="75">
+			<? if ("Главная" !== $activePage) echo '<a class="header-logo header-logo__link" href="index.php">';
+				else echo '<div class="header-logo">' ?>
+				<img class="header-logo__image" src="img/logo.png" alt="Логотип" width="95" height="75">		
 				<span class="header-logo__caption">Company</span>
-			</div>
+			<? if ("Главная" !== $activePage) echo '</a>';
+				else echo '</div>' ?>	
 			<div class="company-info">
 				<b class="company-info__tagline">Нанотехнологии здоровья</b>
 				<div class="contacts">
@@ -81,7 +83,7 @@
 						if($activePage === "Доставка и оплата")
 							echo '<span class="header-nav-item__link header-nav-item__link_current">Доставка и оплата</span>';
 						else
-							echo '<a class="header-nav-item__link" href="shipment.php">Доставка и оплата</a>';
+							echo '<a class="header-nav-item__link" href="paydelivery.php">Доставка и оплата</a>';
 					?>
 				</li>
 				<li class="header-nav-item">

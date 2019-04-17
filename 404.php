@@ -1,5 +1,6 @@
 <?
-	$activePage = "Главная";
+	$title = "Ошибка 404 - Company";
+	$activePage = "404";
 	require_once("inner/meta.php");
 ?>
 <body>

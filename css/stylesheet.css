@@ -338,6 +338,11 @@ body {
 	width: 207px;
 }
 
+.page-header .header-logo__link:hover {
+	border-bottom-color: #7f7f7f;
+	color: #fff;
+}
+
 .header-logo__image {
 	margin: 42px 50px 24px 63px;
 }
@@ -1094,6 +1099,11 @@ body {
 	height: 28px;
 	margin: 13px 0 5px 7px;
 	width: 36px;
+}
+
+.footer-logo__link {
+	text-decoration: none;
+	border-bottom: none;
 }
 
 .copyrhigt__company-name {

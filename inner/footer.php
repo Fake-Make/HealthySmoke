@@ -4,8 +4,10 @@
 		<div class="copyright">
 			<span class="copyright__part copyright__lifetime">Copyright ©2007-<?= date("Y", time()); ?></span>
 			<span class="copyright__part copyright__company-lifetime"><b>© "Company"</b>, <?= date("Y", time()); ?></span>
-			<img class="copyright__image" src="img/logo.png" alt="Company-logo">
-			<span class="copyright__part copyrhigt__company-name">Company</span>
+			<? if ("Главная" !== $activePage) echo '<a class="footer-logo__link" href="index.php">'; ?>
+				<img class="copyright__image" src="img/logo.png" alt="Company-logo">
+				<span class="copyright__part copyrhigt__company-name">Company</span>
+			<? if ("Главная" !== $activePage) echo '</a>'; ?>	
 		</div>
 		<nav class="footer-nav">
 			<ul class="footer-nav__list">
@@ -46,7 +48,7 @@
 						if($activePage === "Доставка и оплата")
 							echo '<span class="footer-nav__link">Доставка и оплата</span>';
 						else
-							echo '<a class="footer-nav__link" href="shipment.php">Доставка и оплата</a>';
+							echo '<a class="footer-nav__link" href="paydelivery.php">Доставка и оплата</a>';
 					?>
 				</li>
 				<li class="footer-nav__list-item">
