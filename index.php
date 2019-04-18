@@ -1,6 +1,7 @@
 <?
 	$activePage = "Главная";
 	require_once("inner/meta.php");
+	require_once("lib/db.php");
 ?>
 <body>
 	<? require_once("inner/header.php"); ?>
@@ -9,54 +10,21 @@
 			<main class="categories">
 				<h1 class="invisible">Company - Электронные сигареты</h1>
 				<ul class="categories">
+					<? 
+						$cats = getCat4Index();
+						foreach ($cats as $item) {
+							$img = $item["img"] ? $item["img"] : "img/no-image.jpg";
+							$alt = $item["img"] ? $img : "Изображение категории отсутствует";
+					?>
 					<li class="category">
 						<a class="category__link" href="#">
-							<img class="category__image" src="img/category-1.jpg" alt="category-image-1">
-							<span class="category__name-container"><span class="category__name-inner">Электронные сигареты</span></span>
+							<img class="category__image" src="<?=$img; ?>" alt="<?=$alt; ?>">
+							<span class="category__name-container"><span class="category__name-inner"><?=$item["name"]; ?></span></span>
 						</a>
 					</li>
-					<li class="category">
-						<a class="category__link" href="#">
-							<img class="category__image" src="img/category-2.jpg" alt="category-image-2">
-							<span class="category__name-container"><span class="category__name-inner">Трубки</span></span>
-						</a>
-					</li>
-					<li class="category">
-						<a class="category__link" href="#">
-							<img class="category__image" src="img/category-3.jpg" alt="category-image-3">
-							<span class="category__name-container"><span class="category__name-inner">Жидкости для заправки</span></span>
-						</a>
-					</li>
-					<li class="category">
-						<a class="category__link" href="#">
-							<img class="category__image" src="img/category-4.jpg" alt="category-image-4">
-							<span class="category__name-container"><span class="category__name-inner">Аккумуляторы и атомайзеры</span></span>
-						</a>
-					</li>
-					<li class="category">
-						<a class="category__link" href="#">
-							<img class="category__image" src="img/category-5.jpg" alt="category-image-5">
-							<span class="category__name-container"><span class="category__name-inner">Картриджи</span></span>
-						</a>
-					</li>
-					<li class="category">
-						<a class="category__link" href="#">
-							<img class="category__image" src="img/category-6.jpg" alt="category-image-6">
-							<span class="category__name-container"><span class="category__name-inner">Зарядные устройства</span></span>
-						</a>
-					</li>
-					<li class="category">
-						<a class="category__link" href="#">
-							<img class="category__image" src="img/category-7.jpg" alt="category-image-7">
-							<span class="category__name-container"><span class="category__name-inner">Аксессуары</span></span>
-						</a>
-					</li>
-					<li class="category">
-						<a class="category__link" href="#">
-							<img class="category__image" src="img/category-8.jpg" alt="category-image-1">
-							<span class="category__name-container"><span class="category__name-inner">Подарочные наборы</span></span>
-						</a>
-					</li>
+					<? 
+						}
+					?>
 				</ul>
 			</main>
 			<? require_once("inner/sidebar.php") ?>
