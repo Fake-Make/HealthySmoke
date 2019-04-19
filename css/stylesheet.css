@@ -1533,6 +1533,7 @@ body {
 .paginator__link {
 	color: inherit;
 	text-decoration: underline;
+	border-bottom: none;
 }
 
 .paginator__elem_next {

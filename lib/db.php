@@ -31,30 +31,45 @@
 		return mysqli_fetch_all($sqlRes, MYSQLI_ASSOC);
 	}
 
-	// Функция проверки пользовательского обращения на пустоту
-	function checkAppeal($post) {
-		return is_array($post) && strlen($post["feedback-author"]) && strlen($post["email"]) && strlen($post["feedback-text"]) ? 1 : 0;
+	// Возвращает SQL/XSS-безопасную входную строку, если она содержит хотя бы один непробельный символ
+	// Иначе возвращает 0
+	function validAnyString($str) {
+		if (!isset($str))
+			return 0;
+		global $db;
+		$spaces = [" ", "\r", "\n", "\t"];
+		return strlen(str_replace($spaces, "", $str)) ? mysqli_real_escape_string($db, htmlspecialchars($str)) : 0;
 	}
 
+	// Возвращает валидный email, если возможно такое преобразование
+	// Иначе возвращает 0
+	function validEmail($str) {
+		if (!isset($str))
+			return 0;
+		$symbols = [" ", "\r", "\n", "\t"];
+		echo $str . "\n";
+		$str = str_replace($symbols, "", $str);
+		echo $str . "\n";
+		return preg_match("!^[A-Za-z0-9]+@[A-Za-z]+\.[A-Za-z]{2,3}$!", $str) ? $str : 0;
+	}
 
-	// Функция валидации пользовательского обращения
-	// Экранирование символов HTML, двойных кавычек и апострофов
-	function validAppeal($post) {
-		global $db;
-		foreach ($post as $key=>$item) {
-			$validPost[$key] = mysqli_real_escape_string($db, htmlspecialchars($item));
-		}
-		return $validPost;
+	// Возвращает валидный номер телефона, если возможно такое преобразование
+	// Иначе возвращает 0
+	function validPhone($str) {
+		if (!isset($str))
+			return 0;
+		$symbols = [" ", "\r", "\n", "\t", "+", "-"];
+		$str = str_replace($symbols, "", $str);
+		return preg_match("!^[0-9]{11,13}$!", $str) ? $str : 0;
 	}
 
 	// Функция занесения обращения пользователя в БД
-	function addAppeal($post) {
+	function addAppeal($name, $email, $text, $phone = 0) {
 		global $db;
-		$post = validAppeal($post);
 		$sqlReq = "INSERT INTO appeals (userName, email, " . 
-			($post["phone"] ? "phone, " : "") . "message) VALUES ('" . 
-			$post["feedback-author"] . "', '" . $post["email"] . "', '" .
-			($post["phone"] ? $post["phone"] . "', '" : "") . $post["feedback-text"] . "');";
+			($phone ? "phone, " : "") . "message) VALUES ('" . 
+			$name . "', '" . $email . "', '" .
+			($phone ? $phone . "', '" : "") . $text . "');";
 		return mysqli_query($db, $sqlReq);
 	}
 ?>

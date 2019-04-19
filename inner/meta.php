@@ -1,5 +1,7 @@
-<!--Файл, содержащий блок мета-информации для всех страниц сайта-->
-<? require_once("./lib/conf.php"); ?>
+<? 
+	session_start();
+	require_once("./lib/conf.php"); 
+?>
 <!DOCTYPE html>
 <html lang="ru">
 

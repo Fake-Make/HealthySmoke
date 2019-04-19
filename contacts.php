@@ -61,26 +61,54 @@
 				</table>
 				<section class="feedback-form">
 					<h2 class="feedback-form__headline">Форма обратной связи</h2>
+					<?
+						if (!empty($_POST)) {
+							// Валидация полей
+							$fName = validAnyString($_POST["feedback-author"]);
+							$fEmail = validEmail($_POST["email"]);
+							$fPhone = validPhone($_POST["phone"]);
+							$fMessage = validAnyString($_POST["feedback-text"]);
+							$fSummary = $fName && $fEmail && $fMessage;
+							if ($fSummary) {
+								// Добавление в базу данных
+								addAppeal($fName, $fEmail, $fMessage, empty($_POST["phone"]) ? NULL : $fPhone);
+								$_SESSION['feedback'] = 'sent';
+								// Отправка сообщения
+								$message = "Пользователем " . $fName . " было отправлено обращение: \r\n" .
+									$fMessage . "\r\nОтветить можно по email: " . $fEmail . 
+									($fPhone ? " или по телефону: " . $fPhone . ".\r\n" : ".\r\n");
+								mail(TEST_MAIL, "Пользовательское обращение", $message);
+							}
+						}
+						// Если он уже отправил, то больше ему не дадим это сделать
+						if ($_SESSION['feedback'] === 'sent') {
+					?>
+					<p>Благодарим за ваше письмо. Мы свяжемся с вами в ближайшее время!</p>
+					<? } else { ?>
 					<p class="feedback-form__hint">
 						<span class="required-star">*</span> — обязательные для заполнения поля
 					</p>
 					<?
-						if (!empty($_POST) && checkAppeal($_POST)) {
-							addAppeal($_POST);
-						} elseif (!empty($_POST) && !checkAppeal($_POST)) {
+						// Если пришли ошибочки
+						if (!empty($_POST) && !$fSummary) {
 					?>
 					<aside class="error-box error-text">
-						<? if (!strlen($_POST["feedback-author"])) { ?>
+						<? if (!$fName) { ?>
 						<p class="error-message">
 							Поле «Имя» должно быть заполнено
 						</p>
 						<? } ?>
-						<? if (!strlen($_POST["email"])) { ?>
+						<? if (!$fEmail) { ?>
 						<p class="error-message">
-							Поле «Электронная почта» должно быть заполнено
+							Поле «Электронная почта» должно быть заполнено <?= empty($_POST["email"]) ? "" : "корректно" ?>
 						</p>
 						<? } ?>
-						<? if (!strlen($_POST["feedback-text"])) { ?>
+						<? if (!empty($_POST["phone"]) && !$fPhone) { ?>
+						<p class="error-message">
+							Поле «Телефон» должно соответствовать примеру: 7 999 111 22 33
+						</p>
+						<? } ?>
+						<? if (!$fMessage) { ?>
 						<p class="error-message">
 							Поле обращения должно быть заполнено
 						</p>
@@ -122,6 +150,7 @@
 							</div>
 						</div>
 					</form>
+					<? } ?>
 				</section>
 			</main>
 			<? require_once("inner/sidebar.php"); ?>
