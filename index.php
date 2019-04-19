@@ -1,7 +1,6 @@
 <?
 	$activePage = "Главная";
 	require_once("inner/meta.php");
-	require_once("lib/db.php");
 ?>
 <body>
 	<? require_once("inner/header.php"); ?>

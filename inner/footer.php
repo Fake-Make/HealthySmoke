@@ -67,3 +67,4 @@
 		</div>
 	</div>
 </footer>
+<? mysqli_close($db); ?>

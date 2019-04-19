@@ -64,21 +64,32 @@
 					<p class="feedback-form__hint">
 						<span class="required-star">*</span> — обязательные для заполнения поля
 					</p>
+					<?
+						if (!empty($_POST) && checkAppeal($_POST)) {
+							addAppeal($_POST);
+						} elseif (!empty($_POST) && !checkAppeal($_POST)) {
+					?>
 					<aside class="error-box error-text">
+						<? if (!strlen($_POST["feedback-author"])) { ?>
 						<p class="error-message">
 							Поле «Имя» должно быть заполнено
 						</p>
+						<? } ?>
+						<? if (!strlen($_POST["email"])) { ?>
 						<p class="error-message">
-							Пользователь с такой электронной почтой уже зарегестрирован
+							Поле «Электронная почта» должно быть заполнено
 						</p>
+						<? } ?>
+						<? if (!strlen($_POST["feedback-text"])) { ?>
 						<p class="error-message">
-							Поле «Подтверждение пароля» должно быть заполнено
+							Поле обращения должно быть заполнено
 						</p>
-						<p class="error-message">
-							Поле «Пароль» должно быть заполнено
-						</p>
+						<? } ?>
 					</aside>
-					<form method="POST" class="registration-form" name="contats-page__feedback-form">
+					<?
+						}
+					?>
+					<form method="POST" class="registration-form" name="contats-page__feedback-form" action="contacts.php">
 						<div class="feedback-form__row">
 							<label class="inner-label" for="feedback-author">
 								Имя <span class="required-star">*</span>
