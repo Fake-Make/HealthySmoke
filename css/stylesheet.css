@@ -1506,7 +1506,7 @@ body {
 
 .paginator {
 	display: flex;
-	justify-content: space-between;
+	justify-content: center;
 	width: 360px;
 	margin: 0 auto;
 }
@@ -1524,6 +1524,7 @@ body {
 	height: 24px;
 	justify-content: space-around;
 	width: 25px;
+	margin: 0 8px;
 }
 
 .paginator__elem_current {

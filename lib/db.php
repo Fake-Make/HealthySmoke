@@ -121,7 +121,7 @@
 	function makePaginator($show, $cur, $max) {
 		echo '<ul class="paginator catalog-page__paginator">';
 		$shift = ($show - 1) / 2;
-		// Мы слишком лево
+		// Мы слишком слева
 		if ($cur - $shift < 1) {
 			if ($show > $max)
 				$show = $max;
@@ -132,7 +132,7 @@
 					echo "<li class='paginator__elem'><a href='" . $_SERVER['SCRIPT_NAME'] . "?page=$i" . "' class='paginator__link'>$i</a></li>";
 			}
 		}	
-		// Мы слишком право
+		// Мы слишком справа
 		elseif ($cur + $shift > $max) {
 			$left = $max - $show + 1;
 			if ($left < 1)
