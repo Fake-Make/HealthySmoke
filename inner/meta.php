@@ -1,10 +1,6 @@
-<? 
-	session_start();
-	require_once("./lib/conf.php"); 
-?>
+<? session_start(); ?>
 <!DOCTYPE html>
 <html lang="ru">
-
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">

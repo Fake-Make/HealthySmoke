@@ -1,5 +1,3 @@
-<!--Файл, содержащий блок сайдбара для всех страниц сайта-->
-<? require_once("./lib/db.php"); ?>
 <div class="sidebar">
 	<section class="catalog">
 		<h2 class="sidebar__headline">Каталог</h2>

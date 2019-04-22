@@ -1,8 +1,18 @@
 <?
+	require_once("lib/db.php");
+	if(!isset($_GET["id"]))
+		header("404.php");
+	// Валиднуть INT
+	$id = $_GET["id"];
+	$good = getGood4Product($id)["0"];
+	$img = $good["img"] ? $good["img"] : "img/no-image.jpg";
+	$alt = $good["img"] ? $img : "Изображение отсутствует";
+	$productName = $good["name"];
+	$price = $good["price"];
+	$desc = $good["description"];
+
 	// Взять название и цену товара
-	$productName = "Product";
-	$productPrice = 20;
-	$title = "$productName — купить за $productPrice руб. в интернет-магазине Company";
+	$title = "$productName — купить за $price руб. в интернет-магазине Company";
 	$activePage = "Каталог";
 	require_once("inner/meta.php");
 ?>
@@ -15,15 +25,21 @@
 					<ul class="bread-crumbs">
 						<li class="bread-crumb"><a class="bread-crumb__link" href="index.php">Главная</a></li>
 						<li class="bread-crumb"><a class="bread-crumb__link" href="catalog.php">Каталог</a></li>
-						<li class="bread-crumb"><a class="bread-crumb__link" href="#">Электронные сигареты</a></li>
-						<li class="bread-crumb bread-crumb_current">Электронная сигарета «Такая-то»</li>
+						<?
+							if (isset($_GET["category"]))
+								echo '<li class="bread-crumb"><a class="bread-crumb__link" href="catalog.php?category=' . $_GET["category"] . '">' . getCategoryNameByID($_GET["category"]) . '</a></li>';
+						?>
+						<li class="bread-crumb bread-crumb_current"><?=$productName; ?></li>
 					</ul>
 				</nav>
 				<section class="product">
-					<h1 class="product__info-block-part product__headline">Электронная сигарета «Такая-то»</h1>
-					<img class="product__image" src="img/product-image-1.jpg" alt="Упс! Здесь было фото сигареты, но теперь его нет :(">
-					<span class="good-price good_price product__info-block-part product__info-price">820 <small class="good-price__currency">руб.</small></span>
-
+					<h1 class="product__info-block-part product__headline"><?=$productName; ?></h1>
+					<img class="product__image" src="<?=$img; ?>" alt="<?=$alt; ?>">
+					<? if (is_null($price)) { ?>
+						<span class="good-price good_price product__info-block-part product__info-price"><small class="good-price__currency">Цена не указана</small></span>
+					<? } else { ?>
+						<span class="good-price good_price product__info-block-part product__info-price"><?=$price; ?> <small class="good-price__currency">руб.</small></span>
+					<? } ?>
 					<form class="product__info-block-part product__form" name="product-page__product-to-cart-form" method="POST">
 						<span class="amount-tubmler product__amount-tumbler">
 							<button type="button" class="amount-tumbler__button amount-tumbler__button_left"></button>
@@ -34,45 +50,14 @@
 							в корзину</button>
 					</form>
 					<article class="product__description">
-						<h2>Высокое качество японских ножей</h2>
-						<p>
-							Сегодня японские ножи соединили в себе древнейшие традиции изготовления самурайских мечей и инновационные
-							технологии и, именно поэтому японские ножи обладают уникальными свойствами. Сделаны японские ножи только из
-							высококачественных материалов. Клинок японского ножа делают из высокоуглеродистой стали, что обеспечивает его
-							высокую прочность и надежность. Следует отметить, что японские ножи эргономичны по своему дизайну, что
-							обеспечивает удобство и комфорт в работе. Японские ножи суперострые и после заточки очень долго не тупятся,
-							благодаря этому уникальному качеству они получили широкую известность. Японские ножи - это прекрасный выбор,
-							который говорит о требовательности покупателя к высокому качеству ножа и о его превосходном вкусе. Кстати, нужно
-							отметить, что японские ножи предназначены не только для японской, но и для европейской, а также любой другой
-							кухни. В известных ресторанах крупнейших городов во всем мире используют именно японские ножи. Японские ножи
-							-это профессиональные инструменты для японской кухни (купить японские ножи Вы можете у нас).
-						</p>
-						<p>
-							Интернет магазин "Chef" предлагает купить японские ножи (ножи касуми, масахиро), нож для суши. У нас есть
-							японские ножи из дамасской стали (ножи masahiro, касуми). Дамасская сталь - это не просто причудливый узор на
-							лезвии ножа, это технология, сочетающая твердую сталь сердцевины клинка для сохранения остроты ножа и множество
-							слоев мягкой стали, которая и создает рисунок при заточке, для придания гибкости и прочности острой, но хрупкой
-							сердцевине. По этой технологии делались древние острейшие самурайские мечи катаны. Ножи из дамасской стали
-							прочны, надежны и долговечны, что подтверждено многолетним опытом. Не зря ножи из дамасской стали бестселлерами
-							продаж. Есть также товары, которые являются результатом современных научных технологий: титановые, керамические
-							ножи из Японии.
-						</p>
-						<p>
-							Кухонные японские ножи (ножи masahiro, касуми, хаттори) известных торговых марок уже завоевали популярность
-							благодаря своей прочности и уникальным качествам - остроте и долговечности заточки. Японские ножи (ножи касуми,
-							масахиро, хаттори, кухонные ножи из дамасской стали) - это профессиональные поварские инструменты, секреты
-							производства которых передаются и шлифуются мастерами из поколения в поколение. Эти японские ножи обладают
-							особым значением - они своего рода статус шеф-повара, в Японии обладание таким ножом считалось показателем
-							высокого мастерства в поварском деле.
-						</p>
+						<h2>Описание товара <?=$productName; ?></h2>
+						<?=$desc ? $desc : "<p>Описание отсутствует.</p>" ; ?>
 					</article>
 				</section>
-
 			</main>
 			<? require_once("inner/sidebar.php"); ?>
 		</div>
 	</div>
 	<? require_once("inner/footer.php"); ?>
 </body>
-
 </html>

@@ -1,6 +1,7 @@
 <?
 	$title = "Информация о компании — «Company»";
 	$activePage = "О компании";
+	require_once("lib/db.php");
 	require_once("inner/meta.php");
 ?>
 <body>

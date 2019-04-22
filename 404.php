@@ -1,6 +1,7 @@
 <?
 	$title = "Ошибка 404 - Company";
 	$activePage = "404";
+	require_once("lib/db.php");
 	require_once("inner/meta.php");
 ?>
 <body>

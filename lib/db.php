@@ -21,10 +21,45 @@
 		$sqlRes = mysqli_query($db, $sqlReq);
 		return mysqli_fetch_all($sqlRes, MYSQLI_ASSOC);
 	}
+
+	// Получение названия категории по ID
+	function getCategoryNameByID($id) {
+		$sqlReq = "SELECT name from categories WHERE id=$id";
+		global $db;
+
+		$sqlRes = mysqli_query($db, $sqlReq);
+		return mysqli_fetch_all($sqlRes, MYSQLI_ASSOC)["0"]["name"];
+	}
 	
 	// Выборка шести последних новостей для сайдбара
 	function getNews4Sidebar() {
 		$sqlReq = "SELECT anounce, dt from news ORDER BY dt DESC LIMIT 6";
+		global $db;
+
+		$sqlRes = mysqli_query($db, $sqlReq);
+		return mysqli_fetch_all($sqlRes, MYSQLI_ASSOC);
+	}
+
+	// Выборка size товаров для page-той страницы
+	function getGoods4Catalog($page, $size, $category = NULL) {
+		$start = 1 + $page * $size - $size;
+		$end = $start + $size - 1;
+
+		$sqlReq = is_null($category) ?
+			"SELECT id, name, price, img FROM goods WHERE id BETWEEN $start AND $end" :
+			"SELECT id, name, price, img FROM goods WHERE id IN 
+				(SELECT goodID FROM goodToCategories WHERE
+					goodID BETWEEN $start AND $end AND
+					categoryID = $category)";
+		global $db;
+
+		$sqlRes = mysqli_query($db, $sqlReq);
+		return mysqli_fetch_all($sqlRes, MYSQLI_ASSOC);
+	}
+
+	// Взятие данных для товара id
+	function getGood4Product($id) {
+		$sqlReq = "SELECT id, name, price, description, img from goods WHERE id=$id";
 		global $db;
 
 		$sqlRes = mysqli_query($db, $sqlReq);

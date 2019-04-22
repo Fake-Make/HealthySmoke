@@ -1,5 +1,3 @@
-<!--Файл, содержащий заголовочный блок для всех страниц сайта-->
-<? require_once("lib/db.php"); ?>
 <header class="page-header">
 	<div class="wrapper">
 		<aside class="header-top">
