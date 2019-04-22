@@ -32,7 +32,7 @@
 						if($activePage === "О компании")
 							echo '<span class="footer-nav__link">О компании</span>';
 						else
-							echo '<a class="footer-nav__link" href="#">О компании</a>';
+							echo '<a class="footer-nav__link" href="about.php">О компании</a>';
 					?>
 				</li>
 				<li class="footer-nav__list-item">

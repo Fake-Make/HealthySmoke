@@ -6,7 +6,7 @@
 
 	// Выборка названий и изображений всех категорий для главной страницы
 	function getCat4Index() {
-		$sqlReq = "SELECT name, img from categories";
+		$sqlReq = "SELECT id, name, img from categories";
 		global $db;
 
 		$sqlRes = mysqli_query($db, $sqlReq);
@@ -15,7 +15,7 @@
 
 	// Выборка названий всех категорий для сайдбара
 	function getCat4Sidebar() {
-		$sqlReq = "SELECT name from categories";
+		$sqlReq = "SELECT id, name from categories";
 		global $db;
 
 		$sqlRes = mysqli_query($db, $sqlReq);

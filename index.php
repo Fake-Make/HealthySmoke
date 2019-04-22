@@ -12,11 +12,12 @@
 					<? 
 						$cats = getCat4Index();
 						foreach ($cats as $item) {
+							$id = $item["id"];
 							$img = $item["img"] ? $item["img"] : "img/no-image.jpg";
 							$alt = $item["img"] ? $img : "Изображение категории отсутствует";
 					?>
 					<li class="category">
-						<a class="category__link" href="#">
+						<a class="category__link" href="catalog.php?category=<?=$item["id"]; ?>">
 							<img class="category__image" src="<?=$img; ?>" alt="<?=$alt; ?>">
 							<span class="category__name-container"><span class="category__name-inner"><?=$item["name"]; ?></span></span>
 						</a>

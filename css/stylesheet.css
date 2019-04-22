@@ -522,6 +522,13 @@ body {
 	text-decoration: none;
 }
 
+.user-info__link_hover:hover {
+	color: #ffde00;
+	text-decoration-color: #ffde00;
+	border-bottom-color: #ffde00;
+	cursor: pointer;
+}
+
 .cart-label {
 	color: #fff;
 	font-family: "Arial", sans-serif;

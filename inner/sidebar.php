@@ -7,10 +7,19 @@
 			<?
 				$cats = getCat4Sidebar();
 				foreach ($cats as $item) {
+					$SBCatName = $item["name"];
+					$SBCatId = $item["id"];
 			?>
-			<li class="catalog-list__item"><a class="catalog-list__link" href="#"><?=$item["name"]; ?></a></li>
+				<? if (isset($_GET["category"]) && $_GET["category"] === $SBCatId) { ?>
+					<li class="catalog-list__item catalog-list__item_active">					
+						<span class="catalog-list__link"><?=$SBCatName; ?></a>
+					</li>
+				<? } else { ?>
+					<li class="catalog-list__item">
+						<a class="catalog-list__link" href="catalog.php?category=<?=$SBCatId; ?>"><?=$SBCatName; ?></a>
+					</li>
 			<?
-				}
+				} }
 			?>
 		</ul>
 	</section>

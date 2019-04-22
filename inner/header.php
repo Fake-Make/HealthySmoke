@@ -18,7 +18,7 @@
 			</div>
 		</aside>
 		<div class="user-info">
-			<form class="user-info__form" method="POST" action="send">
+			<form class="user-info__form" method="POST" action="login.php">
 				<span>
 					<label class="user-info__label" for="user-name">Логин: </label>
 					<input class="user-info__input" type="text" name="user-name" id="user-name">
@@ -27,9 +27,14 @@
 					<label class="user-info__label user-info__label_margin-right_bigger" for="user-password">Пароль: </label>
 					<input class="user-info__input" type="password" name="user-password" id="user-password">
 				</span>
-				<input class="user-info__link" type="submit" name="submit" value="Войти">
+				<input class="user-info__link user-info__link_hover" type="submit" name="submit" value="Войти">
 			</form>
-			<a class="user-info__link user-info__link_reposition" href="registration.php">Регистрация</a>
+			<?
+				if($activePage === "Регистрация")
+					echo '<span class="user-info__link user-info__link_reposition">Регистрация</span>';
+				else
+					echo '<a class="user-info__link user-info__link_hover user-info__link_reposition" href="registration.php">Регистрация</a>';
+			?>
 			<span class="cart-label">В <a class="cart-label__link" href="#">корзине</a> товаров - <b>12</b></span>
 		</div>
 	</div>
@@ -68,7 +73,7 @@
 						if($activePage === "О компании")
 							echo '<span class="header-nav-item__link header-nav-item__link_current">О компании</span>';
 						else
-							echo '<a class="header-nav-item__link" href="#">О компании</a>';
+							echo '<a class="header-nav-item__link" href="about.php">О компании</a>';
 					?>
 				</li>
 				<li class="header-nav-item">
