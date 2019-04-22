@@ -42,19 +42,30 @@
 
 	// Выборка size товаров для page-той страницы
 	function getGoods4Catalog($page, $size, $category = NULL) {
-		$start = 1 + $page * $size - $size;
-		$end = $start + $size - 1;
+		$offset = ($page - 1) * $size;
 
 		$sqlReq = is_null($category) ?
-			"SELECT id, name, price, img FROM goods WHERE id BETWEEN $start AND $end" :
+			"SELECT id, name, price, img FROM goods LIMIT $offset, $size" :
 			"SELECT id, name, price, img FROM goods WHERE id IN 
 				(SELECT goodID FROM goodToCategories WHERE
-					goodID BETWEEN $start AND $end AND
-					categoryID = $category)";
+					categoryID = $category) LIMIT $offset, $size";
 		global $db;
 
 		$sqlRes = mysqli_query($db, $sqlReq);
 		return mysqli_fetch_all($sqlRes, MYSQLI_ASSOC);
+	}
+
+	// Получение максималного количества страниц товаров для разных запросов
+	function getMaxPage4Catalog($size, $category = NULL) {
+		$sqlReq = is_null($category) ?
+			"SELECT count(*) FROM goods" :
+			"SELECT count(*) FROM goods WHERE id IN 
+				(SELECT goodID FROM goodToCategories WHERE
+					categoryID = $category)";
+		global $db;
+
+		$sqlRes = mysqli_query($db, $sqlReq);
+		return ceil(mysqli_fetch_row($sqlRes)["0"] / $size);
 	}
 	
 	// Взятие данных для товара id
