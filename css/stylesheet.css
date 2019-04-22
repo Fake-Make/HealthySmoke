@@ -769,7 +769,7 @@ body {
 	color: inherit;
 	display: block;
 	font-size: 15px;
-	height: 15px;
+	/*height: 15px; */
 }
 
 .category__name-inner {

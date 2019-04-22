@@ -1,7 +1,7 @@
 <?
 	require_once("lib/db.php");
 	if(!isset($_GET["id"]))
-		header("404.php");
+		header("Location: 404.php");
 	// Валиднуть INT
 	$id = $_GET["id"];
 	$good = getGood4Product($id)["0"];
