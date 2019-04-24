@@ -40,64 +40,36 @@
 		<div class="wrapper">
 			<span class="menu-toggler">Меню</span>
 			<ul class="menu-togglable">
+				<?
+					foreach ($menu as $item) {
+						$menuItemName = $item["name"];
+						$menuItemHref = $item["href"];
+				?>
 				<li class="header-nav-item">
-					<?
-						if($activePage === "Главная")
-							echo '<span class="header-nav-item__link header-nav-item__link_current">Главная</span>';
-						else
-							echo '<a class="header-nav-item__link" href="index.php">Главная</a>';
-					?>
+					<span>
+						<?
+							if(isset($item["sub-menu"])) {
+								if($activePage === $menuItemName)
+									echo "<span class='header-nav-item__container-for-link'><span class='header-nav-item__link header-nav-item__link_current'>$menuItemName</span></span>";
+								else
+									echo "<span class='header-nav-item__container-for-link'><a class='header-nav-item__link' href='$menuItemHref'>$menuItemName</a></span>";
+								echo "<ul class='sub-menu'>";
+								foreach($item["sub-menu"] as $subItem) {
+									$menuSubItemName = $subItem["name"];
+									$menuSubItemHref = $subItem["href"];
+									echo "<li class='sub-menu__list-item'><a class='sub-menu__link' href='$menuSubItemHref'>$menuSubItemName</a></li>";
+								}
+								echo "</ul>";
+							} else {
+								if($activePage === $menuItemName)
+									echo "<span class='header-nav-item__link header-nav-item__link_current'>$menuItemName</span>";
+								else
+									echo "<a class='header-nav-item__link' href='$menuItemHref'>$menuItemName</a>";
+							}						
+						?>
+					</span>
 				</li>
-				<li class="header-nav-item">
-					<?
-						if($activePage === "Каталог")
-							echo '<span class="header-nav-item__container-for-link"><span class="header-nav-item__link header-nav-item__link_current">Каталог</span></span>';
-						else
-							echo '<span class="header-nav-item__container-for-link"><a class="header-nav-item__link" href="catalog.php">Каталог</a></span>';
-					?>
-					<ul class="sub-menu">
-						<li class="sub-menu__list-item"><a class="sub-menu__link" href="#">Электронные сигареты</a></li>
-						<li class="sub-menu__list-item"><a class="sub-menu__link" href="#">Трубки</a></li>
-						<li class="sub-menu__list-item"><a class="sub-menu__link" href="#">Картриджи</a></li>
-						<li class="sub-menu__list-item"><a class="sub-menu__link" href="#">Аккумуляторы и атомайзеры</a></li>
-						<li class="sub-menu__list-item"><a class="sub-menu__link" href="#">Аксессуары</a></li>
-						<li class="sub-menu__list-item"><a class="sub-menu__link" href="#">Зарядные устройства</a></li>
-						<li class="sub-menu__list-item"><a class="sub-menu__link" href="#">Жидкости для заправки</a></li>
-						<li class="sub-menu__list-item"><a class="sub-menu__link" href="#">Подарочные наборы</a></li>
-					</ul>
-				</li>
-				<li class="header-nav-item">
-					<?
-						if($activePage === "О компании")
-							echo '<span class="header-nav-item__link header-nav-item__link_current">О компании</span>';
-						else
-							echo '<a class="header-nav-item__link" href="about.php">О компании</a>';
-					?>
-				</li>
-				<li class="header-nav-item">
-					<?
-						if($activePage === "Новости")
-							echo '<span class="header-nav-item__link header-nav-item__link_current">Новости</span>';
-						else
-							echo '<a class="header-nav-item__link" href="news.php">Новости</a>';
-					?>
-				</li>
-				<li class="header-nav-item">
-					<?
-						if($activePage === "Доставка и оплата")
-							echo '<span class="header-nav-item__link header-nav-item__link_current">Доставка и оплата</span>';
-						else
-							echo '<a class="header-nav-item__link" href="paydelivery.php">Доставка и оплата</a>';
-					?>
-				</li>
-				<li class="header-nav-item">
-					<?
-						if($activePage === "Контакты")
-							echo '<span class="header-nav-item__link header-nav-item__link_current">Контакты</span>';
-						else
-							echo '<a class="header-nav-item__link" href="contacts.php">Контакты</a>';
-					?>
-				</li>
+				<?}?>
 			</ul>
 		</div>
 	</nav>

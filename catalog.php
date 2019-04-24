@@ -1,5 +1,5 @@
 <?
-	require_once("lib/db.php");
+	require_once("lib/conf.php");
 	// Если выборка будет пуста
 	//if(!isset($_GET["id"]))
 	//	header("Location: 404.php");
@@ -31,16 +31,16 @@
 								if (isset($_GET["category"]))
 									echo '<li class="bread-crumb"><a class="bread-crumb__link" href="catalog.php?category=' . $_GET["category"] . '">' . getCategoryNameByID($_GET["category"]) . '</a></li>';
 							?>
-							<li class="bread-crumb bread-crumb_current"><?=$productName; ?></li>
+							<li class="bread-crumb bread-crumb_current"><?=$productName?></li>
 						</ul>
 					</nav>
 					<section class="product">
-						<h1 class="product__info-block-part product__headline"><?=$productName; ?></h1>
-						<img class="product__image" src="<?=$img; ?>" alt="<?=$alt; ?>">
+						<h1 class="product__info-block-part product__headline"><?=$productName?></h1>
+						<img class="product__image" src="<?=$img?>" alt="<?=$alt?>">
 						<? if (is_null($price)) { ?>
 							<span class="good-price good_price product__info-block-part product__info-price"><small class="good-price__currency">Цена не указана</small></span>
 						<? } else { ?>
-							<span class="good-price good_price product__info-block-part product__info-price"><?=$price; ?> <small class="good-price__currency">руб.</small></span>
+							<span class="good-price good_price product__info-block-part product__info-price"><?=$price?> <small class="good-price__currency">руб.</small></span>
 						<? } ?>
 						<form class="product__info-block-part product__form" name="product-page__product-to-cart-form" method="POST">
 							<span class="amount-tubmler product__amount-tumbler">
@@ -52,8 +52,8 @@
 								в корзину</button>
 						</form>
 						<article class="product__description">
-							<h2>Описание товара <?=$productName; ?></h2>
-							<?=$desc ? $desc : "<p>Описание отсутствует.</p>" ; ?>
+							<h2>Описание товара <?=$productName?></h2>
+							<?=$desc ? $desc : "<p>Описание отсутствует.</p>"?>
 						</article>
 					</section>
 				<? } else { ?>
@@ -81,12 +81,12 @@
 							// Геты вообще пидоры, хер знает, где их носило
 							// Лучше лишний раз провериться и предохраниться
 							$category = isset($_GET["category"]) ? $_GET["category"] : NULL;
-							$maxPage = getMaxPage4Catalog(12, $category);
+							$maxPage = getMaxPage4Catalog($maxGoodsOnPage, $category);
 							$page = isset($_GET["page"]) ? intval($_GET["page"]) : 1;
-							if ($page > $maxPage)
+							if ($page > $maxPage || $page < 1)
 								$page = 1;
 							// Тупа место для SQL-инъекции охуенное
-							$cats = $category ? getGoods4Catalog($page, 12, $category) : getGoods4Catalog($page, 12);
+							$cats = $category ? getGoods4Catalog($page, $maxGoodsOnPage, $category) : getGoods4Catalog($page, $maxGoodsOnPage);
 							foreach ($cats as $item) {
 								$id = $item["id"];
 								$img = $item["img"] ? $item["img"] : "img/no-image.jpg";
@@ -95,20 +95,20 @@
 								$price = $item["price"];
 						?>
 						<li class="category good-piece">
-							<a class="category__link" href="catalog.php?id=<?=$id; ?><?=isset($_GET["category"]) ? "&category=" . $_GET["category"] : ""; ?>">
-								<img class="category__image good__image" src="<?=$img; ?>" alt="<?=$alt; ?>">
-								<span class="category__name-container good_name"><span class="category__name-inner"><?=$name; ?></span></span>
+							<a class="category__link" href="catalog.php?id=<?=$id?><?=isset($_GET["category"]) ? "&category=" . $_GET["category"] : ""?>">
+								<img class="category__image good__image" src="<?=$img?>" alt="<?=$alt?>">
+								<span class="category__name-container good_name"><span class="category__name-inner"><?=$name?></span></span>
 							</a>
 							<span class="good-price good_price">
 								<? if (is_null($price)) { ?>
 									<small class="good-price__currency">Цена не указана</small>
 								<? } else { ?>
-									<?=$price; ?> <small class="good-price__currency">руб.</small>
+									<?=$price?> <small class="good-price__currency">руб.</small>
 								<? } ?>
 							</span>
 							<form method="POST">
 								<input type="hidden" name="itemAmount" value="1">
-								<input type="hidden" name="id" value="<?=$id; ?>">
+								<input type="hidden" name="id" value="<?=$id?>">
 								<button class="good-to-cart good_to-cart">в корзину</button>
 							</form>
 						</li>
@@ -116,7 +116,7 @@
 							}
 						?>
 					</ul>
-					<? makePaginator(7, intval($_GET["page"]) ? intval($_GET["page"]) : 1, $maxPage); ?>
+					<? makePaginator(7, $page, $maxPage); ?>
 				<? } ?>
 			</main>
 			<? require_once("inner/sidebar.php"); ?>

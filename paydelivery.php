@@ -1,7 +1,7 @@
 <?
 	$title = "Информация о доставке и оплате — интернет-магазин Company";
 	$activePage = "Доставка и оплата";
-	require_once("lib/db.php");
+	require_once("lib/conf.php");
 	require_once("inner/meta.php");
 ?>
 <body>

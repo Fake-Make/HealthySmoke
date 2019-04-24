@@ -1,7 +1,7 @@
 <?
 	$title = "Регистрация — интернет-магазин Company";
 	$activePage = "Регистрация";
-	require_once("lib/db.php");
+	require_once("lib/conf.php");
 	require_once("inner/meta.php");
 ?>
 <body>

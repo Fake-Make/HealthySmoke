@@ -10,11 +10,11 @@
 			?>
 				<? if (isset($_GET["category"]) && $_GET["category"] === $SBCatId) { ?>
 					<li class="catalog-list__item catalog-list__item_active">					
-						<span class="catalog-list__link"><?=$SBCatName; ?></a>
+						<span class="catalog-list__link"><?=$SBCatName?></a>
 					</li>
 				<? } else { ?>
 					<li class="catalog-list__item">
-						<a class="catalog-list__link" href="catalog.php?category=<?=$SBCatId; ?>"><?=$SBCatName; ?></a>
+						<a class="catalog-list__link" href="catalog.php?category=<?=$SBCatId?>"><?=$SBCatName?></a>
 					</li>
 			<?
 				} }
@@ -25,15 +25,14 @@
 		<h2 class="sidebar__headline news__headline">Новости</h2>
 		<ul class="news-list">
 			<?
-				// Вынести 6 в конфиг
-				$news = getNewsByPages(6);
+				$news = getNewsByPages($maxNewsAtSidebar);
 				foreach ($news as $item) {
 			?>
 			<li class="news-item">
 				<a class="news-item__link" href="#">
 					<?=$item["anounce"]; ?>
 				</a>
-				<span class="news-item__date"><?=$item["dt"]; ?></span>
+				<span class="news-item__date"><?=$item["dt"]?></span>
 			</li>
 			<?
 				}

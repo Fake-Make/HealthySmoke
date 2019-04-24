@@ -1,5 +1,5 @@
 <?
-	require_once("lib/db.php");
+	require_once("lib/conf.php");
 	if (isset($_GET["id"]) && !empty($news = getOneNews($id = intval($_GET["id"])))) {
 	 	$news = $news["0"];
 	 	$newsHeader = $news["header"];
@@ -42,12 +42,11 @@
 							// Сюда нужен отряд валидашек
 							// Геты вообще пидоры, хер знает, где их носило
 							// Лучше лишний раз провериться и предохраниться
-							$itemsOnPage = 12;
-							$maxPage = getMaxPage4News($itemsOnPage);
+							$maxPage = getMaxPage4News($maxNewsOnPage);
 							$page = isset($_GET["page"]) ? intval($_GET["page"]) : 1;
-							if ($page > $maxPage)
+							if ($page > $maxPage || $page < 1)
 								$page = 1;
-							$news = getNewsByPages($itemsOnPage, $page);
+							$news = getNewsByPages($maxNewsOnPage, $page);
 							foreach ($news as $item) {
 								$id = $item["id"];
 								$anounce = $item["anounce"];

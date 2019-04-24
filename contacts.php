@@ -1,7 +1,7 @@
 <?
 	$title = "Контактная информация ООО «Company»";
 	$activePage = "Контакты";
-	require_once("lib/db.php");
+	require_once("lib/conf.php");
 	require_once("inner/meta.php");
 ?>
 <body>
@@ -101,7 +101,7 @@
 						<? } ?>
 						<? if (!$fEmail) { ?>
 						<p class="error-message">
-							Поле «Электронная почта» должно быть заполнено <?= empty($_POST["email"]) ? "" : "корректно" ?>
+							Поле «Электронная почта» должно быть заполнено <?=empty($_POST["email"]) ? "" : "корректно"?>
 						</p>
 						<? } ?>
 						<? if (!empty($_POST["phone"]) && !$fPhone) { ?>

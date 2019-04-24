@@ -60,11 +60,11 @@ INSERT INTO news (anounce, header, content, dt) VALUES
 INSERT INTO categories (name, img) VALUES
 ('Электронные сигареты', 'img/category-1.jpg'),
 ('Трубки', 'img/category-2.jpg'),
-('Жидкости для заправки', 'img/category-3.jpg'),
-('Аккумуляторы и атомайзеры', 'img/category-4.jpg'),
 ('Картриджи', 'img/category-5.jpg'),
-('Зарядные устройства', 'img/category-6.jpg'),
+('Аккумуляторы и атомайзеры', 'img/category-4.jpg'),
 ('Аксессуары', 'img/category-7.jpg'),
+('Зарядные устройства', 'img/category-6.jpg'),
+('Жидкости для заправки', 'img/category-3.jpg'),
 ('Подарочные наборы', 'img/category-8.jpg');
 
 INSERT INTO goods (name, description, price, img) VALUES

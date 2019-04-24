@@ -1,6 +1,6 @@
 <?
 	$activePage = "Главная";
-	require_once("lib/db.php");
+	require_once("lib/conf.php");
 	require_once("inner/meta.php");
 ?>
 <body>
@@ -18,9 +18,9 @@
 							$alt = $item["img"] ? $img : "Изображение категории отсутствует";
 					?>
 					<li class="category">
-						<a class="category__link" href="catalog.php?category=<?=$item["id"]; ?>">
-							<img class="category__image" src="<?=$img; ?>" alt="<?=$alt; ?>">
-							<span class="category__name-container"><span class="category__name-inner"><?=$item["name"]; ?></span></span>
+						<a class="category__link" href="catalog.php?category=<?=$item["id"]?>">
+							<img class="category__image" src="<?=$img?>" alt="<?=$alt?>">
+							<span class="category__name-container"><span class="category__name-inner"><?=$item["name"]?></span></span>
 						</a>
 					</li>
 					<? 

@@ -1,8 +1,9 @@
 <?
 	$title = "Ошибка 404 - Company";
 	$activePage = "404";
-	require_once("lib/db.php");
-	require_once("inner/meta.php");
+	require_once("lib/conf.php");
+require_once("lib/db.php");
+require_once("lib/functions.php");
 ?>
 <body>
 	<? require_once("inner/header.php"); ?>
