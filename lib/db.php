@@ -31,9 +31,21 @@
 		return mysqli_fetch_all($sqlRes, MYSQLI_ASSOC)["0"]["name"];
 	}
 	
-	// Выборка шести последних новостей для сайдбара
-	function getNews4Sidebar() {
-		$sqlReq = "SELECT anounce, dt from news ORDER BY dt DESC LIMIT 6";
+	// Выборка size последних новостей для page-той страницы
+	function getNewsByPages($size, $page = NULL) {
+		$offset = ($page - 1) * $size;
+		$sqlReq = is_null($page) ?
+			"SELECT id, anounce, dt FROM news ORDER BY dt DESC LIMIT $size" :
+			"SELECT id, anounce, dt FROM news ORDER BY dt DESC LIMIT $offset, $size";
+		global $db;
+
+		$sqlRes = mysqli_query($db, $sqlReq);
+		return mysqli_fetch_all($sqlRes, MYSQLI_ASSOC);
+	}
+
+	// Получение заголовка и содержимого для новости id
+	function getOneNews($id) {
+		$sqlReq = "SELECT header, content, dt FROM news WHERE id=$id";
 		global $db;
 
 		$sqlRes = mysqli_query($db, $sqlReq);
@@ -62,6 +74,15 @@
 			"SELECT count(*) FROM goods WHERE id IN 
 				(SELECT goodID FROM goodToCategories WHERE
 					categoryID = $category)";
+		global $db;
+
+		$sqlRes = mysqli_query($db, $sqlReq);
+		return ceil(mysqli_fetch_row($sqlRes)["0"] / $size);
+	}
+
+	// Получение максималного количества страниц товаров для разных запросов
+	function getMaxPage4News($size) {
+		$sqlReq = "SELECT count(*) FROM news";
 		global $db;
 
 		$sqlRes = mysqli_query($db, $sqlReq);

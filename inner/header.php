@@ -79,7 +79,7 @@
 						if($activePage === "Новости")
 							echo '<span class="header-nav-item__link header-nav-item__link_current">Новости</span>';
 						else
-							echo '<a class="header-nav-item__link" href="#">Новости</a>';
+							echo '<a class="header-nav-item__link" href="news.php">Новости</a>';
 					?>
 				</li>
 				<li class="header-nav-item">

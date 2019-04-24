@@ -986,7 +986,7 @@ body {
 	height: 0;
 	left: 0;
 	position: absolute;
-	width: 136px;
+	width: 84%;
 }
 
 .news-item:last-child .news-item__date::after {
@@ -1605,7 +1605,7 @@ body {
 
 .product__amount-tumbler {
 	margin-left: 1px;
-	margin-right: 21px;
+	margin-right: auto;
 }
 
 .amount-tubmler {
@@ -1620,6 +1620,7 @@ body {
 	box-shadow: none;
 	color: #4c4c4c;
 	padding: 0 9px;
+	margin: 0;
 }
 
 .product__good_to-cart {

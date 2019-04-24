@@ -25,7 +25,8 @@
 		<h2 class="sidebar__headline news__headline">Новости</h2>
 		<ul class="news-list">
 			<?
-				$news = getNews4Sidebar();
+				// Вынести 6 в конфиг
+				$news = getNewsByPages(6);
 				foreach ($news as $item) {
 			?>
 			<li class="news-item">
@@ -38,6 +39,6 @@
 				}
 			?>
 		</ul>
-		<span class="archive"><a class="archive__link" href="#">Архив новостей</a></span>
+		<span class="archive"><a class="archive__link" href="news.php">Архив новостей</a></span>
 	</section>
 </div>

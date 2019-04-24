@@ -39,7 +39,7 @@
 						if($activePage === "Новости")
 							echo '<span class="footer-nav__link">Новости</span>';
 						else
-							echo '<a class="footer-nav__link" href="#">Новости</a>';
+							echo '<a class="footer-nav__link" href="news.php">Новости</a>';
 					?>
 				</li>
 				<li class="footer-nav__list-item">
