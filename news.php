@@ -1,10 +1,10 @@
 <?
 	require_once("lib/conf.php");
-	if (isset($_GET["id"]) && !empty($news = getOneNews($id = intval($_GET["id"])))) {
-	 	$news = $news["0"];
-	 	$newsHeader = $news["header"];
-		$newsContent = $news["content"];
-		$newsData = $news["dt"];
+	if (isset($_GET["id"]) && !empty($oneNews = getOneNews($id = intval($_GET["id"])))) {
+	 	$oneNews = $oneNews["0"];
+	 	$newsHeader = $oneNews["header"];
+		$newsContent = $oneNews["content"];
+		$newsData = $oneNews["dt"];
 	 	$title = "$newsHeader — читать новости интернет-магазина Company";
 	}	else
 		$title = "Новости - Company";
@@ -16,7 +16,7 @@
 	<div class="content">
 		<div class="wrapper content__wrapper">
 			<main class="inside-content">
-				<? if(!empty($news)) { ?>
+				<? if(!empty($oneNews)) { ?>
 					<nav class="bread-crumbs-container product__bread-crumbs">
 						<ul class="bread-crumbs">
 							<li class="bread-crumb"><a class="bread-crumb__link" href="index.php">Главная</a></li>
