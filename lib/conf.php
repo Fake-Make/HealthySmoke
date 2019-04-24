@@ -9,6 +9,7 @@
 	$maxNewsOnPage = 15;
 	$maxNewsAtSidebar = 6;
 	$maxGoodsOnPage = 12;
+	$paginatorElements = 7;
 
 	$cats = getCat4Sidebar();
 	foreach ($cats as $item) {
@@ -18,6 +19,7 @@
 		];
 	}
 
+	echo array_search(7, $cats);
 	$menu = [
 		"0" => ["name"=>"Главная", "href"=>"index.php"],
 		"1" => ["name"=>"Каталог", "href"=>"catalog.php", "sub-menu"=>$categoriesSubMenu],

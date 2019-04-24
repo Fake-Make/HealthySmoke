@@ -3,7 +3,6 @@
 		<h2 class="sidebar__headline">Каталог</h2>
 		<ul class="catalog-list">
 			<?
-				$cats = getCat4Sidebar();
 				foreach ($cats as $item) {
 					$SBCatName = $item["name"];
 					$SBCatId = $item["id"];

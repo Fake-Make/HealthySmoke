@@ -11,7 +11,6 @@
 				<h1 class="invisible">Company - Электронные сигареты</h1>
 				<ul class="categories">
 					<? 
-						$cats = getCat4Index();
 						foreach ($cats as $item) {
 							$id = $item["id"];
 							$img = $item["img"] ? $item["img"] : "img/no-image.jpg";

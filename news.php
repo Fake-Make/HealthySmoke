@@ -62,7 +62,7 @@
 							}
 						?>
 					</ul>
-					<? makePaginator(7, $page, $maxPage); ?>
+					<? makePaginator($paginatorElements, $page, $maxPage); ?>
 				<? } ?>
 			</main>
 			<? require_once("inner/sidebar.php"); ?>

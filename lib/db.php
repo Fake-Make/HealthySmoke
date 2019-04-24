@@ -22,20 +22,11 @@
 
 	// Выборка названий всех категорий для сайдбара
 	function getCat4Sidebar() {
-		$sqlReq = "SELECT id, name from categories";
+		$sqlReq = "SELECT id, name, img from categories";
 		global $db;
 
 		$sqlRes = mysqli_query($db, $sqlReq);
 		return mysqli_fetch_all($sqlRes, MYSQLI_ASSOC);
-	}
-
-	// Получение названия категории по ID
-	function getCategoryNameByID($id) {
-		$sqlReq = "SELECT name from categories WHERE id=$id";
-		global $db;
-
-		$sqlRes = mysqli_query($db, $sqlReq);
-		return mysqli_fetch_all($sqlRes, MYSQLI_ASSOC)["0"]["name"];
 	}
 	
 	// Выборка size последних новостей для page-той страницы

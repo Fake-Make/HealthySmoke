@@ -28,8 +28,10 @@
 							<li class="bread-crumb"><a class="bread-crumb__link" href="index.php">Главная</a></li>
 							<li class="bread-crumb"><a class="bread-crumb__link" href="catalog.php">Каталог</a></li>
 							<?
+								// Чтобы лишний раз не лезть в БД
+								$catId = abs(intval(isset($_GET["category"])));
 								if (isset($_GET["category"]))
-									echo '<li class="bread-crumb"><a class="bread-crumb__link" href="catalog.php?category=' . $_GET["category"] . '">' . getCategoryNameByID($_GET["category"]) . '</a></li>';
+									echo '<li class="bread-crumb"><a class="bread-crumb__link" href="catalog.php?category=' . $_GET["category"] . '">' . $cats[array_search($catId, array_column($cats, "id"))]["name"] . '</a></li>';
 							?>
 							<li class="bread-crumb bread-crumb_current"><?=$productName?></li>
 						</ul>
@@ -86,8 +88,8 @@
 							if ($page > $maxPage || $page < 1)
 								$page = 1;
 							// Тупа место для SQL-инъекции охуенное
-							$cats = $category ? getGoods4Catalog($page, $maxGoodsOnPage, $category) : getGoods4Catalog($page, $maxGoodsOnPage);
-							foreach ($cats as $item) {
+							$goods = $category ? getGoods4Catalog($page, $maxGoodsOnPage, $category) : getGoods4Catalog($page, $maxGoodsOnPage);
+							foreach ($goods as $item) {
 								$id = $item["id"];
 								$img = $item["img"] ? $item["img"] : "img/no-image.jpg";
 								$alt = $item["img"] ? $img : "Изображение отсутствует";
@@ -116,7 +118,7 @@
 							}
 						?>
 					</ul>
-					<? makePaginator(7, $page, $maxPage); ?>
+					<? makePaginator($paginatorElements, $page, $maxPage); ?>
 				<? } ?>
 			</main>
 			<? require_once("inner/sidebar.php"); ?>
