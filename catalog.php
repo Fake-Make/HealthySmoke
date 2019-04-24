@@ -1,27 +1,18 @@
-<?
-	require_once("lib/conf.php");
-	// Если выборка будет пуста
-	//if(!isset($_GET["id"]))
-	//	header("Location: 404.php");
-	if (isset($_GET["id"]) && !empty($good = getGood4Product($id = intval($_GET["id"])))) {
-		$good = $good["0"];
-		$img = $good["img"] ? $good["img"] : "img/no-image.jpg";
-		$alt = $good["img"] ? $img : "Изображение отсутствует";
-		$productName = $good["name"];
-		$price = $good["price"];
-		$desc = $good["description"];
-		// Взять название и цену товара
-		$title = "$productName — купить за $price руб. в интернет-магазине Company";
-	}	else
-		$title = "Каталог товаров - Company";
-	$activePage = "Каталог";
-	require_once("inner/meta.php");
-?>
-<body>
-	<? require_once("inner/header.php"); ?>
-	<div class="content">
-		<div class="wrapper content__wrapper">
-			<main class="inside-content">
+<? require_once("inner/header.php"); ?>
+	<?
+		if (isset($_GET["id"]) && !empty($good = getGood4Product($id = intval($_GET["id"])))) {
+			$good = $good["0"];
+			$img = $good["img"] ? $good["img"] : "img/no-image.jpg";
+			$alt = $good["img"] ? $img : "Изображение отсутствует";
+			$productName = $good["name"];
+			$price = $good["price"];
+			$desc = $good["description"];
+			// Взять название и цену товара
+			$title = "$productName — купить за $price руб. в интернет-магазине Company";
+		}	else
+			$title = "Каталог товаров - Company";
+		$activePage = "Каталог";
+	?>
 				<? if(!empty($good)) { ?>
 					<nav class="bread-crumbs-container product__bread-crumbs">
 						<ul class="bread-crumbs">
@@ -120,11 +111,5 @@
 					</ul>
 					<? makePaginator($paginatorElements, $page, $maxPage); ?>
 				<? } ?>
-			</main>
-			<? require_once("inner/sidebar.php"); ?>
-		</div>
-	</div>
-	<? require_once("inner/footer.php"); ?>
-</body>
-
-</html>
+<? require_once("inner/sidebar.php"); ?>
+<? require_once("inner/footer.php"); ?>

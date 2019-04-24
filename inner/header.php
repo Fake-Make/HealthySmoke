@@ -1,76 +1,97 @@
-<header class="page-header">
-	<div class="wrapper">
-		<aside class="header-top">
-			<? if ("Главная" !== $activePage) echo '<a class="header-logo header-logo__link" href="index.php">';
-				else echo '<div class="header-logo">' ?>
-				<img class="header-logo__image" src="img/logo.png" alt="Логотип" width="95" height="75">		
-				<span class="header-logo__caption">Company</span>
-			<? if ("Главная" !== $activePage) echo '</a>';
-				else echo '</div>' ?>	
-			<div class="company-info">
-				<b class="company-info__tagline">Нанотехнологии здоровья</b>
-				<div class="contacts">
-					<a class="contacts__link-mail" href="mailto:info@company.ru">info@company.ru</a>
-					<a class="contacts__link-phone" href="tel:+73833491849">+7 (383) 349-18-49</a>
-				</div>
-			</div>
-		</aside>
-		<div class="user-info">
-			<form class="user-info__form" method="POST" action="login.php">
-				<span>
-					<label class="user-info__label" for="user-name">Логин: </label>
-					<input class="user-info__input" type="text" name="user-name" id="user-name">
-				</span>
-				<span>
-					<label class="user-info__label user-info__label_margin-right_bigger" for="user-password">Пароль: </label>
-					<input class="user-info__input" type="password" name="user-password" id="user-password">
-				</span>
-				<input class="user-info__link user-info__link_hover" type="submit" name="submit" value="Войти">
-			</form>
-			<?
-				if($activePage === "Регистрация")
-					echo '<span class="user-info__link user-info__link_reposition">Регистрация</span>';
-				else
-					echo '<a class="user-info__link user-info__link_hover user-info__link_reposition" href="registration.php">Регистрация</a>';
-			?>
-			<span class="cart-label">В <a class="cart-label__link" href="#">корзине</a> товаров - <b>12</b></span>
-		</div>
-	</div>
-	<nav class="header-nav">
+<?
+	require_once("lib/conf.php");
+	ob_start("changeTitle");
+	session_start();	
+?>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<link rel="stylesheet" href="css/stylesheet.css">
+	<link rel="shortcut icon" href="img/favicon.png" type="image/png">
+	<link rel="alternate" href="https://allfont.ru/allfont.css?fonts=arial-narrow">
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<script src="js/script.js"></script>
+	<title>%DYNAMIC_TITLE%</title>
+</head>
+<body>
+	<header class="page-header">
 		<div class="wrapper">
-			<span class="menu-toggler">Меню</span>
-			<ul class="menu-togglable">
-				<?
-					foreach ($menu as $item) {
-						$menuItemName = $item["name"];
-						$menuItemHref = $item["href"];
-				?>
-				<li class="header-nav-item">
+			<aside class="header-top">
+				<? if ("Главная" !== $activePage) echo '<a class="header-logo header-logo__link" href="index.php">';
+					else echo '<div class="header-logo">' ?>
+					<img class="header-logo__image" src="img/logo.png" alt="Логотип" width="95" height="75">		
+					<span class="header-logo__caption">Company</span>
+				<? if ("Главная" !== $activePage) echo '</a>';
+					else echo '</div>' ?>	
+				<div class="company-info">
+					<b class="company-info__tagline">Нанотехнологии здоровья</b>
+					<div class="contacts">
+						<a class="contacts__link-mail" href="mailto:info@company.ru">info@company.ru</a>
+						<a class="contacts__link-phone" href="tel:+73833491849">+7 (383) 349-18-49</a>
+					</div>
+				</div>
+			</aside>
+			<div class="user-info">
+				<form class="user-info__form" method="POST" action="login.php">
 					<span>
-						<?
-							if(isset($item["sub-menu"])) {
-								if($activePage === $menuItemName)
-									echo "<span class='header-nav-item__container-for-link'><span class='header-nav-item__link header-nav-item__link_current'>$menuItemName</span></span>";
-								else
-									echo "<span class='header-nav-item__container-for-link'><a class='header-nav-item__link' href='$menuItemHref'>$menuItemName</a></span>";
-								echo "<ul class='sub-menu'>";
-								foreach($item["sub-menu"] as $subItem) {
-									$menuSubItemName = $subItem["name"];
-									$menuSubItemHref = $subItem["href"];
-									echo "<li class='sub-menu__list-item'><a class='sub-menu__link' href='$menuSubItemHref'>$menuSubItemName</a></li>";
-								}
-								echo "</ul>";
-							} else {
-								if($activePage === $menuItemName)
-									echo "<span class='header-nav-item__link header-nav-item__link_current'>$menuItemName</span>";
-								else
-									echo "<a class='header-nav-item__link' href='$menuItemHref'>$menuItemName</a>";
-							}						
-						?>
+						<label class="user-info__label" for="user-name">Логин: </label>
+						<input class="user-info__input" type="text" name="user-name" id="user-name">
 					</span>
-				</li>
-				<?}?>
-			</ul>
+					<span>
+						<label class="user-info__label user-info__label_margin-right_bigger" for="user-password">Пароль: </label>
+						<input class="user-info__input" type="password" name="user-password" id="user-password">
+					</span>
+					<input class="user-info__link user-info__link_hover" type="submit" name="submit" value="Войти">
+				</form>
+				<?
+					if($activePage === "Регистрация")
+						echo '<span class="user-info__link user-info__link_reposition">Регистрация</span>';
+					else
+						echo '<a class="user-info__link user-info__link_hover user-info__link_reposition" href="registration.php">Регистрация</a>';
+				?>
+				<span class="cart-label">В <a class="cart-label__link" href="#">корзине</a> товаров - <b>12</b></span>
+			</div>
 		</div>
-	</nav>
-</header>
+		<nav class="header-nav">
+			<div class="wrapper">
+				<span class="menu-toggler">Меню</span>
+				<ul class="menu-togglable">
+					<?
+						foreach ($menu as $item) {
+							$menuItemName = $item["name"];
+							$menuItemHref = $item["href"];
+					?>
+					<li class="header-nav-item">
+						<span>
+							<?
+								if(isset($item["sub-menu"])) {
+									if($activePage === $menuItemName)
+										echo "<span class='header-nav-item__container-for-link'><span class='header-nav-item__link header-nav-item__link_current'>$menuItemName</span></span>";
+									else
+										echo "<span class='header-nav-item__container-for-link'><a class='header-nav-item__link' href='$menuItemHref'>$menuItemName</a></span>";
+									echo "<ul class='sub-menu'>";
+									foreach($item["sub-menu"] as $subItem) {
+										$menuSubItemName = $subItem["name"];
+										$menuSubItemHref = $subItem["href"];
+										echo "<li class='sub-menu__list-item'><a class='sub-menu__link' href='$menuSubItemHref'>$menuSubItemName</a></li>";
+									}
+									echo "</ul>";
+								} else {
+									if($activePage === $menuItemName)
+										echo "<span class='header-nav-item__link header-nav-item__link_current'>$menuItemName</span>";
+									else
+										echo "<a class='header-nav-item__link' href='$menuItemHref'>$menuItemName</a>";
+								}						
+							?>
+						</span>
+					</li>
+					<?}?>
+				</ul>
+			</div>
+		</nav>
+	</header>
+	<div class="content">
+		<div class="wrapper content__wrapper">
+			<main class="inside-content">

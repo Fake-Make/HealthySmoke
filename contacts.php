@@ -1,14 +1,8 @@
-<?
-	$title = "Контактная информация ООО «Company»";
-	$activePage = "Контакты";
-	require_once("lib/conf.php");
-	require_once("inner/meta.php");
-?>
-<body>
-	<? require_once("inner/header.php"); ?>
-	<div class="content">
-		<div class="wrapper content__wrapper">
-			<main class="inside-content">
+<? require_once("inner/header.php"); ?>
+	<?
+		$title = "Контактная информация ООО «Company»";
+		$activePage = "Контакты";
+	?>
 				<h1 class="contacts-page__main-headline">Контакты</h1>
 				<table class="contacts-section">
 					<tbody>
@@ -153,11 +147,5 @@
 					</form>
 					<? } ?>
 				</section>
-			</main>
-			<? require_once("inner/sidebar.php"); ?>
-		</div>
-	</div>
-	<? require_once("inner/footer.php"); ?>
-</body>
-
-</html>
+<? require_once("inner/sidebar.php"); ?>
+<? require_once("inner/footer.php"); ?>

@@ -6,9 +6,8 @@
 	function validAnyString($str) {
 		if (!isset($str))
 			return 0;
-		global $db;
 		$spaces = [" ", "\r", "\n", "\t"];
-		return strlen(str_replace($spaces, "", $str)) ? addslashes($db, htmlspecialchars($str)) : 0;
+		return strlen(str_replace($spaces, "", $str)) ? addslashes(htmlspecialchars($str)) : 0;
 	}
 
 	// Возвращает валидный email, если возможно такое преобразование
@@ -74,5 +73,10 @@
 		if ($cur != $max)
 			echo "<li class='paginator__elem paginator__elem_next'><a href='" . $_SERVER['SCRIPT_NAME'] . "?page=" . ($cur + 1) . "' class='paginator__link'>Следующая страница</a></li>";
 		echo "</ul>";
+	}
+
+	function changeTitle($buffer) {
+		global $title;
+		return (str_replace("%DYNAMIC_TITLE%", $title, $buffer));
 	}
 ?>

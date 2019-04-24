@@ -1,21 +1,15 @@
-<?
-	require_once("lib/conf.php");
-	if (isset($_GET["id"]) && !empty($oneNews = getOneNews($id = intval($_GET["id"])))) {
-	 	$oneNews = $oneNews["0"];
-	 	$newsHeader = $oneNews["header"];
-		$newsContent = $oneNews["content"];
-		$newsData = $oneNews["dt"];
-	 	$title = "$newsHeader — читать новости интернет-магазина Company";
-	}	else
-		$title = "Новости - Company";
-	$activePage = "Новости";
-	require_once("inner/meta.php");
-?>
-<body>
-	<? require_once("inner/header.php"); ?>
-	<div class="content">
-		<div class="wrapper content__wrapper">
-			<main class="inside-content">
+<? require_once("inner/header.php"); ?>
+	<?
+		if (isset($_GET["id"]) && !empty($oneNews = getOneNews($id = intval($_GET["id"])))) {
+			$oneNews = $oneNews["0"];
+			$newsHeader = $oneNews["header"];
+			$newsContent = $oneNews["content"];
+			$newsData = $oneNews["dt"];
+			$title = "$newsHeader — читать новости интернет-магазина Company";
+		}	else
+			$title = "Новости - Company";
+		$activePage = "Новости";
+	?>
 				<? if(!empty($oneNews)) { ?>
 					<nav class="bread-crumbs-container product__bread-crumbs">
 						<ul class="bread-crumbs">
@@ -64,11 +58,5 @@
 					</ul>
 					<? makePaginator($paginatorElements, $page, $maxPage); ?>
 				<? } ?>
-			</main>
-			<? require_once("inner/sidebar.php"); ?>
-		</div>
-	</div>
-	<? require_once("inner/footer.php"); ?>
-</body>
-
-</html>
+<? require_once("inner/sidebar.php"); ?>
+<? require_once("inner/footer.php"); ?>

@@ -1,14 +1,8 @@
+<? require_once("inner/header.php"); ?>
 <?
 	$title = "Информация о доставке и оплате — интернет-магазин Company";
 	$activePage = "Доставка и оплата";
-	require_once("lib/conf.php");
-	require_once("inner/meta.php");
 ?>
-<body>
-	<? require_once("inner/header.php"); ?>
-	<div class="content">
-		<div class="wrapper content__wrapper">
-			<main class="inside-content">
 				<article class="shipment-article">
 					<h1>Доставка</h1>
 					<p><b>Уважаемые покупатели!</b></p>
@@ -31,11 +25,5 @@
 					<p>Доставка за пределы МКАД - по договоренности</p>
 					<p><i>Также, Вы имеете возможность приобрести товары в нашем шоу-руме на м.Сходненская</i></p>
 				</article>
-			</main>
-			<? require_once("inner/sidebar.php"); ?>
-		</div>
-	</div>
-	<? require_once("inner/footer.php"); ?>
-</body>
-
-</html>
+<? require_once("inner/sidebar.php"); ?>
+<? require_once("inner/footer.php"); ?>

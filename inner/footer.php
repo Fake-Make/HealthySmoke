@@ -1,3 +1,6 @@
+
+	</div>
+</div>
 <footer class="page-footer">
 	<div class="wrapper page-footer__wrapper">
 		<div class="copyright">
@@ -33,3 +36,6 @@
 	</div>
 </footer>
 <? mysqli_close($db); ?>
+</body>
+</html>
+<?ob_end_flush();?>

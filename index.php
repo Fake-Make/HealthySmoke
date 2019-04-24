@@ -1,13 +1,7 @@
-<?
-	$activePage = "Главная";
-	require_once("lib/conf.php");
-	require_once("inner/meta.php");
-?>
-<body>
-	<? require_once("inner/header.php"); ?>
-	<div class="content">
-		<div class="wrapper content__wrapper">
-			<main class="categories">
+<? require_once("inner/header.php"); ?>
+	<?
+		$activePage = "Главная";
+	?>
 				<h1 class="invisible">Company - Электронные сигареты</h1>
 				<ul class="categories">
 					<? 
@@ -61,8 +55,4 @@
 					титановые, керамические ножи из Японии.
 				</p>
 			</article>
-		</div>
-	</div>
-	<? require_once("inner/footer.php"); ?>
-</body>
-</html>
+<? require_once("inner/footer.php"); ?>

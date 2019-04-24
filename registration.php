@@ -1,14 +1,8 @@
-<?
-	$title = "Регистрация — интернет-магазин Company";
-	$activePage = "Регистрация";
-	require_once("lib/conf.php");
-	require_once("inner/meta.php");
-?>
-<body>
-	<? require_once("inner/header.php"); ?>
-	<div class="content">
-		<div class="wrapper content__wrapper">
-			<main class="inside-content inside-content__registration">
+<? require_once("inner/header.php"); ?>
+	<?
+		$title = "Регистрация — интернет-магазин Company";
+		$activePage = "Регистрация";
+	?>
 				<section class="feedback-form feedback-form__registration">
 					<h1 class="registration-headline">Регистрация</h1>
 					<p class="feedback-form__hint">
@@ -71,11 +65,5 @@
 						<input class="form-submit data-send form-submit__registration" type="submit" value="Зарегистрироваться">
 					</form>
 				</section>
-			</main>
-			<? require_once("inner/sidebar.php"); ?>
-		</div>
-	</div>
-	<? require_once("inner/footer.php"); ?>
-</body>
-
-</html>
+<? require_once("inner/sidebar.php"); ?>
+<? require_once("inner/footer.php"); ?>
