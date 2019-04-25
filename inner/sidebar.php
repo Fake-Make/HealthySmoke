@@ -8,16 +8,17 @@
 					$SBCatName = $item["name"];
 					$SBCatId = $item["id"];
 			?>
-				<? if (!is_null($catId) && $catId == $SBCatId) { ?>
+				<?if(!is_null($catId) && $catId == $SBCatId) {?>
 					<li class="catalog-list__item catalog-list__item_active">					
 						<span class="catalog-list__link"><?=$SBCatName?></a>
 					</li>
-				<? } else { ?>
+				<?} else {?>
 					<li class="catalog-list__item">
 						<a class="catalog-list__link" href="catalog.php?category=<?=$SBCatId?>"><?=$SBCatName?></a>
 					</li>
-			<?
-				} }
+				<?
+					}
+				}
 			?>
 		</ul>
 	</section>
@@ -34,9 +35,7 @@
 				</a>
 				<span class="news-item__date"><?=$item["dt"]?></span>
 			</li>
-			<?
-				}
-			?>
+			<?}?>
 		</ul>
 		<span class="archive"><a class="archive__link" href="news.php">Архив новостей</a></span>
 	</section>

@@ -6,10 +6,10 @@
 		<div class="copyright">
 			<span class="copyright__part copyright__lifetime">Copyright ©2007-<?=date("Y", time())?></span>
 			<span class="copyright__part copyright__company-lifetime"><b>© "Company"</b>, <?=date("Y", time())?></span>
-			<? if ("Главная" !== $activePage) echo '<a class="footer-logo__link" href="index.php">'; ?>
+			<?if("Главная" !== $activePage) echo '<a class="footer-logo__link" href="index.php">';?>
 				<img class="copyright__image" src="img/logo.png" alt="Company-logo">
 				<span class="copyright__part copyrhigt__company-name">Company</span>
-			<? if ("Главная" !== $activePage) echo '</a>'; ?>	
+			<?if("Главная" !== $activePage) echo '</a>';?>	
 		</div>
 		<nav class="footer-nav">
 			<ul class="footer-nav__list">
@@ -35,7 +35,7 @@
 		</div>
 	</div>
 </footer>
-<? mysqli_close($db); ?>
+<?mysqli_close($db);?>
 </body>
 </html>
 <?ob_end_flush();?>

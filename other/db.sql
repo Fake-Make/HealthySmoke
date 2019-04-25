@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS
+DROP TABLE if EXISTS
 news, categories, goods, appeals, goodToCategories;
 
 CREATE TABLE news (

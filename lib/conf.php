@@ -4,7 +4,7 @@
 	// Конфигурационный файл сайта для хранения глобальных переменных и констант
 	define(TEST_MAIL, "test@example.com");
 	$title = "Интернет-магазин электронных сигарет - Company";
-	$activePage = $activePage ? $activePage : "Главная";
+	$activePage = "Главная";
 
 	$maxNewsOnPage = 15;
 	$maxNewsAtSidebar = 6;

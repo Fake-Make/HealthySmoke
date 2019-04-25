@@ -2,13 +2,13 @@ const phoneSize = 480;
 
 // Функция для исправления отображения флекс-бокса
 function flexFix() {
-	if ($(window).width() > phoneSize)
+	if($(window).width() > phoneSize)
 		var n = 3;
 	else
 		var n = 2;
 
 	// Если количество элементов не кратно n, то дополняется до кратности n
-	if ($('ul.categories').children().length % n) {
+	if($('ul.categories').children().length % n) {
 		// Перед запуском удаляются лишние фикс-элементы
 		$('.category.hidden').remove();
 		while ($('ul.categories').children().length % n)
@@ -24,7 +24,7 @@ function hideAllActive() {
 // Переключение меню
 function menuToggle(item) {
 	hideAllActive();
-	if ($(item).css('display') === 'flex') {
+	if($(item).css('display') === 'flex') {
 		$(item).removeAttr('style');
 	} else {
 		$(item).css('display', 'flex');
@@ -33,9 +33,9 @@ function menuToggle(item) {
 
 // Скрытие сайдбара при просмотре Mobile на внутренних страницах
 function sidebarHide() {
-	if ($(window).width() <= phoneSize) {
-		if ($(document).find('.header-nav-item__link_current').is('.header-nav-item__link_current')) {
-			if ($('.header-nav-item__link_current').text() != "Главная") {
+	if($(window).width() <= phoneSize) {
+		if($(document).find('.header-nav-item__link_current').is('.header-nav-item__link_current')) {
+			if($('.header-nav-item__link_current').text() != "Главная") {
 				$('.sidebar').css('display', 'none');
 			}
 		}
@@ -44,7 +44,7 @@ function sidebarHide() {
 
 // Функция валидации поля
 function validate(item) {
-	if ($(item).val() === "") {
+	if($(item).val() === "") {
 		// Если пусто, то показываем сообщение об ошибке, делаем границы поля красными
 		$(item).next('.error-emptyness').removeClass('invisible');
 		$(item).addClass('incorrect-input-style');
@@ -62,15 +62,15 @@ $(function () {
 	{ // Общие настройки для всего сайта
 		// Переключатель основного меню
 		$('.menu-toggler').on('click', function () {
-			if ($(window).width() <= phoneSize) {
+			if($(window).width() <= phoneSize) {
 				menuToggle('.menu-togglable');
 			}
 		});
 
 		// Переключатель под-меню
 		$('.header-nav-item').on('click', function () {
-			if ($(window).width() <= phoneSize) {
-				if ($(this).hasClass('active')) {
+			if($(window).width() <= phoneSize) {
+				if($(this).hasClass('active')) {
 					// Деактивация задействованного элемента
 					hideAllActive();
 				} else {
@@ -78,7 +78,7 @@ $(function () {
 					hideAllActive();
 					// Активация задействованного элемента
 					//menuToggle('.sub-menu');
-					if ($(this).find('.sub-menu').is('ul')) {
+					if($(this).find('.sub-menu').is('ul')) {
 						menuToggle('.sub-menu');
 						$(this).addClass('active');
 						return false;
@@ -89,7 +89,7 @@ $(function () {
 
 		// Заливка непустых полей ввода
 		$('.user-info__input').on('change', function () {
-			if ($(this).val() === "")
+			if($(this).val() === "")
 				$(this).removeClass('user-info__input_filled-white')
 			else
 				$(this).addClass('user-info__input_filled-white')
@@ -97,14 +97,14 @@ $(function () {
 
 		// Настройка отображения при изменении размеров экрана
 		$(window).resize(function () {
-			if ($(window).width() > phoneSize) {
+			if($(window).width() > phoneSize) {
 				// Закрывашка меню при смене области просмотра Mobile -> Desktop
-				if ($('.menu-togglable').css('display') === 'flex') {
+				if($('.menu-togglable').css('display') === 'flex') {
 					menuToggle('.menu-togglable');
 				}
 
 				// Возобновление отображения сайдбара при переходе Mobile -> Desktop
-				if ($('.sidebar').css('display') === 'none') {
+				if($('.sidebar').css('display') === 'none') {
 					$('.sidebar').removeAttr('style');
 				}
 			}
@@ -132,17 +132,17 @@ $(function () {
 		// Действие кнопки уменьшения количества товара параллельно с валидацией
 		$('.amount-tumbler__button_left').on('click', function () {
 			var a = $(this).siblings('.products-amount__input')
-			if (!(a.val() >= 1) || a.val() % 1 != 0)
+			if(!(a.val() >= 1) || a.val() % 1 != 0)
 				a.val(1);
 
-			if (a.val() > 1)
+			if(a.val() > 1)
 				a.val(+a.val() - 1);
 		});
 
 		// Действие кнопки увеличения количества товара параллельно с валидацией
 		$('.amount-tumbler__button_right').on('click', function () {
 			var a = $(this).siblings('.products-amount__input')
-			if (!(parseInt(a.val()) >= 1) || a.val() % 1 != 0)
+			if(!(parseInt(a.val()) >= 1) || a.val() % 1 != 0)
 				a.val(1);
 
 			a.val(+a.val() + 1);
@@ -173,7 +173,7 @@ $(function () {
 			$('.search-filter .search-filter__input').focusout(function () {
 				var amount = parseFloat($(this).val(), 10);
 				// Если не число, пустая строка или меньше нуля, то заменить
-				if (!(amount >= 0))
+				if(!(amount >= 0))
 					$(this).val(0);
 			});
 
@@ -181,7 +181,7 @@ $(function () {
 			// Функция применима к элементу на любой другой странице
 			$('.products-amount__input').focusout(function () {
 				var amount = $(this).val();
-				if (!(amount >= 1) || amount % 1 != 0)
+				if(!(amount >= 1) || amount % 1 != 0)
 					$(this).val(1);
 			});
 		}
@@ -196,7 +196,7 @@ $(function () {
 					validate('form[name="registration-page__registration-form"] input[name="registration-password-confirm"]');
 
 				// Отправляем форму, только если все требуемые поля валидны
-				if (flag)
+				if(flag)
 					return false;
 			});
 
@@ -208,7 +208,7 @@ $(function () {
 					validate('form[name="contats-page__feedback-form"] textarea[name="feedback-text"]');
 
 				// Отправляем форму, только если все требуемые поля валидны
-				if (flag)
+				if(flag)
 					return false;
 			});
 
@@ -219,7 +219,7 @@ $(function () {
 					validate('form[name="any-page__login-form_full"] input[name="login-password"]');
 
 				// Отправляем форму, только если все требуемые поля валидны
-				if (flag)
+				if(flag)
 					return false;
 			});
 
@@ -228,14 +228,14 @@ $(function () {
 				var min = parseFloat($(this).find('.search-filter__input[name="cost-from"]').val());
 				var max = parseFloat($(this).find('.search-filter__input[name="cost-to"]').val());
 				// Проверка на пустоту, логичность и неотрицательость
-				if (!(min <= max) || min < 0 || max < 0)
+				if(!(min <= max) || min < 0 || max < 0)
 					return false;
 			});
 
 			// Валидация формы "Положить в корзину" на странице "О продукте"
 			$('form[name="product-page__product-to-cart-form"]').on('submit', function () {
 				var amount = +$(this).find('.products-amount__input').val();
-				if (amount < 1 || amount % 1 !== 0)
+				if(amount < 1 || amount % 1 !== 0)
 					return false;
 			})
 		}
