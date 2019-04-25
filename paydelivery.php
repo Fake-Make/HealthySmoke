@@ -2,6 +2,7 @@
 <?
 	$title = "Информация о доставке и оплате — интернет-магазин Company";
 	$activePage = "Доставка и оплата";
+	echo applyChanges(ob_get_clean());
 ?>
 				<article class="shipment-article">
 					<h1>Доставка</h1>

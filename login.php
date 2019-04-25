@@ -2,6 +2,7 @@
 	<?
 		$title = "Вход — интернет-магазин электронных сигарет Company";
 		$activePage = "Вход";
+		echo applyChanges(ob_get_clean());
 	?>
 				<section class="feedback-form feedback-form__registration">
 					<h1 class="registration-headline registration-headline_login">Вход</h1>

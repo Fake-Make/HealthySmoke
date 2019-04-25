@@ -9,6 +9,7 @@
 		}	else
 			$title = "Новости - Company";
 		$activePage = "Новости";
+		echo applyChanges(ob_get_clean());
 	?>
 				<? if(!empty($oneNews)) { ?>
 					<nav class="bread-crumbs-container product__bread-crumbs">

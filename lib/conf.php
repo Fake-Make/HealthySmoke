@@ -3,7 +3,7 @@
 	require_once("functions.php");
 	// Конфигурационный файл сайта для хранения глобальных переменных и констант
 	define(TEST_MAIL, "test@example.com");
-	$title = $title ? $title : "Company - Интернет-магазин электронных сигарет";
+	$title = "Интернет-магазин электронных сигарет - Company";
 	$activePage = $activePage ? $activePage : "Главная";
 
 	$maxNewsOnPage = 15;

@@ -2,6 +2,7 @@
 	<?
 		$title = "Контактная информация ООО «Company»";
 		$activePage = "Контакты";
+		echo applyChanges(ob_get_clean());
 	?>
 				<h1 class="contacts-page__main-headline">Контакты</h1>
 				<table class="contacts-section">

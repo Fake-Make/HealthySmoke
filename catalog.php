@@ -12,6 +12,7 @@
 		}	else
 			$title = "Каталог товаров - Company";
 		$activePage = "Каталог";
+		echo applyChanges(ob_get_clean());
 	?>
 				<? if(!empty($good)) { ?>
 					<nav class="bread-crumbs-container product__bread-crumbs">

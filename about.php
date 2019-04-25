@@ -2,6 +2,7 @@
 	<?
 		$title = "Информация о компании — «Company»";
 		$activePage = "О компании";
+		echo applyChanges(ob_get_clean());
 	?>
 				<article>
 					<h1>О компании</h1>
