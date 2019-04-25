@@ -1,5 +1,6 @@
 <?require_once("inner/header.php");?>
 <?
+	// Если пришёл id новости, значит подобрать данные для вывода одной новости
 	if(isset($_GET["id"]) && !empty($oneNews = getOneNews($id = validNaturalNumber($_GET["id"])))) {
 		$oneNews = $oneNews["0"];
 		$newsHeader = $oneNews["header"];
@@ -35,6 +36,7 @@
 	</nav>
 	<ul class="news-list">
 		<?
+			// Аналогично странице каталога
 			$maxPage = getMaxPage4News($maxNewsOnPage);
 			$page = validNaturalNumber($_GET["page"]);
 			if($page > $maxPage)

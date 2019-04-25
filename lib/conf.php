@@ -6,11 +6,14 @@
 	$title = "Интернет-магазин электронных сигарет - Company";
 	$activePage = "Главная";
 
+	// Переменные для задания количества отображаемых элементов на страницах
 	$maxNewsOnPage = 15;
 	$maxNewsAtSidebar = 6;
 	$maxGoodsOnPage = 12;
 	$paginatorElements = 7;
 
+	// Сразу берём категории, т.к. они всегда нужны для сайдбара, а он на каждой странице
+	// Т.к. категорий не должно быть много, то сразу подцепляем и ссылки на изображения
 	$cats = getCat4Sidebar();
 	foreach ($cats as $item) {
 		$categoriesSubMenu[] = [
@@ -19,7 +22,7 @@
 		];
 	}
 
-	echo array_search(7, $cats);
+	// Храним меню в массиве, т.к. оно повторяется дважды и может изменяться
 	$menu = [
 		"0" => ["name"=>"Главная", "href"=>"index.php"],
 		"1" => ["name"=>"Каталог", "href"=>"catalog.php", "sub-menu"=>$categoriesSubMenu],

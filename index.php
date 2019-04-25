@@ -9,6 +9,8 @@
 <h1 class="invisible">Company - Электронные сигареты</h1>
 <ul class="categories">
 	<?
+		// Категории уже получены в конфиге
+		// Было нужно для меню
 		foreach ($cats as $item) {
 			$id = $item["id"];
 			$img = $item["img"] ? $item["img"] : "img/no-image.jpg";

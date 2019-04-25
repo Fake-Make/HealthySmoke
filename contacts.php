@@ -2,6 +2,7 @@
 <?
 	$title = "Контактная информация ООО «Company»";
 	$activePage = "Контакты";
+	// Открываем сессию или проверяем существование таковой
 	session_start();
 	echo applyChanges(ob_get_clean());
 ?>

@@ -1,5 +1,6 @@
 <?require_once("inner/header.php");?>
 <?
+	// Если пришёл id и такой товар существует, то нужно взять данные для отображения товара
 	if(isset($_GET["id"]) && !empty($good = getGood4Product($id = validNaturalNumber($_GET["id"])))) {
 		$good = $good["0"];
 		$img = $good["img"] ? $good["img"] : "img/no-image.jpg";
@@ -21,7 +22,7 @@
 			<li class="bread-crumb"><a class="bread-crumb__link" href="index.php">Главная</a></li>
 			<li class="bread-crumb"><a class="bread-crumb__link" href="catalog.php">Каталог</a></li>
 			<?
-				// Чтобы лишний раз не лезть в БД
+				// Чтобы лишний раз не лезть в БД, посмотрим, пришла ли категория и найдём её название в соотвествующем массиве
 				if(!is_null($catId)) {
 					echo
 						'<li class="bread-crumb">
@@ -37,11 +38,7 @@
 	<section class="product">
 		<h1 class="product__info-block-part product__headline"><?=$productName?></h1>
 		<img class="product__image" src="<?=$img?>" alt="<?=$alt?>">
-		<?if(is_null($price)) {?>
-			<span class="good-price good_price product__info-block-part product__info-price"><small class="good-price__currency">Цена не указана</small></span>
-		<?} else {?>
-			<span class="good-price good_price product__info-block-part product__info-price"><?=$price?> <small class="good-price__currency">руб.</small></span>
-		<?}?>
+		<span class="good-price good_price product__info-block-part product__info-price"><?=$price?> <small class="good-price__currency">руб.</small></span>
 		<form class="product__info-block-part product__form" name="product-page__product-to-cart-form" method="POST">
 			<span class="amount-tubmler product__amount-tumbler">
 				<button type="button" class="amount-tumbler__button amount-tumbler__button_left"></button>
@@ -76,13 +73,13 @@
 	</form>
 	<ul class="categories categories__reposition">
 		<?
-			// Сюда нужен отряд валидашек
-			// Геты вообще пидоры, хер знает, где их носило
-			// Лучше лишний раз провериться и предохраниться
+			// Нужно знать, сколько всего страниц, для пагинатора и корректировки текущей страницы
 			$maxPage = getMaxPage4Catalog($maxGoodsOnPage, $catId);
 			$page = validNaturalNumber($_GET["page"]);
 			if($page > $maxPage)
 				$page = 1;
+			// Если пришла категория, то фильтруем товары
+			// Иначе выводим все подряд
 			$goods = is_null($catId) ? getGoods4Catalog($page, $maxGoodsOnPage) : getGoods4Catalog($page, $maxGoodsOnPage, $catId);
 			foreach ($goods as $item) {
 				$id = $item["id"];
