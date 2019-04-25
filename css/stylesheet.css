@@ -1552,7 +1552,7 @@ body {
 @media screen and (max-width: 480px) {
 	.catalog-page__paginator {
 		margin: -12px auto 0 40px;
-		width: 328px;
+		width: 346px;
 	}
 
 	.paginator__elem_next {
