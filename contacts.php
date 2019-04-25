@@ -66,8 +66,7 @@
 			$fPhone = validPhone($_POST["phone"]);
 			$fMessage = validAnyString($_POST["feedback-text"]);
 			// Флаг наличия ошибок
-			$fSummary = $fName && $fEmail && $fMessage;
-			if($fSummary) {
+			if($fSummary = $fName && $fEmail && $fMessage) {
 				// Добавление в базу данных
 				addAppeal($fName, $fEmail, $fMessage, $fPhone);
 				$_SESSION['feedback'] = 'sent';
@@ -88,7 +87,7 @@
 		</p>
 		<?
 			// Если пришли ошибочки
-			if($fSummary) {
+			if(!$fSummary) {
 		?>
 			<aside class="error-box error-text">
 				<?if(!$fName) {?>
