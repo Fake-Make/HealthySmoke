@@ -11,15 +11,6 @@
 	// Принудительное завершение соединения находится в конце файла footer.php
 	$db = mysqli_connect(DB_HOST, DB_LOGIN, DB_PASSWORD, DB_NAME) or die ('Not connected: ' . mysql_error());
 
-	// Выборка названий и изображений всех категорий для главной страницы
-	function getCat4Index() {
-		$sqlReq = "SELECT id, name, img from categories";
-		global $db;
-
-		$sqlRes = mysqli_query($db, $sqlReq);
-		return mysqli_fetch_all($sqlRes, MYSQLI_ASSOC);
-	}
-
 	// Выборка названий всех категорий для сайдбара
 	function getCat4Sidebar() {
 		$sqlReq = "SELECT id, name, img from categories";

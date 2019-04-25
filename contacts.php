@@ -2,6 +2,7 @@
 	<?
 		$title = "Контактная информация ООО «Company»";
 		$activePage = "Контакты";
+		session_start();
 		echo applyChanges(ob_get_clean());
 	?>
 				<h1 class="contacts-page__main-headline">Контакты</h1>
@@ -67,7 +68,7 @@
 							$fSummary = $fName && $fEmail && $fMessage;
 							if ($fSummary) {
 								// Добавление в базу данных
-								addAppeal($fName, $fEmail, $fMessage, empty($_POST["phone"]) ? NULL : $fPhone);
+								addAppeal($fName, $fEmail, $fMessage, $fPhone);
 								$_SESSION['feedback'] = 'sent';
 								// Отправка сообщения
 								$message = "Пользователем " . $fName . " было отправлено обращение: \r\n" .
@@ -86,7 +87,7 @@
 					</p>
 					<?
 						// Если пришли ошибочки
-						if (!empty($_POST) && !$fSummary) {
+						if ($fSummary) {
 					?>
 					<aside class="error-box error-text">
 						<? if (!$fName) { ?>

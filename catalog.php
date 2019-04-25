@@ -1,6 +1,6 @@
 <? require_once("inner/header.php"); ?>
 	<?
-		if (isset($_GET["id"]) && !empty($good = getGood4Product($id = intval($_GET["id"])))) {
+		if (isset($_GET["id"]) && !empty($good = getGood4Product($id = validNaturalNumber($_GET["id"])))) {
 			$good = $good["0"];
 			$img = $good["img"] ? $good["img"] : "img/no-image.jpg";
 			$alt = $good["img"] ? $img : "Изображение отсутствует";
@@ -11,6 +11,7 @@
 			$title = "$productName — купить за $price руб. в интернет-магазине Company";
 		}	else
 			$title = "Каталог товаров - Company";
+		$catId = isset($_GET["category"]) ? validNaturalNumber($_GET["category"]) : NULL;
 		$activePage = "Каталог";
 		echo applyChanges(ob_get_clean());
 	?>
@@ -21,9 +22,15 @@
 							<li class="bread-crumb"><a class="bread-crumb__link" href="catalog.php">Каталог</a></li>
 							<?
 								// Чтобы лишний раз не лезть в БД
-								$catId = abs(intval(isset($_GET["category"])));
-								if (isset($_GET["category"]))
-									echo '<li class="bread-crumb"><a class="bread-crumb__link" href="catalog.php?category=' . $_GET["category"] . '">' . $cats[array_search($catId, array_column($cats, "id"))]["name"] . '</a></li>';
+								if (!is_null($catId)) {
+									echo
+										'<li class="bread-crumb">
+											<a class="bread-crumb__link" href="catalog.php?category=' . $catId . '">'
+												. $cats[array_search($catId, array_column($cats, "id"))]["name"] . '
+											</a>
+										</li>';
+								}
+									
 							?>
 							<li class="bread-crumb bread-crumb_current"><?=$productName?></li>
 						</ul>
@@ -74,13 +81,11 @@
 							// Сюда нужен отряд валидашек
 							// Геты вообще пидоры, хер знает, где их носило
 							// Лучше лишний раз провериться и предохраниться
-							$category = isset($_GET["category"]) ? $_GET["category"] : NULL;
-							$maxPage = getMaxPage4Catalog($maxGoodsOnPage, $category);
-							$page = isset($_GET["page"]) ? intval($_GET["page"]) : 1;
-							if ($page > $maxPage || $page < 1)
+							$maxPage = getMaxPage4Catalog($maxGoodsOnPage, $catId);
+							$page = validNaturalNumber($_GET["page"]);
+							if ($page > $maxPage)
 								$page = 1;
-							// Тупа место для SQL-инъекции охуенное
-							$goods = $category ? getGoods4Catalog($page, $maxGoodsOnPage, $category) : getGoods4Catalog($page, $maxGoodsOnPage);
+							$goods = is_null($catId) ? getGoods4Catalog($page, $maxGoodsOnPage) : getGoods4Catalog($page, $maxGoodsOnPage, $catId);
 							foreach ($goods as $item) {
 								$id = $item["id"];
 								$img = $item["img"] ? $item["img"] : "img/no-image.jpg";
@@ -89,16 +94,12 @@
 								$price = $item["price"];
 						?>
 						<li class="category good-piece">
-							<a class="category__link" href="catalog.php?id=<?=$id?><?=isset($_GET["category"]) ? "&category=" . $_GET["category"] : ""?>">
+							<a class="category__link" href="catalog.php?id=<?=$id?><?=is_null($catId) ? "" : "&category=" . $catId?>">
 								<img class="category__image good__image" src="<?=$img?>" alt="<?=$alt?>">
 								<span class="category__name-container good_name"><span class="category__name-inner"><?=$name?></span></span>
 							</a>
 							<span class="good-price good_price">
-								<? if (is_null($price)) { ?>
-									<small class="good-price__currency">Цена не указана</small>
-								<? } else { ?>
-									<?=$price?> <small class="good-price__currency">руб.</small>
-								<? } ?>
+								<?=$price?> <small class="good-price__currency">руб.</small>
 							</span>
 							<form method="POST">
 								<input type="hidden" name="itemAmount" value="1">

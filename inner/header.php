@@ -1,7 +1,6 @@
 <?
 	require_once("lib/conf.php");
 	ob_start();
-	session_start();	
 ?>
 <!DOCTYPE html>
 <html lang="ru">

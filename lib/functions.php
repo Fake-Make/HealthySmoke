@@ -2,32 +2,41 @@
 	// Функции PHP без обращения к БД
 
 	// Возвращает SQL/XSS-безопасную входную строку, если она содержит хотя бы один непробельный символ
-	// Иначе возвращает 0
+	// Иначе возвращает NULL
 	function validAnyString($str) {
 		if (!isset($str))
-			return 0;
+			return NULL;
 		$spaces = [" ", "\r", "\n", "\t"];
-		return strlen(str_replace($spaces, "", $str)) ? addslashes(htmlspecialchars($str)) : 0;
+		return strlen(str_replace($spaces, "", $str)) ? addslashes(htmlspecialchars($str)) : NULL;
+	}
+
+	// Возвращает натуральное число, если его возможно получить из строки
+	// Иначе возвращает 1
+	function validNaturalNumber($num) {
+		$num = intval($num);
+		if ($num < 1)
+			$num = 1;
+		return $num;
 	}
 
 	// Возвращает валидный email, если возможно такое преобразование
-	// Иначе возвращает 0
+	// Иначе возвращает NULL
 	function validEmail($str) {
 		if (!isset($str))
-			return 0;
+			return NULL;
 		$symbols = [" ", "\r", "\n", "\t"];
 		$str = str_replace($symbols, "", $str);
-		return preg_match("!^[A-Za-z0-9]+@[A-Za-z]+\.[A-Za-z]{2,3}$!", $str) ? $str : 0;
+		return preg_match("!^[A-Za-z0-9]+@[A-Za-z]+\.[A-Za-z]{2,3}$!", $str) ? $str : NULL;
 	}
 
 	// Возвращает валидный номер телефона, если возможно такое преобразование
-	// Иначе возвращает 0
+	// Иначе возвращает NULL
 	function validPhone($str) {
 		if (!isset($str))
-			return 0;
+			return NULL;
 		$symbols = [" ", "\r", "\n", "\t", "+", "-"];
 		$str = str_replace($symbols, "", $str);
-		return preg_match("!^[0-9]{11,13}$!", $str) ? $str : 0;
+		return preg_match("!^[0-9]{11,13}$!", $str) ? $str : NULL;
 	}
 
 	// Отрисовщик логотипа с учётом текущей страницы

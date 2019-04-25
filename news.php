@@ -1,6 +1,6 @@
 <? require_once("inner/header.php"); ?>
 	<?
-		if (isset($_GET["id"]) && !empty($oneNews = getOneNews($id = intval($_GET["id"])))) {
+		if (isset($_GET["id"]) && !empty($oneNews = getOneNews($id = validNaturalNumber($_GET["id"])))) {
 			$oneNews = $oneNews["0"];
 			$newsHeader = $oneNews["header"];
 			$newsContent = $oneNews["content"];
@@ -38,8 +38,8 @@
 							// Геты вообще пидоры, хер знает, где их носило
 							// Лучше лишний раз провериться и предохраниться
 							$maxPage = getMaxPage4News($maxNewsOnPage);
-							$page = isset($_GET["page"]) ? intval($_GET["page"]) : 1;
-							if ($page > $maxPage || $page < 1)
+							$page = validNaturalNumber($_GET["page"]);
+							if ($page > $maxPage)
 								$page = 1;
 							$news = getNewsByPages($maxNewsOnPage, $page);
 							foreach ($news as $item) {

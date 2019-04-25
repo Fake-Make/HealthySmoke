@@ -8,7 +8,7 @@
 					$SBCatName = $item["name"];
 					$SBCatId = $item["id"];
 			?>
-				<? if (isset($_GET["category"]) && $_GET["category"] === $SBCatId) { ?>
+				<? if (!is_null($catId) && $catId == $SBCatId) { ?>
 					<li class="catalog-list__item catalog-list__item_active">					
 						<span class="catalog-list__link"><?=$SBCatName?></a>
 					</li>
