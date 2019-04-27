@@ -25,4 +25,6 @@
 		</li>
 	<?}?>
 </ul>
+<?=$_SERVER['PHP_SELF']?>
+<?=$_SERVER['REQUEST_URI']?>
 <?require_once "template/sidebarAndFooter.php"?>

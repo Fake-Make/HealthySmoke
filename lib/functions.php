@@ -124,7 +124,7 @@
 	function validPhone($str) {
 		if(!isset($str))
 			return NULL;
-		$symbols = [" ", "\r", "\n", "\t", "+", "-"];
+		$symbols = [" ", "\r", "\n", "\t", "+", "-", "(", ")"];
 		$str = str_replace($symbols, "", $str);
 		return preg_match("!^[0-9]{11,13}$!", $str) ? $str : NULL;
 	}
