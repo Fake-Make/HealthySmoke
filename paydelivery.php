@@ -1,4 +1,4 @@
-<?require_once("inner/header.php");?>
+<?require_once("template/header.php");?>
 <?
 	$title = "Информация о доставке и оплате — интернет-магазин Company";
 	$activePage = "Доставка и оплата";
@@ -26,5 +26,4 @@
 	<p>Доставка за пределы МКАД - по договоренности</p>
 	<p><i>Также, Вы имеете возможность приобрести товары в нашем шоу-руме на м.Сходненская</i></p>
 </article>
-<?require_once("inner/sidebar.php");?>
-<?require_once("inner/footer.php");?>
+<?require_once "template/sidebarAndFooter.php"?>

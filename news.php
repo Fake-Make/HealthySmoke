@@ -1,4 +1,4 @@
-<?require_once("inner/header.php");?>
+<?require_once("template/header.php");?>
 <?
 	// Если пришёл id новости, значит подобрать данные для вывода одной новости
 	if(isset($_GET["id"]) && !empty($oneNews = getOneNews($id = validNaturalNumber($_GET["id"])))) {
@@ -37,11 +37,11 @@
 	<ul class="news-list">
 		<?
 			// Аналогично странице каталога
-			$maxPage = getMaxPage4News($maxNewsOnPage);
+			$maxPage = getMaxPage4News(MAX_NEWS_ON_PAGE);
 			$page = validNaturalNumber($_GET["page"]);
 			if($page > $maxPage)
 				$page = 1;
-			$news = getNewsByPages($maxNewsOnPage, $page);
+			$news = getNewsByPages(MAX_NEWS_ON_PAGE, $page);
 			foreach ($news as $item) {
 				$id = $item["id"];
 				$anounce = $item["anounce"];
@@ -55,7 +55,6 @@
 		</li>
 		<?}?>
 	</ul>
-	<? makePaginator($paginatorElements, $page, $maxPage); ?>
+	<? makePaginator(PAGINATOR_ELEMENTS, $page, $maxPage); ?>
 <?}?>
-<?require_once("inner/sidebar.php");?>
-<?require_once("inner/footer.php");?>
+<?require_once "template/sidebarAndFooter.php"?>

@@ -1,4 +1,4 @@
-<?require_once("inner/header.php");?>
+<?require_once("template/header.php");?>
 <?
 	$title = "Контактная информация ООО «Company»";
 	$activePage = "Контакты";
@@ -115,30 +115,30 @@
 		<?}?>
 		<form method="POST" class="registration-form" name="contats-page__feedback-form" action="contacts.php">
 			<div class="feedback-form__row">
-				<label class="inner-label" for="feedback-author">
+				<label class="template-label" for="feedback-author">
 					Имя <span class="required-star">*</span>
 				</label>
-				<input class="inner-input-box inner-input-box__name" type="text" name="feedback-author" id="feedback-author">
+				<input class="template-input-box template-input-box__name" type="text" name="feedback-author" id="feedback-author">
 				<span class="error-text feedback-form__error-hint error-emptyness invisible">Поле «Имя» должно быть заполнено</span>
 			</div>
 			<div class="feedback-form__row">
-				<label class="inner-label" for="email">
+				<label class="template-label" for="email">
 					Электронная почта <span class="required-star">*</span>
 				</label>
-				<input class="inner-input-box inner-input-box__email" type="email" name="email" id="email">
+				<input class="template-input-box template-input-box__email" type="email" name="email" id="email">
 				<span class="error-text feedback-form__error-hint error-emptyness invisible">Поле «Электронная почта» должно быть заполнено</span>
 			</div>
 			<div class="feedback-form__row">
-				<label class="inner-label optional" for="phone">
+				<label class="template-label optional" for="phone">
 					Телефон
 				</label>
-				<input class="inner-input-box" type="tel" name="phone" id="phone">
+				<input class="template-input-box" type="tel" name="phone" id="phone">
 			</div>
 			<div class="feedback-form__row feedback-form__row_left-shift">
-				<label class="inner-label feedback-text-area__label" for="feedback-text">
+				<label class="template-label feedback-text-area__label" for="feedback-text">
 					Пожалуйста укажите какого рода информация вас интересует <span class="required-star">*</span>
 				</label>
-				<textarea class="inner-input-box feedback-text-area__input" name="feedback-text" id="feedback-text"></textarea>
+				<textarea class="template-input-box feedback-text-area__input" name="feedback-text" id="feedback-text"></textarea>
 				<div>
 					<input class="form-submit data-send" type="submit" value="Отправить">
 					<input class="form-submit clear-inputs" type="button" value="Очистить поля">
@@ -147,5 +147,4 @@
 		</form>
 	<?}?>
 </section>
-<?require_once("inner/sidebar.php");?>
-<?require_once("inner/footer.php");?>
+<?require_once "template/sidebarAndFooter.php"?>

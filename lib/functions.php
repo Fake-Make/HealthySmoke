@@ -1,5 +1,95 @@
 <?
-	// Функции PHP без обращения к БД
+	/************************Функции связанные с БД*****************************/
+
+	// Выборка названий всех категорий для сайдбара
+	function getCat4Sidebar() {
+		$sqlReq = "SELECT id, name, img from categories";
+		global $db;
+
+		$sqlRes = mysqli_query($db, $sqlReq);
+		return mysqli_fetch_all($sqlRes, MYSQLI_ASSOC);
+	}
+	
+	// Выборка size последних новостей для page-той страницы
+	function getNewsByPages($size, $page = NULL) {
+		$offset = ($page - 1) * $size;
+		$sqlReq = is_null($page) ?
+			"SELECT id, anounce, dt FROM news ORDER BY dt DESC LIMIT $size" :
+			"SELECT id, anounce, dt FROM news ORDER BY dt DESC LIMIT $offset, $size";
+		global $db;
+
+		$sqlRes = mysqli_query($db, $sqlReq);
+		return mysqli_fetch_all($sqlRes, MYSQLI_ASSOC);
+	}
+
+	// Получение заголовка и содержимого для новости id
+	function getOneNews($id) {
+		$sqlReq = "SELECT header, content, dt FROM news WHERE id=$id";
+		global $db;
+
+		$sqlRes = mysqli_query($db, $sqlReq);
+		return mysqli_fetch_all($sqlRes, MYSQLI_ASSOC);
+	}
+
+	// Выборка size товаров для page-той страницы
+	function getGoods4Catalog($page, $size, $category = NULL) {
+		$offset = ($page - 1) * $size;
+
+		$sqlReq = is_null($category) ?
+			"SELECT id, name, price, img FROM goods LIMIT $offset, $size" :
+			"SELECT id, name, price, img FROM goods WHERE id IN 
+				(SELECT goodID FROM goodToCategories WHERE
+					categoryID = $category) LIMIT $offset, $size";
+		global $db;
+
+		$sqlRes = mysqli_query($db, $sqlReq);
+		return mysqli_fetch_all($sqlRes, MYSQLI_ASSOC);
+	}
+
+	// Получение максималного количества страниц товаров для разных запросов
+	function getMaxPage4Catalog($size, $category = NULL) {
+		$sqlReq = is_null($category) ?
+			"SELECT count(*) FROM goods" :
+			"SELECT count(*) FROM goods WHERE id IN 
+				(SELECT goodID FROM goodToCategories WHERE
+					categoryID = $category)";
+		global $db;
+
+		$sqlRes = mysqli_query($db, $sqlReq);
+		return ceil(mysqli_fetch_row($sqlRes)["0"] / $size);
+	}
+
+	// Получение максималного количества страниц товаров для разных запросов
+	function getMaxPage4News($size) {
+		$sqlReq = "SELECT count(*) FROM news";
+		global $db;
+
+		$sqlRes = mysqli_query($db, $sqlReq);
+		return ceil(mysqli_fetch_row($sqlRes)["0"] / $size);
+	}
+	
+	// Взятие данных для товара id
+	function getGood4Product($id) {
+		$sqlReq = "SELECT id, name, price, description, img from goods WHERE id=$id";
+		global $db;
+
+		$sqlRes = mysqli_query($db, $sqlReq);
+		return mysqli_fetch_all($sqlRes, MYSQLI_ASSOC);
+	}
+
+	// Функция занесения обращения пользователя в БД
+	function addAppeal($name, $email, $text, $phone = 0) {
+		global $db;
+		$sqlReq = "INSERT INTO appeals (userName, email, " . 
+			($phone ? "phone, " : "") . "message) VALUES ('" . 
+			$name . "', '" . $email . "', '" .
+			($phone ? $phone . "', '" : "") . $text . "');";
+		return mysqli_query($db, $sqlReq);
+	}
+
+	/************************Функции связанные с БД*****************************/
+
+	/***********************Функции не связанные с БД***************************/
 
 	// Возвращает SQL/XSS-безопасную входную строку, если она содержит хотя бы один непробельный символ
 	// Иначе возвращает NULL
@@ -152,4 +242,6 @@
  
 		return str_replace($replacement, $replacers, $buffer);
 	}
+
+	/***********************Функции не связанные с БД***************************/
 ?>

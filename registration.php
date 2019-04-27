@@ -1,4 +1,4 @@
-<?require_once("inner/header.php");?>
+<?require_once("template/header.php");?>
 <?
 	$title = "Регистрация — интернет-магазин Company";
 	$activePage = "Регистрация";
@@ -25,43 +25,42 @@
 	</aside>
 	<form method="POST" class="registration-form" name="registration-page__registration-form">
 		<div class="feedback-form__row">
-			<label class="inner-label" for="registration-user-name">
+			<label class="template-label" for="registration-user-name">
 				Имя <span class="required-star">*</span>
 			</label>
-			<input class="inner-input-box inner-input-box__name" type="text" name="registration-user-name" id="registration-user-name">
+			<input class="template-input-box template-input-box__name" type="text" name="registration-user-name" id="registration-user-name">
 			<span class="error-text feedback-form__error-hint error-emptyness invisible">Поле «Имя» должно быть заполнено</span>
 		</div>
 		<div class="feedback-form__row">
-			<label class="inner-label" for="registration-email">
+			<label class="template-label" for="registration-email">
 				Электронная почта <span class="required-star">*</span>
 			</label>
-			<input class="inner-input-box inner-input-box__registration-email" type="email" name="registration-email" id="registration-email">
+			<input class="template-input-box template-input-box__registration-email" type="email" name="registration-email" id="registration-email">
 			<span class="error-text feedback-form__error-hint error-emptyness invisible">Поле «Электронная почта» должно быть заполнено</span>
 			<span class="error-text feedback-form__error-hint error_correctness	invisible">Неверный адрес электронной почты</span>
 		</div>
 		<div class="feedback-form__row">
-			<label class="inner-label optional" for="phone">
+			<label class="template-label optional" for="phone">
 				Телефон
 			</label>
-			<input class="inner-input-box" type="tel" name="phone" id="phone">
+			<input class="template-input-box" type="tel" name="phone" id="phone">
 		</div>
 		<div class="feedback-form__row feedback-form__registration-password">
-			<label class="inner-label" for="registration-password">
+			<label class="template-label" for="registration-password">
 				Пароль <span class="required-star">*</span>
 			</label>
-			<input class="inner-input-box inner-input-box__password" type="password" name="registration-password" id="registration-password">
+			<input class="template-input-box template-input-box__password" type="password" name="registration-password" id="registration-password">
 			<span class="error-text feedback-form__error-hint error-emptyness invisible">Поле «Пароль» должно быть заполнено</span>
 		</div>
 		<div class="feedback-form__row feedback-form__registration-password-confirm">
-			<label class="inner-label" for="registration-password-confirm">
+			<label class="template-label" for="registration-password-confirm">
 				Подтверждение пароля <span class="required-star">*</span>
 			</label>
-			<input class="inner-input-box inner-input-box__password-confirm" type="password" name="registration-password-confirm"
+			<input class="template-input-box template-input-box__password-confirm" type="password" name="registration-password-confirm"
 			 id="registration-password-confirm">
 			<span class="error-text feedback-form__error-hint error-emptyness invisible">Поле «Подтверждениe пароля» должно быть заполнено</span>
 		</div>
 		<input class="form-submit data-send form-submit__registration" type="submit" value="Зарегистрироваться">
 	</form>
 </section>
-<?require_once("inner/sidebar.php");?>
-<?require_once("inner/footer.php");?>
+<?require_once "template/sidebarAndFooter.php"?>

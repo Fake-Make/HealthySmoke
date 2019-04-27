@@ -1,6 +1,29 @@
 <?
 	require_once("lib/conf.php");
+	require_once("lib/functions.php");
 	ob_start();
+	// Сразу берём категории, т.к. они всегда нужны для сайдбара, а он на каждой странице
+	// Т.к. категорий не должно быть много, то сразу подцепляем и ссылки на изображения
+	// Помимо прочего не переопределяем подменю после инициализации меню, чтобы избежать
+	// избыточных обращений к массиву массива
+	$db = mysqli_connect(DB_HOST, DB_LOGIN, DB_PASSWORD, DB_NAME) or die ('Not connected: ' . mysql_error());
+	$cats = getCat4Sidebar();
+	foreach ($cats as $item) {
+		$categoriesSubMenu[] = [
+			"name"=>$item["name"],
+			"href"=>"catalog.php?category=" . $item["id"]
+		];
+	}
+
+	// Храним меню в массиве, т.к. оно повторяется дважды и может изменяться
+	$menu = [
+		["name"=>"Главная", "href"=>"index.php"],
+		["name"=>"Каталог", "href"=>"catalog.php", "sub-menu"=>$categoriesSubMenu],
+		["name"=>"О компании", "href"=>"about.php"],
+		["name"=>"Новости", "href"=>"news.php"],
+		["name"=>"Доставка и оплата", "href"=>"paydelivery.php"],
+		["name"=>"Контакты", "href"=>"contacts.php"]
+	];
 ?>
 <!DOCTYPE html>
 <html lang="ru">

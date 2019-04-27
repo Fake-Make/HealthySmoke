@@ -1,4 +1,4 @@
-<?require_once("inner/header.php");?>
+<?require_once("template/header.php");?>
 <?
 	// Если пришёл id и такой товар существует, то нужно взять данные для отображения товара
 	if(isset($_GET["id"]) && !empty($good = getGood4Product($id = validNaturalNumber($_GET["id"])))) {
@@ -74,13 +74,13 @@
 	<ul class="categories categories__reposition">
 		<?
 			// Нужно знать, сколько всего страниц, для пагинатора и корректировки текущей страницы
-			$maxPage = getMaxPage4Catalog($maxGoodsOnPage, $catId);
+			$maxPage = getMaxPage4Catalog(MAX_GOODS_ON_PAGE, $catId);
 			$page = validNaturalNumber($_GET["page"]);
 			if($page > $maxPage)
 				$page = 1;
 			// Если пришла категория, то фильтруем товары
 			// Иначе выводим все подряд
-			$goods = is_null($catId) ? getGoods4Catalog($page, $maxGoodsOnPage) : getGoods4Catalog($page, $maxGoodsOnPage, $catId);
+			$goods = is_null($catId) ? getGoods4Catalog($page, MAX_GOODS_ON_PAGE) : getGoods4Catalog($page, MAX_GOODS_ON_PAGE, $catId);
 			foreach ($goods as $item) {
 				$id = $item["id"];
 				$img = $item["img"] ? $item["img"] : "img/no-image.jpg";
@@ -91,7 +91,7 @@
 		<li class="category good-piece">
 			<a class="category__link" href="catalog.php?id=<?=$id?><?=is_null($catId) ? "" : "&category=" . $catId?>">
 				<img class="category__image good__image" src="<?=$img?>" alt="<?=$alt?>">
-				<span class="category__name-container good_name"><span class="category__name-inner"><?=$name?></span></span>
+				<span class="category__name-container good_name"><span class="category__name-template"><?=$name?></span></span>
 			</a>
 			<span class="good-price good_price">
 				<?=$price?> <small class="good-price__currency">руб.</small>
@@ -104,7 +104,6 @@
 		</li>
 		<?}?>
 	</ul>
-	<?makePaginator($paginatorElements, $page, $maxPage);?>
+	<?makePaginator(PAGINATOR_ELEMENTS, $page, $maxPage);?>
 <?}?>
-<?require_once("inner/sidebar.php");?>
-<?require_once("inner/footer.php");?>
+<?require_once "template/sidebarAndFooter.php"?>
