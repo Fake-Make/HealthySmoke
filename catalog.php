@@ -2,7 +2,6 @@
 <?
 	// Если пришёл id и такой товар существует, то нужно взять данные для отображения товара
 	if(isset($_GET["id"]) && !empty($good = getGood4Product($id = validNaturalNumber($_GET["id"])))) {
-		$good = $good["0"];
 		$img = $good["img"] ? $good["img"] : "img/no-image.jpg";
 		$alt = $good["img"] ? $img : "Изображение отсутствует";
 		$productName = $good["name"];

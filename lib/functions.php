@@ -28,7 +28,7 @@
 		global $db;
 
 		$sqlRes = mysqli_query($db, $sqlReq);
-		return mysqli_fetch_all($sqlRes, MYSQLI_ASSOC);
+		return mysqli_fetch_assoc($sqlRes);
 	}
 
 	// Выборка size товаров для page-той страницы
@@ -74,7 +74,7 @@
 		global $db;
 
 		$sqlRes = mysqli_query($db, $sqlReq);
-		return mysqli_fetch_all($sqlRes, MYSQLI_ASSOC);
+		return mysqli_fetch_assoc($sqlRes);
 	}
 
 	// Функция занесения обращения пользователя в БД

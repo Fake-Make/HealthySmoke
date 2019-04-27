@@ -2,7 +2,6 @@
 <?
 	// Если пришёл id новости, значит подобрать данные для вывода одной новости
 	if(isset($_GET["id"]) && !empty($oneNews = getOneNews($id = validNaturalNumber($_GET["id"])))) {
-		$oneNews = $oneNews["0"];
 		$newsHeader = $oneNews["header"];
 		$newsContent = $oneNews["content"];
 		$newsData = $oneNews["dt"];
