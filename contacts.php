@@ -65,16 +65,21 @@
 			$fEmail = validEmail($_POST["email"]);
 			$fPhone = validPhone($_POST["phone"]);
 			$fMessage = validAnyString($_POST["feedback-text"]);
-			// Флаг наличия ошибок
+			// Флаг отсутствия ошибок
 			if($fSummary = $fName && $fEmail && $fMessage) {
-				// Добавление в базу данных
-				addAppeal($fName, $fEmail, $fMessage, $fPhone);
-				$_SESSION['feedback'] = 'sent';
 				// Отправка сообщения
 				$message = "Пользователем " . $fName . " было отправлено обращение: \r\n" .
 					$fMessage . "\r\nОтветить можно по email: " . $fEmail . 
 					($fPhone ? " или по телефону: " . $fPhone . ".\r\n" : ".\r\n");
-				mail(TEST_MAIL, "Пользовательское обращение", $message);
+				if(mail(TEST_MAIL, "Пользовательское обращение", $message)) {
+					// Добавление в базу данных
+					addAppeal($fName, $fEmail, $fMessage, $fPhone);
+					$_SESSION['feedback'] = 'sent';
+					$messageSent = true;
+				}	else {
+					$fSummary = $messageSent = false;
+					//header("Location: $thisScript");
+				}
 			}
 		}
 		// Если он уже отправил, то больше ему не дадим это сделать
@@ -110,6 +115,11 @@
 					Поле обращения должно быть заполнено
 				</p>
 				<?}?>
+				<?if($fName && $fEmail && $fMessage && (empty($_POST["phone"]) || !empty($_POST["phone"]) && $fPhone) && false === $messageSent) {?>
+				<p class="error-message">
+					На сервере произошла ошибка: ваше письмо не отправлено! Попробуйте ещё раз.
+				</p>
+				<?}?>
 			</aside>
 		<?}?>
 		<form method="POST" class="registration-form" name="contats-page__feedback-form" action="contacts.php">
@@ -117,27 +127,27 @@
 				<label class="template-label" for="feedback-author">
 					Имя <span class="required-star">*</span>
 				</label>
-				<input class="template-input-box template-input-box__name" type="text" name="feedback-author" id="feedback-author">
+				<input class="template-input-box template-input-box__name" type="text" name="feedback-author" id="feedback-author" <?=$fName ? 'value="' . $fName . '"' : ''?>>
 				<span class="error-text feedback-form__error-hint error-emptyness invisible">Поле «Имя» должно быть заполнено</span>
 			</div>
 			<div class="feedback-form__row">
 				<label class="template-label" for="email">
 					Электронная почта <span class="required-star">*</span>
 				</label>
-				<input class="template-input-box template-input-box__email" type="email" name="email" id="email">
+				<input class="template-input-box template-input-box__email" type="email" name="email" id="email" <?=$fEmail ? 'value="' . $fEmail . '"' : ''?>>
 				<span class="error-text feedback-form__error-hint error-emptyness invisible">Поле «Электронная почта» должно быть заполнено</span>
 			</div>
 			<div class="feedback-form__row">
 				<label class="template-label optional" for="phone">
 					Телефон
 				</label>
-				<input class="template-input-box" type="tel" name="phone" id="phone">
+				<input class="template-input-box" type="tel" name="phone" id="phone" <?=$fPhone ? 'value="' . $fPhone . '"' : ''?>>
 			</div>
 			<div class="feedback-form__row feedback-form__row_left-shift">
 				<label class="template-label feedback-text-area__label" for="feedback-text">
 					Пожалуйста укажите какого рода информация вас интересует <span class="required-star">*</span>
 				</label>
-				<textarea class="template-input-box feedback-text-area__input" name="feedback-text" id="feedback-text"></textarea>
+				<textarea class="template-input-box feedback-text-area__input" name="feedback-text" id="feedback-text"><?=$fMessage ? $fMessage : ''?></textarea>
 				<div>
 					<input class="form-submit data-send" type="submit" value="Отправить">
 					<input class="form-submit clear-inputs" type="button" value="Очистить поля">
