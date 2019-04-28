@@ -46,7 +46,7 @@
 					// Если запись в директории - это файл
 					// И в нём содержится название вставляемого файла
 					// То инклюдим
-					if(is_file(INCLUDE_AREAS_PATH . $entry) && false !== strpos($_SERVER["SCRIPT_NAME"], str_replace("_include.php", "", $entry))) {
+					if(is_file(INCLUDE_AREAS_PATH . $entry) && false !== strpos($thisScript, str_replace("_include.php", "", $entry))) {
 						include(INCLUDE_AREAS_PATH . $entry);
 					}
 				}
@@ -60,10 +60,10 @@
 		<div class="copyright">
 			<span class="copyright__part copyright__lifetime">Copyright ©2007-<?=date("Y", time())?></span>
 			<span class="copyright__part copyright__company-lifetime"><b>© "Company"</b>, <?=date("Y", time())?></span>
-			<?if("Главная" !== $activePage) echo '<a class="footer-logo__link" href="index.php">';?>
+			<?if(false === strpos($thisScript, $mainPageScript)) echo '<a class="footer-logo__link" href="index.php">';?>
 				<img class="copyright__image" src="img/logo.png" alt="Company-logo">
 				<span class="copyright__part copyrhigt__company-name">Company</span>
-			<?if("Главная" !== $activePage) echo '</a>';?>	
+			<?if(false === strpos($thisScript, $mainPageScript)) echo '</a>';?>	
 		</div>
 		<nav class="footer-nav">
 			<ul class="footer-nav__list">
@@ -74,7 +74,7 @@
 				?>
 				<li class="footer-nav__list-item">
 					<?
-						if($activePage === $item["name"])
+						if(false !== strpos($thisScript, $menuItemHref))
 							echo "<span class='footer-nav__link'>$menuItemName</span>";
 						else
 							echo "<a class='footer-nav__link' href='$menuItemHref'>$menuItemName</a>";

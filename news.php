@@ -8,8 +8,7 @@
 		$title = "$newsHeader — читать новости интернет-магазина Company";
 	}	else
 		$title = "Новости - Company";
-	$activePage = "Новости";
-	echo applyChanges(ob_get_clean());
+	echo changeTitle(ob_get_clean());
 	// Далее на строках 15-16 табуляция вызывает сомнения
 ?>
 <?if(!empty($oneNews)) {?>

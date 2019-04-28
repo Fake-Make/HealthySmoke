@@ -12,7 +12,4 @@
 	define("MAX_NEWS_ON_SIDEBAR", 6);
 	define("MAX_GOODS_ON_PAGE", 12);
 	define("PAGINATOR_ELEMENTS", 7);
-
-	$title = "Интернет-магазин электронных сигарет - Company";
-	$activePage = "Главная";
 ?>

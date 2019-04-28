@@ -12,8 +12,7 @@
 	}	else
 		$title = "Каталог товаров - Company";
 	$catId = isset($_GET["category"]) ? validNaturalNumber($_GET["category"]) : NULL;
-	$activePage = "Каталог";
-	echo applyChanges(ob_get_clean());
+	echo changeTitle(ob_get_clean());
 ?>
 <?if(!empty($good)) {?>
 	<nav class="bread-crumbs-container product__bread-crumbs">

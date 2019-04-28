@@ -1,10 +1,9 @@
 <?require_once("template/header.php");?>
 <?
 	$title = "Контактная информация ООО «Company»";
-	$activePage = "Контакты";
 	// Открываем сессию или проверяем существование таковой
 	session_start();
-	echo applyChanges(ob_get_clean());
+	echo changeTitle(ob_get_clean());
 ?>
 <h1 class="contacts-page__main-headline">Контакты</h1>
 <table class="contacts-section">

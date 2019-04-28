@@ -1,8 +1,7 @@
 <?require_once("template/header.php");?>
 <?
 	$title = "Регистрация — интернет-магазин Company";
-	$activePage = "Регистрация";
-	echo applyChanges(ob_get_clean());
+	echo changeTitle(ob_get_clean());
 ?>
 <section class="feedback-form feedback-form__registration">
 	<h1 class="registration-headline">Регистрация</h1>

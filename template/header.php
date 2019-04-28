@@ -24,6 +24,9 @@
 		["name"=>"Доставка и оплата", "href"=>"paydelivery.php"],
 		["name"=>"Контакты", "href"=>"contacts.php"]
 	];
+	$title = "Интернет-магазин электронных сигарет - Company";
+	$mainPageScript = $menu["0"]["href"];
+	$thisScript = $_SERVER["SCRIPT_NAME"];
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -41,7 +44,18 @@
 	<header class="page-header">
 		<div class="wrapper">
 			<aside class="header-top">
-				%LOGO_REPLACEMENT%
+				<?
+					if(false === strpos($thisScript, $mainPageScript)) 
+						echo "<a class='header-logo header-logo__link' href='index.php'>";
+					else
+						echo "<div class='header-logo'>";
+					echo "<img class='header-logo__image' src='img/logo.png' alt='Логотип' width='95' height='75'>		
+						<span class='header-logo__caption'>Company</span>";
+					if(false === strpos($thisScript, $mainPageScript))
+						echo "</a>";
+					else 
+		 				echo "</div>";
+				?>
 				<div class="company-info">
 					<b class="company-info__tagline">Нанотехнологии здоровья</b>
 					<div class="contacts">
@@ -63,7 +77,7 @@
 					<input class="user-info__link user-info__link_hover" type="submit" name="submit" value="Войти">
 				</form>
 				<?
-					if($activePage === "Регистрация")
+					if(false !== strpos($_SERVER["SCRIPT_NAME"], "registration.php"))
 						echo '<span class="user-info__link user-info__link_reposition">Регистрация</span>';
 					else
 						echo '<a class="user-info__link user-info__link_hover user-info__link_reposition" href="registration.php">Регистрация</a>';
@@ -71,7 +85,43 @@
 				<span class="cart-label">В <a class="cart-label__link" href="#">корзине</a> товаров - <b>12</b></span>
 			</div>
 		</div>
-		%HEADER_MENU_REPLACEMENT%
+		<?
+			echo "
+				<nav class='header-nav'>
+					<div class='wrapper'>
+						<span class='menu-toggler'>Меню</span>
+						<ul class='menu-togglable'>";
+			foreach ($menu as $item) {
+				$menuItemName = $item["name"];
+				$menuItemHref = $item["href"];
+				echo "<li class='header-nav-item'><span>";
+				if(isset($item["sub-menu"])) {
+					if(false !== strpos($thisScript, $menuItemHref))
+						echo "<span class='header-nav-item__container-for-link'><span class='header-nav-item__link header-nav-item__link_current'>$menuItemName</span></span>";
+					else
+						echo "<span class='header-nav-item__container-for-link'><a class='header-nav-item__link' href='$menuItemHref'>$menuItemName</a></span>";
+					echo "<ul class='sub-menu'>";
+					foreach($item["sub-menu"] as $subItem) {
+						$menuSubItemName = $subItem["name"];
+						$menuSubItemHref = $subItem["href"];
+						echo "<li class='sub-menu__list-item'><a class='sub-menu__link' href='$menuSubItemHref'>$menuSubItemName</a></li>";
+					}
+					echo "</ul>";
+				} else {
+					if(false !== strpos($thisScript, $menuItemHref))
+						echo "<span class='header-nav-item__link header-nav-item__link_current'>$menuItemName</span>";
+					else
+						echo "<a class='header-nav-item__link' href='$menuItemHref'>$menuItemName</a>";
+				}
+				echo "
+							</span>
+						</li>";
+			}
+			echo "
+					</ul>
+				</div>
+			</nav>";
+		?>
 	</header>
 	<div class="content">
 		<div class="wrapper content__wrapper">
