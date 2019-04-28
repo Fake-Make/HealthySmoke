@@ -46,15 +46,15 @@
 			<aside class="header-top">
 				<?
 					if(false === strpos($thisScript, $mainPageScript)) 
-						echo "<a class='header-logo header-logo__link' href='index.php'>";
+						echo '<a class="header-logo header-logo__link" href="index.php">';
 					else
-						echo "<div class='header-logo'>";
-					echo "<img class='header-logo__image' src='img/logo.png' alt='Логотип' width='95' height='75'>		
-						<span class='header-logo__caption'>Company</span>";
+						echo '<div class="header-logo">';
+					echo '<img class="header-logo__image" src="img/logo.png" alt="Логотип" width="95" height="75">		
+						<span class="header-logo__caption">Company</span>';
 					if(false === strpos($thisScript, $mainPageScript))
-						echo "</a>";
+						echo '</a>';
 					else 
-		 				echo "</div>";
+		 				echo '</div>';
 				?>
 				<div class="company-info">
 					<b class="company-info__tagline">Нанотехнологии здоровья</b>
@@ -86,41 +86,41 @@
 			</div>
 		</div>
 		<?
-			echo "
-				<nav class='header-nav'>
-					<div class='wrapper'>
-						<span class='menu-toggler'>Меню</span>
-						<ul class='menu-togglable'>";
+			echo '
+				<nav class="header-nav">
+					<div class="wrapper">
+						<span class="menu-toggler">Меню</span>
+						<ul class="menu-togglable">';
 			foreach ($menu as $item) {
 				$menuItemName = $item["name"];
 				$menuItemHref = $item["href"];
-				echo "<li class='header-nav-item'><span>";
+				echo '<li class="header-nav-item"><span>';
 				if(isset($item["sub-menu"])) {
 					if(false !== strpos($thisScript, $menuItemHref))
-						echo "<span class='header-nav-item__container-for-link'><span class='header-nav-item__link header-nav-item__link_current'>$menuItemName</span></span>";
+						echo '<span class="header-nav-item__container-for-link"><span class="header-nav-item__link header-nav-item__link_current">' . $menuItemName . '</span></span>';
 					else
-						echo "<span class='header-nav-item__container-for-link'><a class='header-nav-item__link' href='$menuItemHref'>$menuItemName</a></span>";
-					echo "<ul class='sub-menu'>";
+						echo '<span class="header-nav-item__container-for-link"><a class="header-nav-item__link" href="' . $menuItemHref .'">' . $menuItemName . '</a></span>';
+					echo '<ul class="sub-menu">';
 					foreach($item["sub-menu"] as $subItem) {
 						$menuSubItemName = $subItem["name"];
 						$menuSubItemHref = $subItem["href"];
-						echo "<li class='sub-menu__list-item'><a class='sub-menu__link' href='$menuSubItemHref'>$menuSubItemName</a></li>";
+						echo '<li class="sub-menu__list-item"><a class="sub-menu__link" href="' . $menuSubItemHref . '">' . $menuSubItemName . '</a></li>';
 					}
-					echo "</ul>";
+					echo '</ul>';
 				} else {
 					if(false !== strpos($thisScript, $menuItemHref))
-						echo "<span class='header-nav-item__link header-nav-item__link_current'>$menuItemName</span>";
+						echo '<span class="header-nav-item__link header-nav-item__link_current">' . $menuItemName . '</span>';
 					else
-						echo "<a class='header-nav-item__link' href='$menuItemHref'>$menuItemName</a>";
+						echo '<a class="header-nav-item__link" href="' . $menuItemHref . '">' . $menuItemName . '</a>';
 				}
-				echo "
+				echo '
 							</span>
-						</li>";
+						</li>';
 			}
-			echo "
+			echo '
 					</ul>
 				</div>
-			</nav>";
+			</nav>';
 		?>
 	</header>
 	<div class="content">

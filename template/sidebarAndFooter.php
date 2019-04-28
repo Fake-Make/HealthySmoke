@@ -75,9 +75,9 @@
 				<li class="footer-nav__list-item">
 					<?
 						if(false !== strpos($thisScript, $menuItemHref))
-							echo "<span class='footer-nav__link'>$menuItemName</span>";
+							echo '<span class="footer-nav__link">' . $menuItemName . '</span>';
 						else
-							echo "<a class='footer-nav__link' href='$menuItemHref'>$menuItemName</a>";
+							echo '<a class="footer-nav__link" href="' . $menuItemHref . '">' . $menuItemName . '</a>';
 					?>
 				</li>
 				<?}?>
