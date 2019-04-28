@@ -1507,12 +1507,12 @@ body {
 .paginator {
 	display: flex;
 	justify-content: center;
-	width: 360px;
+	width: 480px;
 	margin: 0 auto;
 }
 
 .catalog-page__paginator {
-	margin: 0 26.2% 62px 172px;
+	margin: 0 auto 62px;
 	padding-top: 1px;
 }
 
@@ -1545,7 +1545,7 @@ body {
 }
 
 .paginator__elem_next {
-	margin-left: 9px;
+	margin: 0 auto;
 	width: auto;
 }
 

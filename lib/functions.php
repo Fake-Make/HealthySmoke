@@ -132,6 +132,7 @@
 	// Отрисовщик пагинатора
 	function makePaginator($show, $cur, $max) {
 		echo '<ul class="paginator catalog-page__paginator">';
+		echo "<li class='paginator__elem paginator__elem_next'>" . ($cur != 1 ? "<a href='" . $thisScript . "?page=" . ($cur - 1) . "' class='paginator__link'>Предыдущая страница</a>" : "") . "</li>";
 		$shift = ($show - 1) / 2;
 		$thisScript = $_SERVER["SCRIPT_NAME"];
 		// Мы слишком слева
@@ -170,8 +171,7 @@
 					echo "<li class='paginator__elem'><a href='" . $thisScript . "?page=$i" . "' class='paginator__link'>$i</a></li>";
 			}
 		}
-		if($cur != $max)
-			echo "<li class='paginator__elem paginator__elem_next'><a href='" . $thisScript . "?page=" . ($cur + 1) . "' class='paginator__link'>Следующая страница</a></li>";
+		echo "<li class='paginator__elem paginator__elem_next'>" . ($cur != $max ? "<a href='" . $thisScript . "?page=" . ($cur + 1) . "' class='paginator__link'>Следующая страница</a>" : "") . "</li>";
 		echo "</ul>";
 	}
 
