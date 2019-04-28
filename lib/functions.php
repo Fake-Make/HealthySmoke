@@ -116,7 +116,7 @@
 			return NULL;
 		$symbols = [" ", "\r", "\n", "\t"];
 		$str = str_replace($symbols, "", $str);
-		return preg_match("!^[A-Za-z0-9]+@[A-Za-z]+\.[A-Za-z]{2,3}$!", $str) ? $str : NULL;
+		return preg_match("!^[A-Za-z0-9]+@[A-Za-z]+(\.[A-Za-z]+)+$!", $str) ? $str : NULL;
 	}
 
 	// Возвращает валидный номер телефона, если возможно такое преобразование
