@@ -80,10 +80,9 @@
 					<input class="user-info__link user-info__link_hover" type="submit" name="submit" value="Войти">
 				</form>
 				<?
-					if(false !== strpos($_SERVER["SCRIPT_NAME"], "registration.php"))
-						echo '<span class="user-info__link user-info__link_reposition">Регистрация</span>';
-					else
-						echo '<a class="user-info__link user-info__link_hover user-info__link_reposition" href="registration.php">Регистрация</a>';
+					echo false !== strpos($_SERVER["SCRIPT_NAME"], "registration.php") ?
+						"<span class=\"user-info__link user-info__link_reposition\">Регистрация</span>" :
+						"<a class=\"user-info__link user-info__link_hover user-info__link_reposition\" href=\"registration.php\">Регистрация</a>";
 				?>
 				<span class="cart-label">В <a class="cart-label__link" href="#">корзине</a> товаров - <b>12</b></span>
 			</div>

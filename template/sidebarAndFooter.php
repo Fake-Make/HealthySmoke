@@ -58,10 +58,10 @@
 		<div class="copyright">
 			<span class="copyright__part copyright__lifetime">Copyright ©2007-<?=date("Y", time())?></span>
 			<span class="copyright__part copyright__company-lifetime"><b>© "Company"</b>, <?=date("Y", time())?></span>
-			<?if($isNotMainPage) echo '<a class="footer-logo__link" href="index.php">'?>
+			<?if($isNotMainPage) echo "<a class=\"footer-logo__link\" href=\"index.php\">"?>
 				<img class="copyright__image" src="img/logo.png" alt="Company-logo">
 				<span class="copyright__part copyrhigt__company-name">Company</span>
-			<?if($isNotMainPage) echo '</a>'?>	
+			<?if($isNotMainPage) echo "</a>"?>
 		</div>
 		<nav class="footer-nav">
 			<ul class="footer-nav__list">
