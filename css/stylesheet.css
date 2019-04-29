@@ -1544,19 +1544,49 @@ body {
 	border-bottom: none;
 }
 
+.paginator__elem_prev,
 .paginator__elem_next {
 	margin: 0 auto;
 	width: auto;
 }
 
+.paginator__arrow {
+	width: 0;
+	height: 0;
+	border: 14px solid transparent;
+	margin-top: -2px;
+}
+
+.paginator__arrow_right {
+	border-right: none;
+	border-left-color: #555;
+}
+
+.paginator__arrow_left {
+	border-left: none;
+	border-right-color: #555;
+}
+
+.paginator .paginator__arrow:hover,
+.paginator .paginator__arrow:active {
+	border-bottom-color: transparent;
+	color: transparent;
+	text-decoration: none;
+}
+
+.paginator__arrow_right:hover {
+	border-left-color: #549ef1;
+}
+
+.paginator__arrow_left:hover {
+	border-right-color: #549ef1;
+}
+
+
 @media screen and (max-width: 480px) {
 	.catalog-page__paginator {
 		margin: -12px auto 0 40px;
 		width: 346px;
-	}
-
-	.paginator__elem_next {
-		margin-left: 0px;
 	}
 }
 

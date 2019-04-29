@@ -129,7 +129,7 @@
 	// Отрисовщик пагинатора
 	function makePaginator($show, $cur, $max) {
 		echo '<ul class="paginator catalog-page__paginator">';
-		echo '<li class="paginator__elem paginator__elem_next">'
+		echo '<li class="paginator__elem paginator__elem_prev">'
 			. ($cur != 1 ? '<a href="' . $thisScript . '?page=' . ($cur - 1) .
 			'" class="paginator__link">Предыдущая страница</a>' : '') . '</li>';
 		// Количество отображаемых элементов в пагинаторе

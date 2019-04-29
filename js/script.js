@@ -16,6 +16,18 @@ function flexFix() {
 	}
 }
 
+function paginatorFix() {
+	if($(window).width() > phoneSize) {
+		// Появление текста у пагинатора
+		$('.paginator__elem_prev a').text('Предыдущая страница').removeClass('paginator__arrow paginator__arrow_left');
+		$('.paginator__elem_next a').text('Следующая страница').removeClass('paginator__arrow paginator__arrow_right');
+	} else {
+		// Скрытие лишнего текста у пагинатора
+		$('.paginator__elem_prev a').text('  ').addClass('paginator__arrow paginator__arrow_left');
+		$('.paginator__elem_next a').text('  ').addClass('paginator__arrow paginator__arrow_right');
+	}	
+}
+
 // Деактивация активных элементов при наличии таковых
 function hideAllActive() {
 	$('.active').removeClass('active').find('.sub-menu').css('display', 'none');
@@ -108,11 +120,13 @@ $(function () {
 					$('.sidebar').removeAttr('style');
 				}
 			}
+			paginatorFix();
 			sidebarHide();
 		});
 
 		// Скрытие сайдбара при просмотре Mobile на внутренних страницах
 		sidebarHide();
+		paginatorFix();
 	}
 
 	{ // Группа специфических настроек
