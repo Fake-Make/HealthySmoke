@@ -1,7 +1,11 @@
 <?require_once("template/header.php");?>
 <?
 	// Если пришёл id новости, значит подобрать данные для вывода одной новости
-	if(isset($_GET["id"]) && !empty($oneNews = getOneNews($id = validNaturalNumber($_GET["id"])))) {
+	$id = isset($_GET["id"]) ? validNaturalNumber($_GET["id"]) : NULL;
+	// Взятие новости из БД (раньше было одной функцией)
+	if ($id)
+		$oneNews = mysqli_fetch_assoc(mysqli_query($db, "SELECT header, content, dt FROM news WHERE id=$id"));
+	if(!empty($oneNews)) {
 		$newsHeader = $oneNews["header"];
 		$newsContent = $oneNews["content"];
 		$newsData = $oneNews["dt"];
@@ -35,7 +39,9 @@
 	<ul class="news-list">
 		<?
 			// Аналогично странице каталога
-			$maxPage = getMaxPage4News(MAX_NEWS_ON_PAGE);
+			// Взятие максимального числа новостей из БД
+			$sqlReq = "SELECT count(*) FROM news";
+			$maxPage = ceil(mysqli_fetch_row(mysqli_query($db, $sqlReq))["0"] / MAX_NEWS_ON_PAGE);
 			$page = validNaturalNumber($_GET["page"]);
 			if($page > $maxPage)
 				$page = 1;

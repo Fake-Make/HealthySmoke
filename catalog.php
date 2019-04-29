@@ -1,7 +1,11 @@
 <?require_once("template/header.php");?>
 <?
-	// Если пришёл id и такой товар существует, то нужно взять данные для отображения товара
-	if(isset($_GET["id"]) && !empty($good = getGood4Product($id = validNaturalNumber($_GET["id"])))) {
+	// Если пришёл id новости, значит подобрать данные для вывода одной новости
+	$id = isset($_GET["id"]) ? validNaturalNumber($_GET["id"]) : NULL;
+	// Взятие новости из БД (раньше было одной функцией)
+	if ($id)
+		$good = mysqli_fetch_assoc(mysqli_query($db, "SELECT id, name, price, description, img from goods WHERE id=$id"));
+	if(!empty($good)) {
 		$img = $good["img"] ? $good["img"] : "img/no-image.jpg";
 		$alt = $good["img"] ? $img : "Изображение отсутствует";
 		$productName = $good["name"];
@@ -72,13 +76,28 @@
 	<ul class="categories categories__reposition">
 		<?
 			// Нужно знать, сколько всего страниц, для пагинатора и корректировки текущей страницы
-			$maxPage = getMaxPage4Catalog(MAX_GOODS_ON_PAGE, $catId);
+			// Взятие максимального числа страниц из БД
+			$sqlReq = "SELECT count(*) FROM goods ";
+			$sqlReqWithCats = 
+				"INNER JOIN goodToCategories ON goods.id = goodToCategories.goodID
+					WHERE categoryID = $catId";
+			if($catId)
+				$sqlReq .= $sqlReqWithCats;
+			$maxPage = ceil(mysqli_fetch_row(mysqli_query($db, $sqlReq))["0"] / MAX_GOODS_ON_PAGE);
 			$page = validNaturalNumber($_GET["page"]);
 			if($page > $maxPage)
 				$page = 1;
 			// Если пришла категория, то фильтруем товары
 			// Иначе выводим все подряд
-			$goods = getGoods4Catalog($page, MAX_GOODS_ON_PAGE, $catId);
+		
+			// Взятие товаров из БД (было одной функцией)
+			// Исправить на JOIN, конструировать строку запроса
+			$offset = ($page - 1) * MAX_GOODS_ON_PAGE;
+			$sqlReq = "SELECT id, name, price, img FROM goods " . 
+				(is_null($catId) ?
+					"LIMIT $offset, " . MAX_GOODS_ON_PAGE :
+					$sqlReqWithCats . " LIMIT $offset, " . MAX_GOODS_ON_PAGE);	
+			$goods = mysqli_fetch_all(mysqli_query($db, $sqlReq), MYSQLI_ASSOC);
 		?>
 		<?foreach ($goods as $item):?>
 			<?

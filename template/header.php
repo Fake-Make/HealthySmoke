@@ -7,7 +7,9 @@
 	// Помимо прочего не переопределяем подменю после инициализации меню, чтобы избежать
 	// избыточных обращений к массиву массива
 	$db = mysqli_connect(DB_HOST, DB_LOGIN, DB_PASSWORD, DB_NAME) or die ('Not connected: ' . mysql_error());
-	$cats = getCat4Sidebar();
+	// Взятие категорий из БД (раньше было одной функцией)
+	$sqlReq = "SELECT id, name, img from categories";
+	$cats = mysqli_fetch_all(mysqli_query($db, $sqlReq), MYSQLI_ASSOC);
 	foreach ($cats as $item) {
 		$categoriesSubMenu[] = [
 			"name"=>$item["name"],

@@ -73,7 +73,11 @@
 					($fPhone ? " или по телефону: " . $fPhone . ".\r\n" : ".\r\n");
 				if($fSummary = $messageSent = mail(TEST_MAIL, "Пользовательское обращение", $message)) {
 					// Добавление в базу данных
-					addAppeal($fName, $fEmail, $fMessage, $fPhone);
+					$sqlReq = "INSERT INTO appeals (userName, email, " . 
+						($fPhone ? "phone, " : "") . "message) VALUES ('" . 
+						$fName . "', '" . $fEmail . "', '" .
+						($fPhone ? $fPhone . "', '" : "") . $fMessage . "');";
+					mysqli_query($db, $sqlReq);
 					$_SESSION['feedback'] = 'sent';
 				}
 			}
