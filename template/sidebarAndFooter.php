@@ -30,7 +30,7 @@
 						foreach ($news as $item) {
 					?>
 					<li class="news-item">
-						<a class="news-item__link" href="#">
+						<a class="news-item__link" href="news.php?id=<?=$item["id"]?>">
 							<?=$item["anounce"]; ?>
 						</a>
 						<span class="news-item__date"><?=$item["dt"]?></span>
