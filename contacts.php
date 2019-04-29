@@ -59,7 +59,7 @@
 <section class="feedback-form">
 	<h2 class="feedback-form__headline">Форма обратной связи</h2>
 	<?
-		if(!empty($_POST)) {
+		if(!empty($_POST)):
 			// Валидация полей
 			$fName = validAnyString($_POST["feedback-author"]);
 			$fEmail = validEmail($_POST["email"]);
@@ -71,89 +71,85 @@
 				$message = "Пользователем " . $fName . " было отправлено обращение: \r\n" .
 					$fMessage . "\r\nОтветить можно по email: " . $fEmail . 
 					($fPhone ? " или по телефону: " . $fPhone . ".\r\n" : ".\r\n");
-				if(mail(TEST_MAIL, "Пользовательское обращение", $message)) {
+				if($fSummary = $messageSent = mail(TEST_MAIL, "Пользовательское обращение", $message)) {
 					// Добавление в базу данных
 					addAppeal($fName, $fEmail, $fMessage, $fPhone);
 					$_SESSION['feedback'] = 'sent';
-					$messageSent = true;
-				}	else {
-					$fSummary = $messageSent = false;
-					//header("Location: $thisScript");
 				}
 			}
-		}
-		// Если он уже отправил, то больше ему не дадим это сделать
-		if($_SESSION['feedback'] === 'sent') {
+		endif;
 	?>
+	<?if($_SESSION['feedback'] === 'sent'):?>
 		<p>Благодарим за ваше письмо. Мы свяжемся с вами в ближайшее время!</p>
-	<?} else {?>
-		<p class="feedback-form__hint">
-			<span class="required-star">*</span> — обязательные для заполнения поля
-		</p>
+	<?else:?>
 		<?
+			echo
+				'<p class="feedback-form__hint">
+					<span class="required-star">*</span> — обязательные для заполнения поля
+				</p>';
 			// Если пришли ошибочки
-			if(!$fSummary) {
+			if(!empty($_POST) && !$fSummary) {
+				echo '<aside class="error-box error-text">';
+				if(!$fName)
+					echo
+						'<p class="error-message">
+							Поле «Имя» должно быть заполнено
+						</p>';
+				if(!$fEmail)
+					echo
+						'<p class="error-message">
+							Поле «Электронная почта» должно быть заполнено <?=empty($_POST["email"]) ? "" : "корректно"?>
+						</p>';
+				if(!empty($_POST["phone"]) && !$fPhone)
+					echo
+						'<p class="error-message">
+							Поле «Телефон» должно соответствовать примеру: 7 999 111 22 33
+						</p>';
+				if(!$fMessage)
+						echo
+							'<p class="error-message">
+								Поле обращения должно быть заполнено
+							</p>';
+				if($fName && $fEmail && $fMessage && (empty($_POST["phone"]) || !empty($_POST["phone"]) && $fPhone) && false === $messageSent)
+					echo
+						'<p class="error-message">
+							На сервере произошла ошибка: ваше письмо не отправлено! Попробуйте ещё раз.
+						</p>';
+				echo '</aside>';
+			}
 		?>
-			<aside class="error-box error-text">
-				<?if(!$fName) {?>
-					<p class="error-message">
-						Поле «Имя» должно быть заполнено
-					</p>
-				<?}?>
-				<?if(!$fEmail) {?>
-				<p class="error-message">
-					Поле «Электронная почта» должно быть заполнено <?=empty($_POST["email"]) ? "" : "корректно"?>
-				</p>
-				<?}?>
-				<?if(!empty($_POST["phone"]) && !$fPhone) {?>
-				<p class="error-message">
-					Поле «Телефон» должно соответствовать примеру: 7 999 111 22 33
-				</p>
-				<?}?>
-				<?if(!$fMessage) {?>
-				<p class="error-message">
-					Поле обращения должно быть заполнено
-				</p>
-				<?}?>
-				<?if($fName && $fEmail && $fMessage && (empty($_POST["phone"]) || !empty($_POST["phone"]) && $fPhone) && false === $messageSent) {?>
-				<p class="error-message">
-					На сервере произошла ошибка: ваше письмо не отправлено! Попробуйте ещё раз.
-				</p>
-				<?}?>
-			</aside>
-		<?}?>
 		<form method="POST" class="registration-form" name="contats-page__feedback-form" action="contacts.php">
 			<div class="feedback-form__row">
 				<label class="template-label" for="feedback-author">
 					Имя <span class="required-star">*</span>
 				</label>
-				<input class="template-input-box template-input-box__name" type="text" name="feedback-author" id="feedback-author" <?=$fName ? 'value="' . $fName . '"' : ''?>>
+				<input class="template-input-box template-input-box__name" type="text" name="feedback-author" id="feedback-author" <?=$fName ? "value=\"$fName\"" : ""?>>
 				<span class="error-text feedback-form__error-hint error-emptyness invisible">Поле «Имя» должно быть заполнено</span>
 			</div>
 			<div class="feedback-form__row">
 				<label class="template-label" for="email">
 					Электронная почта <span class="required-star">*</span>
 				</label>
-				<input class="template-input-box template-input-box__email" type="email" name="email" id="email" <?=$fEmail ? 'value="' . $fEmail . '"' : ''?>>
+				<input class="template-input-box template-input-box__email" type="email" name="email" id="email" <?=$fEmail ? "value=\"$fEmail\"" : ""?>>
 				<span class="error-text feedback-form__error-hint error-emptyness invisible">Поле «Электронная почта» должно быть заполнено</span>
 			</div>
 			<div class="feedback-form__row">
 				<label class="template-label optional" for="phone">
 					Телефон
 				</label>
-				<input class="template-input-box" type="tel" name="phone" id="phone" <?=$fPhone ? 'value="' . $fPhone . '"' : ''?>>
+				<input class="template-input-box" type="tel" name="phone" id="phone" <?=$fPhone ? "value=\"$fPhone\"" : ""?>>
 			</div>
 			<div class="feedback-form__row feedback-form__row_left-shift">
 				<label class="template-label feedback-text-area__label" for="feedback-text">
 					Пожалуйста укажите какого рода информация вас интересует <span class="required-star">*</span>
 				</label>
-				<textarea class="template-input-box feedback-text-area__input" name="feedback-text" id="feedback-text"><?=$fMessage ? $fMessage : ''?></textarea>
+				<textarea class="template-input-box feedback-text-area__input" name="feedback-text" id="feedback-text"><?=$fMessage ? $fMessage : ""?></textarea>
 				<div>
 					<input class="form-submit data-send" type="submit" value="Отправить">
 					<input class="form-submit clear-inputs" type="button" value="Очистить поля">
 				</div>
 			</div>
 		</form>
-	<?}?>
+	<?endif?>
 </section>
 <?require_once "template/sidebarAndFooter.php"?>

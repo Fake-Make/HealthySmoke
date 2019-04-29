@@ -11,7 +11,7 @@
 	echo changeTitle(ob_get_clean());
 	// Далее на строках 15-16 табуляция вызывает сомнения
 ?>
-<?if(!empty($oneNews)) {?>
+<?if(!empty($oneNews)):?>
 	<nav class="bread-crumbs-container product__bread-crumbs">
 		<ul class="bread-crumbs">
 			<li class="bread-crumb"><a class="bread-crumb__link" href="index.php">Главная</a></li>
@@ -24,7 +24,7 @@
 		<h1><?=$newsHeader?></h1>
 		<?=$newsContent?>
 	</article>
-<?} else {?>
+<?else:?>
 	<h1 class="invisible">Архив новостей</h1>
 	<nav class="bread-crumbs-container">
 		<ul class="bread-crumbs">
@@ -41,18 +41,16 @@
 				$page = 1;
 			$news = getNewsByPages(MAX_NEWS_ON_PAGE, $page);
 			foreach ($news as $item) {
-				$id = $item["id"];
-				$anounce = $item["anounce"];
-				$dt = $item["dt"]
+				echo 
+					'<li class="news-item">
+						<a class="news-item__link" href="news.php?id=' . $item["id"] . '">' .
+							$item["anounce"] .
+						'</a>
+						<span class="news-item__date">' . $item["dt"] . '</span>
+					</li>';
+			}
 		?>
-		<li class="news-item">
-			<a class="news-item__link" href="news.php?id=<?=$id?>">
-				<?=$anounce?>
-			</a>
-			<span class="news-item__date"><?=$dt?></span>
-		</li>
-		<?}?>
 	</ul>
 	<? makePaginator(PAGINATOR_ELEMENTS, $page, $maxPage); ?>
-<?}?>
+<?endif?>
 <?require_once "template/sidebarAndFooter.php"?>

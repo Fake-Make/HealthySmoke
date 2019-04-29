@@ -11,17 +11,16 @@
 		// Категории уже получены в конфиге
 		// Было нужно для меню
 		foreach ($cats as $item) {
-			$id = $item["id"];
 			$img = $item["img"] ? $item["img"] : "img/no-image.jpg";
 			$alt = $item["img"] ? $img : "Изображение категории отсутствует";
-			// Правильность табуляции на строках 10-25 вызывает сомнения
+			echo
+				'<li class="category">
+					<a class="category__link" href="catalog.php?category=' . $item["id"] . '">
+						<img class="category__image" src="' . $img . '" alt="' . $alt . '">
+						<span class="category__name-container"><span class="category__name-template">' . $item["name"] . '</span></span>
+					</a>
+				</li>';
+		}
 	?>
-		<li class="category">
-			<a class="category__link" href="catalog.php?category=<?=$item["id"]?>">
-				<img class="category__image" src="<?=$img?>" alt="<?=$alt?>">
-				<span class="category__name-container"><span class="category__name-template"><?=$item["name"]?></span></span>
-			</a>
-		</li>
-	<?}?>
 </ul>
 <?require_once "template/sidebarAndFooter.php"?>
