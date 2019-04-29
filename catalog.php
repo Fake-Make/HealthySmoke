@@ -14,7 +14,7 @@
 	$catId = isset($_GET["category"]) ? validNaturalNumber($_GET["category"]) : NULL;
 	echo changeTitle(ob_get_clean());
 ?>
-<?if(!empty($good)) {?>
+<?if(!empty($good)):?>
 	<nav class="bread-crumbs-container product__bread-crumbs">
 		<ul class="bread-crumbs">
 			<li class="bread-crumb"><a class="bread-crumb__link" href="index.php">Главная</a></li>
@@ -50,7 +50,7 @@
 			<?=$desc ? $desc : "<p>Описание отсутствует.</p>"?>
 		</article>
 	</section>
-<?} else {?>
+<?else:?>
 	<h1 class="invisible">Каталог товаров</h1>
 	<nav class="bread-crumbs-container">
 		<ul class="bread-crumbs">
@@ -78,30 +78,29 @@
 				$page = 1;
 			// Если пришла категория, то фильтруем товары
 			// Иначе выводим все подряд
-			$goods = is_null($catId) ? getGoods4Catalog($page, MAX_GOODS_ON_PAGE) : getGoods4Catalog($page, MAX_GOODS_ON_PAGE, $catId);
-			foreach ($goods as $item) {
-				$id = $item["id"];
+			$goods = getGoods4Catalog($page, MAX_GOODS_ON_PAGE, $catId);
+		?>
+		<?foreach ($goods as $item):?>
+			<?
 				$img = $item["img"] ? $item["img"] : "img/no-image.jpg";
 				$alt = $item["img"] ? $img : "Изображение отсутствует";
-				$name = $item["name"];
-				$price = $item["price"];
-		?>
-		<li class="category good-piece">
-			<a class="category__link" href="catalog.php?id=<?=$id?><?=is_null($catId) ? "" : "&category=" . $catId?>">
-				<img class="category__image good__image" src="<?=$img?>" alt="<?=$alt?>">
-				<span class="category__name-container good_name"><span class="category__name-template"><?=$name?></span></span>
-			</a>
-			<span class="good-price good_price">
-				<?=$price?> <small class="good-price__currency">руб.</small>
-			</span>
-			<form method="POST">
-				<input type="hidden" name="itemAmount" value="1">
-				<input type="hidden" name="id" value="<?=$id?>">
-				<button class="good-to-cart good_to-cart">в корзину</button>
-			</form>
-		</li>
-		<?}?>
+			?>
+			<li class="category good-piece">
+				<a class="category__link" href="catalog.php?id=<?=$item["id"]?><?=is_null($catId) ? "" : "&category=" . $catId?>">
+					<img class="category__image good__image" src="<?=$img?>" alt="<?=$alt?>">
+					<span class="category__name-container good_name"><span class="category__name-template"><?=$item["name"]?></span></span>
+				</a>
+				<span class="good-price good_price">
+					<?=$item["price"]?> <small class="good-price__currency">руб.</small>
+				</span>
+				<form method="POST">
+					<input type="hidden" name="itemAmount" value="1">
+					<input type="hidden" name="id" value="<?=$item["id"]?>">
+					<button class="good-to-cart good_to-cart">в корзину</button>
+				</form>
+			</li>
+		<?endforeach?>
 	</ul>
 	<?makePaginator(PAGINATOR_ELEMENTS, $page, $maxPage);?>
-<?}?>
+<?endif?>
 <?require_once "template/sidebarAndFooter.php"?>
