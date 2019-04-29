@@ -1,7 +1,7 @@
 <?require_once("template/header.php");?>
 <?
 	// Если пришёл id новости, значит подобрать данные для вывода одной новости
-	$id = isset($_GET["id"]) ? validNaturalNumber($_GET["id"]) : NULL;
+	$id = !empty($_GET["id"]) ? validNaturalNumber($_GET["id"]) : NULL;
 	// Взятие новости из БД (раньше было одной функцией)
 	if ($id)
 		$good = mysqli_fetch_assoc(mysqli_query($db, "SELECT id, name, price, description, img from goods WHERE id=$id"));
@@ -15,7 +15,12 @@
 		$title = "$productName — купить за $price руб. в интернет-магазине Company";
 	}	else
 		$title = "Каталог товаров - Company";
-	$catId = isset($_GET["category"]) ? validNaturalNumber($_GET["category"]) : NULL;
+	$catId = !empty($_GET["category"]) ? validNaturalNumber($_GET["category"]) : NULL;
+	// Валидация фильтра цены
+	$maxCost = !empty($_GET["cost-to"]) ? validPositiveFloat($_GET["cost-to"]) : NULL;
+	$minCost = !empty($_GET["cost-from"]) ? validPositiveFloat($_GET["cost-from"]) : (is_null($maxCost) ? NULL : 0);
+	if(!is_null($maxCost) && $minCost > $maxCost)
+		$maxCost = $minCost;
 	echo changeTitle(ob_get_clean());
 ?>
 <?if(!empty($good)):?>
@@ -62,15 +67,16 @@
 			<li class="bread-crumb bread-crumb_current">Каталог</li>
 		</ul>
 	</nav>
-	<form class="search-filter" id="catalog-page__search-filter-1" method="POST">
+	<form class="search-filter" id="catalog-page__search-filter-1" action="catalog.php<?=$catId ? "?category=$catId" : ""?>" method="GET">
 		<span class="search-filter__item">
 			<label class="search-filter__label" for="cost-from">Цена</label>
-			<input class="search-filter__input" step="0.01" type="number" min="0" name="cost-from" id="cost-from" placeholder="от">
+			<input class="search-filter__input" step="0.01" type="number" min="0" name="cost-from" id="cost-from" placeholder="от" <?=is_null($minCost) ? '' : "value=\"$minCost\""?>>
 		</span>
 		<span class="search-filter__item">
 			<label class="search-filter__label" for="cost-to">—</label>
-			<input class="search-filter__input" type="number" min="0" name="cost-to" id="cost-to" placeholder="до">
+			<input class="search-filter__input" step="0.01" type="number" min="0" name="cost-to" id="cost-to" placeholder="до" <?=is_null($maxCost) ? '' : "value=\"$maxCost\""?>>
 		</span>
+		<?=$catId ? '<input type="hidden" name="category" value="' . $catId. '">' : ''?>
 		<input class="form-submit search-filter__apply" type="submit" value="Применить">
 	</form>
 	<ul class="categories categories__reposition">
@@ -78,12 +84,17 @@
 			// Нужно знать, сколько всего страниц, для пагинатора и корректировки текущей страницы
 			// Взятие максимального числа страниц из БД
 			$sqlReq = "SELECT count(*) FROM goods ";
+			$sqlReqWithCost = "price " . (is_null($maxCost) ? "> $minCost " : "BETWEEN $minCost AND $maxCost ");
 			$sqlReqWithCats = 
 				"INNER JOIN goodToCategories ON goods.id = goodToCategories.goodID
-					WHERE categoryID = $catId";
+					WHERE categoryID = $catId ";
 			if($catId)
 				$sqlReq .= $sqlReqWithCats;
+			if(!is_null($minCost) || !is_null($maxCost))
+				$sqlReq .= ($catId ? "AND " : "WHERE ") . $sqlReqWithCost;
 			$maxPage = ceil(mysqli_fetch_row(mysqli_query($db, $sqlReq))["0"] / MAX_GOODS_ON_PAGE);
+			if($maxPage < 1)
+				$maxPage = 1;
 			$page = validNaturalNumber($_GET["page"]);
 			if($page > $maxPage)
 				$page = 1;
@@ -91,12 +102,19 @@
 			// Иначе выводим все подряд
 		
 			// Взятие товаров из БД (было одной функцией)
-			// Исправить на JOIN, конструировать строку запроса
+			// Запрос не сложный, но его конструирование - это сущий геморрой
 			$offset = ($page - 1) * MAX_GOODS_ON_PAGE;
-			$sqlReq = "SELECT id, name, price, img FROM goods " . 
-				(is_null($catId) ?
-					"LIMIT $offset, " . MAX_GOODS_ON_PAGE :
-					$sqlReqWithCats . " LIMIT $offset, " . MAX_GOODS_ON_PAGE);	
+			$sqlReq = "SELECT id, name, price, img FROM goods ";
+			if(is_null($catId)) {
+				if(!is_null($minCost) || !is_null($maxCost))
+					$sqlReq .= "WHERE " . $sqlReqWithCost;
+				$sqlReq .= "LIMIT $offset, " . MAX_GOODS_ON_PAGE;
+			} else {
+				$sqlReq .= $sqlReqWithCats;
+				if(!is_null($minCost) || !is_null($maxCost))
+					$sqlReq .= "AND " . $sqlReqWithCost;
+				$sqlReq .= "LIMIT $offset, " . MAX_GOODS_ON_PAGE;
+			}
 			$goods = mysqli_fetch_all(mysqli_query($db, $sqlReq), MYSQLI_ASSOC);
 		?>
 		<?foreach ($goods as $item):?>
@@ -120,6 +138,6 @@
 			</li>
 		<?endforeach?>
 	</ul>
-	<?makePaginator(PAGINATOR_ELEMENTS, $page, $maxPage);?>
+	<?makePaginator(PAGINATOR_ELEMENTS, $page, $maxPage)?>
 <?endif?>
 <?require_once "template/sidebarAndFooter.php"?>

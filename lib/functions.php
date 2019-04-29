@@ -31,6 +31,12 @@
 		return ($num = intval($num)) < 1 ? 1 : $num;
 	}
 
+	// Возвращает неотрицательное вещественное число в виде строки, если его возможно получить
+	// Иначе возвращает 0
+	function validPositiveFloat($num) {
+		return number_format(($num = floatval($num)) < 0 ? 0 : $num, 2);
+	}
+
 	// Возвращает валидный email, если возможно такое преобразование
 	// Иначе возвращает NULL
 	function validEmail($str) {
@@ -54,10 +60,11 @@
 	// Отрисовщик пагинатора
 	function makePaginator($show, $cur, $max) {
 		echo "<ul class=\"paginator catalog-page__paginator\">";
-		$thisScript = $_SERVER["SCRIPT_NAME"];
+		$thisScript = $_SERVER["REQUEST_URI"];
+		$thisScript .= false === strpos($thisScript, "?") ? "?" : "&";
 		echo
 			"<li class=\"paginator__elem paginator__elem_prev\">"
-				. ($cur != 1 ? "<a href=\"$thisScript?page=" . ($cur - 1) .
+				. ($cur != 1 ? "<a href=\"" . $thisScript . "page=" . ($cur - 1) .
 				"\" class=\"paginator__link\">Предыдущая страница</a>" : "") .
 			"</li>";
 		// Количество отображаемых элементов в пагинаторе
@@ -70,7 +77,7 @@
 				if($i === $cur)
 					echo "<li class=\"paginator__elem paginator__elem_current\"><span class=\"paginator__link\">$i</span></li>";
 				else
-					echo "<li class=\"paginator__elem\"><a href=\"$thisScript?page=$i\" class=\"paginator__link\">$i</a></li>";
+					echo "<li class=\"paginator__elem\"><a href=\"" . $thisScript . "page=$i\" class=\"paginator__link\">$i</a></li>";
 			}
 		}	
 		// Мы слишком справа
@@ -82,7 +89,7 @@
 				if($i === $cur)
 					echo "<li class=\"paginator__elem paginator__elem_current\"><span class=\"paginator__link\">$i</span></li>";
 				else
-					echo "<li class=\"paginator__elem\"><a href=\"$thisScript?page=$i\" class=\"paginator__link\">$i</a></li>";
+					echo "<li class=\"paginator__elem\"><a href=\"" . $thisScript . "page=$i\" class=\"paginator__link\">$i</a></li>";
 			}
 		} 
 		// Мы где-то в центре
@@ -95,10 +102,10 @@
 				if($i === $cur)
 					echo "<li class=\"paginator__elem paginator__elem_current\"><span class=\"paginator__link\">$i</span></li>";
 				else
-					echo "<li class=\"paginator__elem\"><a href=\"$thisScript?page=$i\" class=\"paginator__link\">$i</a></li>";
+					echo "<li class=\"paginator__elem\"><a href=\"" . $thisScript . "page=$i\" class=\"paginator__link\">$i</a></li>";
 			}
 		}
-		echo "<li class=\"paginator__elem paginator__elem_next\">" . ($cur != $max ? "<a href=\"$thisScript?page=" . ($cur + 1) . "\" class=\"paginator__link\">Следующая страница</a>" : "") . "</li></ul>";
+		echo "<li class=\"paginator__elem paginator__elem_next\">" . ($cur != $max ? "<a href=\"" . $thisScript . "page=" . ($cur + 1) . "\" class=\"paginator__link\">Следующая страница</a>" : "") . "</li></ul>";
 	}
 
 	// Функция для замены текста в header'е после его создания
