@@ -34,7 +34,7 @@
 	// Возвращает неотрицательное вещественное число в виде строки, если его возможно получить
 	// Иначе возвращает 0
 	function validPositiveFloat($num) {
-		return number_format(($num = floatval($num)) < 0 ? 0 : $num, 2);
+		return round(($num = floatval($num)) < 0 ? 0 : $num, 2);
 	}
 
 	// Возвращает валидный email, если возможно такое преобразование

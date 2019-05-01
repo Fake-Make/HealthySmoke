@@ -19,29 +19,60 @@
 	// Валидация фильтра цены
 	$maxCost = !empty($_GET["cost-to"]) ? validPositiveFloat($_GET["cost-to"]) : NULL;
 	$minCost = !empty($_GET["cost-from"]) ? validPositiveFloat($_GET["cost-from"]) : (is_null($maxCost) ? NULL : 0);
+	// Создание ссылочной конструкции
+	$linkWithCat = $catId ? "category=$catId" : "";
+	$linkWithCosts = $minCost ? "cost-from=$minCost" : "";
+	$linkWithCosts .= $maxCost ? ($linkWithCosts ? "&" : "") . "cost-to=$maxCost" : "";
+	$subLink = $linkWithCat ? $linkWithCat . ($linkWithCosts ? "&" . $linkWithCosts : "") : $linkWithCosts;
+	if($subLink)
+		$subLink = '?' . $subLink;
 	if(!is_null($maxCost) && $minCost > $maxCost)
 		$maxCost = $minCost;
 	echo changeTitle(ob_get_clean());
 ?>
-<?if(!empty($good)):?>
-	<nav class="bread-crumbs-container product__bread-crumbs">
-		<ul class="bread-crumbs">
-			<li class="bread-crumb"><a class="bread-crumb__link" href="index.php">Главная</a></li>
-			<li class="bread-crumb"><a class="bread-crumb__link" href="catalog.php">Каталог</a></li>
-			<?
-				// Чтобы лишний раз не лезть в БД, посмотрим, пришла ли категория и найдём её название в соотвествующем массиве
-				if(!is_null($catId)) {
+<?
+	if($productName)
+		echo '<h1 class="invisible">' . $productName . ' - купить онлайн в интернет-магазине Company</h1>';
+	else
+		echo '<h1 class="invisible">Каталог товаров</h1>';
+?>
+<nav class="bread-crumbs-container">
+	<ul class="bread-crumbs">
+		<li class="bread-crumb"><a class="bread-crumb__link" href="index.php">Главная</a></li>
+		<?
+			// Если определена категория
+			if(!is_null($catId)) {
+				echo '<li class="bread-crumb"><a class="bread-crumb__link" href="catalog.php' . ($linkWithCosts ? '?' . $linkWithCosts : '') . '">Каталог</a></li>';
+				// Если просматривается продукт
+				if(!empty($good)) {
 					echo
 						'<li class="bread-crumb">
-							<a class="bread-crumb__link" href="catalog.php?category=' . $catId . '">'
+							<a class="bread-crumb__link" href="catalog.php' . $subLink . '">'
 								. $cats[array_search($catId, array_column($cats, "id"))]["name"] . '
 							</a>
 						</li>';
+					echo '<li class="bread-crumb bread-crumb_current">' . $productName . '</li>';
+				} else {
+					echo
+						'<li class="bread-crumb">' .
+							$cats[array_search($catId, array_column($cats, "id"))]["name"] .
+						'</li>';
 				}
-			?>
-			<li class="bread-crumb bread-crumb_current"><?=$productName?></li>
-		</ul>
-	</nav>
+			}	else {
+				if(!empty($good)) {
+					echo
+						'<li class="bread-crumb">
+							<a class="bread-crumb__link" href="catalog.php' . ($linkWithCosts ? '?' . $linkWithCosts : '') . '">Каталог</a>
+						</li>';
+					echo '<li class="bread-crumb bread-crumb_current">' . $productName. '</li>';
+				} else {
+					echo '<li class="bread-crumb">Каталог</li>';
+				}
+			}
+		?>		
+	</ul>
+</nav>
+<?if(!empty($good)):?>
 	<section class="product">
 		<h1 class="product__info-block-part product__headline"><?=$productName?></h1>
 		<img class="product__image" src="<?=$img?>" alt="<?=$alt?>">
@@ -60,14 +91,7 @@
 		</article>
 	</section>
 <?else:?>
-	<h1 class="invisible">Каталог товаров</h1>
-	<nav class="bread-crumbs-container">
-		<ul class="bread-crumbs">
-			<li class="bread-crumb"><a class="bread-crumb__link" href="index.php">Главная</a></li>
-			<li class="bread-crumb bread-crumb_current">Каталог</li>
-		</ul>
-	</nav>
-	<form class="search-filter" id="catalog-page__search-filter-1" action="catalog.php<?=$catId ? "?category=$catId" : ""?>" method="GET">
+	<form class="search-filter" id="catalog-page__search-filter-1" action="catalog.php" method="GET">
 		<span class="search-filter__item">
 			<label class="search-filter__label" for="cost-from">Цена</label>
 			<input class="search-filter__input" step="0.01" type="number" min="0" name="cost-from" id="cost-from" placeholder="от" <?=is_null($minCost) ? '' : "value=\"$minCost\""?>>
@@ -123,7 +147,7 @@
 				$alt = $item["img"] ? $img : "Изображение отсутствует";
 			?>
 			<li class="category good-piece">
-				<a class="category__link" href="catalog.php?id=<?=$item["id"]?><?=is_null($catId) ? "" : "&category=" . $catId?>">
+				<a class="category__link" href="catalog.php<?=$subLink ? $subLink . '&id=' . $item["id"] : '?id=' . $item["id"]?>">
 					<img class="category__image good__image" src="<?=$img?>" alt="<?=$alt?>">
 					<span class="category__name-container good_name"><span class="category__name-template"><?=$item["name"]?></span></span>
 				</a>
