@@ -9,11 +9,32 @@
 	// Валидация фильтра цены
 	$maxCost = !empty($_GET["cost-to"]) ? validPositiveFloat($_GET["cost-to"]) : NULL;
 	$minCost = !empty($_GET["cost-from"]) ? validPositiveFloat($_GET["cost-from"]) : NULL;
+	// Сохраняем и текущую страницу при переходе от каталога к товару
+	// Нужно знать, сколько всего страниц, для пагинатора и корректировки текущей страницы
+	// Взятие максимального числа страниц из БД
+	$sqlReq = "SELECT count(*) FROM goods ";
+	$sqlReqWithCost = "price " . (is_null($maxCost) ? "> $minCost " : (is_null($minCost) ? "< $maxCost " : "BETWEEN $minCost AND $maxCost "));
+	$sqlReqWithCats = 
+		"INNER JOIN goodToCategories ON goods.id = goodToCategories.goodID
+			WHERE categoryID = $catId ";
+	if($catId)
+		$sqlReq .= $sqlReqWithCats;
+	if(!is_null($minCost) || !is_null($maxCost))
+		$sqlReq .= ($catId ? "AND " : "WHERE ") . $sqlReqWithCost;
+	$maxPage = ceil(mysqli_fetch_row(mysqli_query($db, $sqlReq))["0"] / MAX_GOODS_ON_PAGE);
+	if($maxPage < 1)
+		$maxPage = 1;
+	$page = validNaturalNumber($_GET["page"]);
+	if($page > $maxPage)
+		$page = 1;
 	// Создание ссылочной конструкции
 	$linkWithCat = $catId ? "category=$catId" : "";
 	$linkWithCosts = $minCost ? "cost-from=$minCost" : "";
 	$linkWithCosts .= $maxCost ? ($linkWithCosts ? "&" : "") . "cost-to=$maxCost" : "";
-	$subLink = $linkWithCat ? $linkWithCat . ($linkWithCosts ? "&" . $linkWithCosts : "") : $linkWithCosts;
+	$subLink = $linkWithCat;
+	$subLink .= ($subLink ? "&" : "") . $linkWithCosts;
+	if (1 != $page)
+		$subLink .= ($subLink ? "&" : "") . "page=$page";
 	if($subLink)
 		$subLink = '?' . $subLink;
 	if(!is_null($maxCost) && $minCost > $maxCost)
@@ -57,23 +78,6 @@
 </form>
 <ul class="categories categories__reposition">
 	<?
-		// Нужно знать, сколько всего страниц, для пагинатора и корректировки текущей страницы
-		// Взятие максимального числа страниц из БД
-		$sqlReq = "SELECT count(*) FROM goods ";
-		$sqlReqWithCost = "price " . (is_null($maxCost) ? "> $minCost " : (is_null($minCost) ? "< $maxCost " : "BETWEEN $minCost AND $maxCost "));
-		$sqlReqWithCats = 
-			"INNER JOIN goodToCategories ON goods.id = goodToCategories.goodID
-				WHERE categoryID = $catId ";
-		if($catId)
-			$sqlReq .= $sqlReqWithCats;
-		if(!is_null($minCost) || !is_null($maxCost))
-			$sqlReq .= ($catId ? "AND " : "WHERE ") . $sqlReqWithCost;
-		$maxPage = ceil(mysqli_fetch_row(mysqli_query($db, $sqlReq))["0"] / MAX_GOODS_ON_PAGE);
-		if($maxPage < 1)
-			$maxPage = 1;
-		$page = validNaturalNumber($_GET["page"]);
-		if($page > $maxPage)
-			$page = 1;
 		// Если пришла категория, то фильтруем товары
 		// Иначе выводим все подряд
 	

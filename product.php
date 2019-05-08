@@ -20,14 +20,19 @@
 	$maxCost = $_GET["cost-to"];
 	$minCost = $_GET["cost-from"];
 	// Создание ссылочной конструкции
+	$page = $_GET["page"];
 	$linkWithCat = $catId ? "category=$catId" : "";
 	$linkWithCosts = $minCost ? "cost-from=$minCost" : "";
 	$linkWithCosts .= $maxCost ? ($linkWithCosts ? "&" : "") . "cost-to=$maxCost" : "";
-	$subLink = $linkWithCat ? $linkWithCat . ($linkWithCosts ? "&" . $linkWithCosts : "") : $linkWithCosts;
+	$subLink = $linkWithCosts;
+	if (1 != $page)
+		$subLink .= ($subLink ? "&" : "") . "page=$page";
 	if($subLink)
 		$subLink = '?' . $subLink;
-	if(!is_null($maxCost) && $minCost > $maxCost)
-		$maxCost = $minCost;
+	// Создание альтернативной ссылки с категорией
+	$subLinkWithCat = $subLink;
+	if ($linkWithCat)
+		$subLinkWithCat .= ($subLinkWithCat ? "&" : "?") . $linkWithCat;
 	echo changeTitle(ob_get_clean());
 ?>
 <?
@@ -39,24 +44,23 @@
 <nav class="bread-crumbs-container">
 	<ul class="bread-crumbs">
 		<li class="bread-crumb"><a class="bread-crumb__link" href="index.php">Главная</a></li>
+		<li class="bread-crumb">
+			<a class="bread-crumb__link" href="catalog.php<?=$subLink?>">
+				Каталог
+			</a>
+		</li>
 		<?
-			echo
-				'<li class="bread-crumb">
-					<a class="bread-crumb__link" href="catalog.php' . ($linkWithCosts ? '?' . $linkWithCosts : '') . '">
-						Каталог
-					</a>
-				</li>';
 			// Если определена категория
 			if($catId) {
 				echo
 					'<li class="bread-crumb">
-						<a class="bread-crumb__link" href="catalog.php' . $subLink . '">'
+						<a class="bread-crumb__link" href="catalog.php' . $subLinkWithCat . '">'
 							. $cats[array_search($catId, array_column($cats, "id"))]["name"] . '
 						</a>
 					</li>';
 			}
-			echo '<li class="bread-crumb bread-crumb_current">' . ($productName ? $productName : "Товар не найден") . '</li>';
-		?>		
+		?>
+		<li class="bread-crumb bread-crumb_current"><?=$productName ? $productName : "Товар не найден"?></li>;
 	</ul>
 </nav>
 <?if(!empty($good)):?>
