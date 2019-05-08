@@ -15,10 +15,10 @@
 		$title = "$productName — купить за $price руб. в интернет-магазине Company";
 	}	else
 		$title = "Товар не найден - Company";
-	$catId = !empty($_GET["category"]) ? validNaturalNumber($_GET["category"]) : NULL;
-	// Валидация фильтра цены
-	$maxCost = !empty($_GET["cost-to"]) ? validPositiveFloat($_GET["cost-to"]) : NULL;
-	$minCost = !empty($_GET["cost-from"]) ? validPositiveFloat($_GET["cost-from"]) : NULL;
+	// Как и было предложено: на странице продукта валидируется только id
+	$catId = $_GET["category"];
+	$maxCost = $_GET["cost-to"];
+	$minCost = $_GET["cost-from"];
 	// Создание ссылочной конструкции
 	$linkWithCat = $catId ? "category=$catId" : "";
 	$linkWithCosts = $minCost ? "cost-from=$minCost" : "";
