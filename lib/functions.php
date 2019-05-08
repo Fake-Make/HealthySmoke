@@ -60,7 +60,7 @@
 	function makePaginator($show, $cur, $max) {
 		echo '<ul class="paginator catalog-page__paginator">';
 		$thisScript = $_SERVER["REQUEST_URI"];
-		$thisScript .= false === strpos($thisScript, '?') ? '?' : '&';
+		$thisScript .= (false === strpos($thisScript, '?')) ? '?' : '&';
 		echo
 			'<li class="paginator__elem paginator__elem_prev">'
 				. ($cur != 1 ? '<a href="' . $thisScript . 'page=' . ($cur - 1) .

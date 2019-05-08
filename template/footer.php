@@ -43,16 +43,8 @@
 			</section>
 		</div>
 		<?
-			if ($handle = opendir(INCLUDE_AREAS_PATH)) {
-				while ($entry = readdir($handle)) {
-					// Если запись в директории - это файл
-					// И в нём содержится название вставляемого файла
-					// То инклюдим
-					if(is_file(INCLUDE_AREAS_PATH . $entry) && false !== strpos($thisScript, str_replace("_include.php", "", $entry)))
-						include(INCLUDE_AREAS_PATH . $entry);
-				}
-				closedir($handle);
-			}
+			if(false !== strpos($thisScript, 'index') && is_file(INCLUDE_AREAS_PATH . 'index_include.php'))
+				include(INCLUDE_AREAS_PATH . 'index_include.php');
 		?>
 	</div>
 </div>
