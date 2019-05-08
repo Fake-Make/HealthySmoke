@@ -134,4 +134,4 @@
 					<a href="catalog.php">сбросить параметры</a> и поискать ещё раз.</p>';			
 	?>
 <?endif?>
-<?require_once "template/footer.php"?>
+<?require_once("template/footer.php")?>

@@ -22,4 +22,4 @@
 		<input class="form-submit data-send form-submit__registration form-submit__login" type="submit" value="Войти">
 	</form>
 </section>
-<?require_once "template/footer.php"?>
+<?require_once("template/footer.php")?>

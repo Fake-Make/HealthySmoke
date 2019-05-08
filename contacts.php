@@ -156,4 +156,4 @@
 		</form>
 	<?endif?>
 </section>
-<?require_once "template/footer.php"?>
+<?require_once("template/footer.php")?>

@@ -59,4 +59,4 @@
 	</ul>
 	<? makePaginator(PAGINATOR_ELEMENTS, $page, $maxPage); ?>
 <?endif?>
-<?require_once "template/footer.php"?>
+<?require_once("template/footer.php")?>

@@ -46,10 +46,8 @@ function menuToggle(item) {
 // Скрытие сайдбара при просмотре Mobile на внутренних страницах
 function sidebarHide() {
 	if($(window).width() <= phoneSize) {
-		if($(document).find('.header-nav-item__link_current').is('.header-nav-item__link_current')) {
-			if($('.header-nav-item__link_current').text() != "Главная") {
+			if($('title').text() != "Интернет-магазин электронных сигарет - Company") {
 				$('.sidebar').css('display', 'none');
-			}
 		}
 	}
 }

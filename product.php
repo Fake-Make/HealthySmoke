@@ -73,4 +73,4 @@
 		<a href="catalog.php<?=$subLink?>">каталога</a>.
 	</h2>
 <?endif?>
-<?require_once "template/footer.php"?>
+<?require_once("template/footer.php")?>
