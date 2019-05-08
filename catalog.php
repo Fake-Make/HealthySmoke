@@ -6,6 +6,9 @@
 	$title = "Каталог товаров - Company";
 		
 	$catId = !empty($_GET["category"]) ? validNaturalNumber($_GET["category"]) : NULL;
+	$catName = NULL;
+	if(false !== (array_search($catId, array_column($cats, "id"))))
+		$catName = $cats[array_search($catId, array_column($cats, "id"))]["name"];
 	// Валидация фильтра цены
 	$maxCost = !empty($_GET["cost-to"]) ? validPositiveFloat($_GET["cost-to"]) : NULL;
 	$minCost = !empty($_GET["cost-from"]) ? validPositiveFloat($_GET["cost-from"]) : NULL;
@@ -13,7 +16,7 @@
 	// Нужно знать, сколько всего страниц, для пагинатора и корректировки текущей страницы
 	// Взятие максимального числа страниц из БД
 	$sqlReq = "SELECT count(*) FROM goods ";
-	$sqlReqWithCost = "price " . (is_null($maxCost) ? "> $minCost " : (is_null($minCost) ? "< $maxCost " : "BETWEEN $minCost AND $maxCost "));
+	$sqlReqWithCost = "price " . (is_null($maxCost) ? ">= $minCost " : (is_null($minCost) ? "<= $maxCost " : "BETWEEN $minCost AND $maxCost "));
 	$sqlReqWithCats = 
 		"INNER JOIN goodToCategories ON goods.id = goodToCategories.goodID
 			WHERE categoryID = $catId ";
@@ -43,6 +46,25 @@
 	// Перенаправление на страницу товара
 	if ($id)
 		header('Location: product.php' . ($subLink ? $subLink . '&' : '?') . "id=$id");
+	// Если пришла категория, то фильтруем товары
+	// Иначе выводим все подряд
+	
+	// Взятие товаров из БД (было одной функцией)
+	// Запрос не сложный, но его конструирование - это сущий геморрой
+	$offset = ($page - 1) * MAX_GOODS_ON_PAGE;
+	$sqlReq = "SELECT id, name, price, img FROM goods ";
+	if(is_null($catId)) {
+		if(!is_null($minCost) || !is_null($maxCost))
+			$sqlReq .= "WHERE " . $sqlReqWithCost;
+		$sqlReq .= "LIMIT " . ($offset ? "$offset, " : "") . MAX_GOODS_ON_PAGE;
+	} else {
+		$sqlReq .= $sqlReqWithCats;
+		if(!is_null($minCost) || !is_null($maxCost))
+			$sqlReq .= "AND " . $sqlReqWithCost;
+		$sqlReq .= "LIMIT $offset, " . MAX_GOODS_ON_PAGE;
+	}
+	$goods = mysqli_fetch_all(mysqli_query($db, $sqlReq), MYSQLI_ASSOC);
+	
 	echo changeTitle(ob_get_clean());
 ?>
 <h1 class="invisible">Каталог товаров</h1>
@@ -51,12 +73,12 @@
 		<li class="bread-crumb"><a class="bread-crumb__link" href="index.php">Главная</a></li>
 		<?
 			// Если определена категория
-			if(!is_null($catId)) {
+			if(!is_null($catId) && $catName) {
 				echo '<li class="bread-crumb"><a class="bread-crumb__link" href="catalog.php' . ($linkWithCosts ? '?' . $linkWithCosts : '') . '">Каталог</a></li>';
 				// Если просматривается продукт
 				echo
 					'<li class="bread-crumb">' .
-						$cats[array_search($catId, array_column($cats, "id"))]["name"] .
+					$catName .
 					'</li>';
 			}	else {
 				echo '<li class="bread-crumb">Каталог</li>';
@@ -76,47 +98,44 @@
 	<?=$catId ? '<input type="hidden" name="category" value="' . $catId. '">' : ''?>
 	<input class="form-submit search-filter__apply" type="submit" value="Применить">
 </form>
+<?
+	if(empty($goods)) {
+		if($catId && !$catName)
+			echo
+				'<h2>Выбранной категории не существует :(</h2>
+				<p>Возможно, вы попали сюда по ошибке. Попробуйте посмотреть
+					<a href="catalog.php">все товары</a>.</p>';				
+		else
+			echo
+				'<h2>Товаров с такими параметрами не найдено :(</h2>
+				<p>Возможно, вы задали слишком строгие критерии фильтрации. Попробуйте 
+					<a href="catalog.php">сбросить параметры</a> и поискать ещё раз.</p>';
+	}			
+?>
 <ul class="categories categories__reposition">
-	<?
-		// Если пришла категория, то фильтруем товары
-		// Иначе выводим все подряд
-	
-		// Взятие товаров из БД (было одной функцией)
-		// Запрос не сложный, но его конструирование - это сущий геморрой
-		$offset = ($page - 1) * MAX_GOODS_ON_PAGE;
-		$sqlReq = "SELECT id, name, price, img FROM goods ";
-		if(is_null($catId)) {
-			if(!is_null($minCost) || !is_null($maxCost))
-				$sqlReq .= "WHERE " . $sqlReqWithCost;
-			$sqlReq .= "LIMIT " . ($offset ? "$offset, " : "") . MAX_GOODS_ON_PAGE;
-		} else {
-			$sqlReq .= $sqlReqWithCats;
-			if(!is_null($minCost) || !is_null($maxCost))
-				$sqlReq .= "AND " . $sqlReqWithCost;
-			$sqlReq .= "LIMIT $offset, " . MAX_GOODS_ON_PAGE;
-		}
-		$goods = mysqli_fetch_all(mysqli_query($db, $sqlReq), MYSQLI_ASSOC);
-	?>
 	<?foreach ($goods as $item):?>
-			<?
-				$img = $item["img"] ? $item["img"] : "img/no-image.jpg";
-				$alt = $item["img"] ? $img : "Изображение отсутствует";
-			?>
-			<li class="category good-piece">
-				<a class="category__link" href="product.php<?=$subLink ? $subLink . '&id=' . $item["id"] : '?id=' . $item["id"]?>">
-					<img class="category__image good__image" src="<?=$img?>" alt="<?=$alt?>">
-					<span class="category__name-container good_name"><span class="category__name-template"><?=$item["name"]?></span></span>
-				</a>
-				<span class="good-price good_price">
-					<?=$item["price"]?> <small class="good-price__currency">руб.</small>
-				</span>
-				<form method="POST">
-					<input type="hidden" name="itemAmount" value="1">
-					<input type="hidden" name="id" value="<?=$item["id"]?>">
-					<button class="good-to-cart good_to-cart">в корзину</button>
-				</form>
-			</li>
+		<?
+			$img = $item["img"] ? $item["img"] : "img/no-image.jpg";
+			$alt = $item["img"] ? $img : "Изображение отсутствует";
+		?>
+		<li class="category good-piece">
+			<a class="category__link" href="product.php<?=$subLink ? $subLink . '&id=' . $item["id"] : '?id=' . $item["id"]?>">
+				<img class="category__image good__image" src="<?=$img?>" alt="<?=$alt?>">
+				<span class="category__name-container good_name"><span class="category__name-template"><?=$item["name"]?></span></span>
+			</a>
+			<span class="good-price good_price">
+				<?=$item["price"]?> <small class="good-price__currency">руб.</small>
+			</span>
+			<form method="POST">
+				<input type="hidden" name="itemAmount" value="1">
+				<input type="hidden" name="id" value="<?=$item["id"]?>">
+				<button class="good-to-cart good_to-cart">в корзину</button>
+			</form>
+		</li>
 	<?endforeach?>
 </ul>
-<?makePaginator(PAGINATOR_ELEMENTS, $page, $maxPage)?>
+<?
+	if(!empty($goods))
+		makePaginator(PAGINATOR_ELEMENTS, $page, $maxPage)
+?>
 <?require_once "template/footer.php"?>
