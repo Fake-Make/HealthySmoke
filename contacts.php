@@ -1,4 +1,4 @@
-<?require_once("template/header.php");?>
+<?require_once("template/header.php")?>
 <?
 	$title = "Контактная информация ООО «Company»";
 	// Открываем сессию или проверяем существование таковой

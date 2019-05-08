@@ -1,4 +1,4 @@
-<?require_once("template/header.php");?>
+<?require_once("template/header.php")?>
 <?
 	// Если пришёл id новости, значит подобрать данные для вывода одной новости
 	$id = isset($_GET["id"]) ? validNaturalNumber($_GET["id"]) : NULL;

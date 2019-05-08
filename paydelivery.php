@@ -1,4 +1,4 @@
-<?require_once("template/header.php");?>
+<?require_once("template/header.php")?>
 <?
 	$title = "Информация о доставке и оплате — интернет-магазин Company";
 	echo changeTitle(ob_get_clean());

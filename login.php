@@ -1,4 +1,4 @@
-<?require_once("template/header.php");?>
+<?require_once("template/header.php")?>
 <?
 	$title = "Вход — интернет-магазин электронных сигарет Company";
 	echo changeTitle(ob_get_clean());
