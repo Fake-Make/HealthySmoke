@@ -94,11 +94,11 @@
 	<form class="search-filter" id="catalog-page__search-filter-1" action="catalog.php" method="GET">
 		<span class="search-filter__item">
 			<label class="search-filter__label" for="cost-from">Цена</label>
-			<input class="search-filter__input" step="0.01" type="number" min="0" name="cost-from" id="cost-from" placeholder="от" <?=is_null($minCost) ? '' : "value=\"$minCost\""?>>
+			<input class="search-filter__input" step="0.01" type="number" min="0" name="cost-from" id="cost-from" placeholder="от" <?=is_null($minCost) ? '' : 'value="' . $minCost . '"'?>>
 		</span>
 		<span class="search-filter__item">
 			<label class="search-filter__label" for="cost-to">—</label>
-			<input class="search-filter__input" step="0.01" type="number" min="0" name="cost-to" id="cost-to" placeholder="до" <?=is_null($maxCost) ? '' : "value=\"$maxCost\""?>>
+			<input class="search-filter__input" step="0.01" type="number" min="0" name="cost-to" id="cost-to" placeholder="до" <?=is_null($maxCost) ? '' : 'value="' . $maxCost . '"'?>>
 		</span>
 		<?=$catId ? '<input type="hidden" name="category" value="' . $catId. '">' : ''?>
 		<input class="form-submit search-filter__apply" type="submit" value="Применить">

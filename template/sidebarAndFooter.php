@@ -9,17 +9,17 @@
 							$SBCatId = $item["id"];
 							if(!is_null($catId) && $catId == $SBCatId)
 								echo
-									"<li class=\"catalog-list__item catalog-list__item_active\">					
-										<span class=\"catalog-list__link\">$SBCatName</a>
-									</li>";
+									'<li class="catalog-list__item catalog-list__item_active">
+										<span class="catalog-list__link">' . $SBCatName . '</a>
+									</li>';
 							else
 								echo
-									"<li class=\"catalog-list__item\">
-										<a class=\"catalog-list__link\" href=\"catalog.php?category=$SBCatId" .
-											(isset($minCost) && !is_null($minCost) ? "&cost-from=$minCost" : "") .
-											(isset($maxCost) && !is_null($maxCost) ? "&cost-to=$maxCost" : "") .
-										"\">$SBCatName</a>
-									</li>";
+									'<li class="catalog-list__item">
+										<a class="catalog-list__link" href="catalog.php?category=' . $SBCatId .
+											(isset($minCost) && !is_null($minCost) ? '&cost-from=' . $minCost : '') .
+											(isset($maxCost) && !is_null($maxCost) ? '&cost-to=' . $maxCost : '') .
+										'">' . $SBCatName . '</a>
+									</li>';
 						}
 					?>
 				</ul>
@@ -61,10 +61,10 @@
 		<div class="copyright">
 			<span class="copyright__part copyright__lifetime">Copyright ©2007-<?=date("Y", time())?></span>
 			<span class="copyright__part copyright__company-lifetime"><b>© "Company"</b>, <?=date("Y", time())?></span>
-			<?if($isNotMainPage) echo "<a class=\"footer-logo__link\" href=\"index.php\">"?>
+			<?if($isNotMainPage) echo '<a class="footer-logo__link" href="index.php">'?>
 				<img class="copyright__image" src="img/logo.png" alt="Company-logo">
 				<span class="copyright__part copyrhigt__company-name">Company</span>
-			<?if($isNotMainPage) echo "</a>"?>
+			<?if($isNotMainPage) echo '</a>'?>
 		</div>
 		<nav class="footer-nav">
 			<ul class="footer-nav__list">
@@ -73,11 +73,11 @@
 						$menuItemName = $item["name"];
 						$menuItemHref = $item["href"];
 						echo
-							"<li class=\"footer-nav__list-item\">" .
+							'<li class="footer-nav__list-item">' .
 								(false !== strpos($thisScript, $menuItemHref) ?
-									"<span class=\"footer-nav__link\">$menuItemName</span>" :
-									"<a class=\"footer-nav__link\" href=\"$menuItemHref\">$menuItemName</a>") .
-							"</li>";
+									'<span class="footer-nav__link">' . $menuItemName . '</span>' :
+									'<a class="footer-nav__link" href="' . $menuItemHref . '">' . $menuItemName . '</a>') .
+							'</li>';
 					}
 				?>
 			</ul>

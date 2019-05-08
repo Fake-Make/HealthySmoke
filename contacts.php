@@ -127,21 +127,21 @@
 				<label class="template-label" for="feedback-author">
 					Имя <span class="required-star">*</span>
 				</label>
-				<input class="template-input-box template-input-box__name" type="text" name="feedback-author" id="feedback-author" <?=$fName ? "value=\"$fName\"" : ""?>>
+				<input class="template-input-box template-input-box__name" type="text" name="feedback-author" id="feedback-author" <?=$fName ? 'value="' . $fName . '"' : ''?>>
 				<span class="error-text feedback-form__error-hint error-emptyness invisible">Поле «Имя» должно быть заполнено</span>
 			</div>
 			<div class="feedback-form__row">
 				<label class="template-label" for="email">
 					Электронная почта <span class="required-star">*</span>
 				</label>
-				<input class="template-input-box template-input-box__email" type="email" name="email" id="email" <?=$fEmail ? "value=\"$fEmail\"" : ""?>>
+				<input class="template-input-box template-input-box__email" type="email" name="email" id="email" <?=$fEmail ? 'value="' . $fEmail . '"' : ""?>>
 				<span class="error-text feedback-form__error-hint error-emptyness invisible">Поле «Электронная почта» должно быть заполнено</span>
 			</div>
 			<div class="feedback-form__row">
 				<label class="template-label optional" for="phone">
 					Телефон
 				</label>
-				<input class="template-input-box" type="tel" name="phone" id="phone" <?=$fPhone ? "value=\"$fPhone\"" : ""?>>
+				<input class="template-input-box" type="tel" name="phone" id="phone" <?=$fPhone ? 'value="' . $fPhone . '"' : ''?>>
 			</div>
 			<div class="feedback-form__row feedback-form__row_left-shift">
 				<label class="template-label feedback-text-area__label" for="feedback-text">
