@@ -4,13 +4,14 @@
 	$id = !empty($_GET["id"]) ? validNaturalNumber($_GET["id"]) : NULL;
 	// Взятие товара из БД (раньше было одной функцией)
 	if ($id)
-		$good = mysqli_fetch_assoc(mysqli_query($db, "SELECT id, name, price, description, img from goods WHERE id=$id"));
+		$good = mysqli_fetch_assoc(mysqli_query($db, "SELECT id, name, price, description, img, mainCategoryID from goods WHERE id=$id"));
 	if(!empty($good)) {
 		$img = $good["img"] ? $good["img"] : "img/no-image.jpg";
 		$alt = $good["img"] ? $img : "Изображение отсутствует";
 		$productName = $good["name"];
 		$price = $good["price"];
 		$desc = $good["description"];
+		$catMainId = $good["mainCategoryID"];
 		// Взять название и цену товара
 		$title = "$productName — купить за $price руб. в интернет-магазине Company";
 	}	else
@@ -21,7 +22,7 @@
 	$minCost = $_GET["cost-from"];
 	// Создание ссылочной конструкции
 	$page = $_GET["page"];
-	$linkWithCat = $catId ? "category=$catId" : "";
+	$linkWithCat = $catId ? "category=$catId" : "category=$catMainId";
 	$linkWithCosts = $minCost ? "cost-from=$minCost" : "";
 	$linkWithCosts .= $maxCost ? ($linkWithCosts ? "&" : "") . "cost-to=$maxCost" : "";
 	$subLink = $linkWithCosts;
@@ -39,30 +40,26 @@
 	if($productName)
 		echo '<h1 class="invisible">' . $productName . ' - купить онлайн в интернет-магазине Company</h1>';
 	else
-		echo '<h1 class="invisible">Товар не найден</h1>';
+		echo '<h1>Товар не найден :(</h1>';
 ?>
-<nav class="bread-crumbs-container">
-	<ul class="bread-crumbs">
-		<li class="bread-crumb"><a class="bread-crumb__link" href="index.php">Главная</a></li>
-		<li class="bread-crumb">
-			<a class="bread-crumb__link" href="catalog.php<?=$subLink?>">
-				Каталог
-			</a>
-		</li>
-		<?
-			// Если определена категория
-			if($catId) {
-				echo
-					'<li class="bread-crumb">
-						<a class="bread-crumb__link" href="catalog.php' . $subLinkWithCat . '">'
-							. $cats[array_search($catId, array_column($cats, "id"))]["name"] . '
-						</a>
-					</li>';
-			}
-		?>
-		<li class="bread-crumb bread-crumb_current"><?=$productName ? $productName : "Товар не найден"?></li>;
-	</ul>
-</nav>
+<?if($productName):?>
+	<nav class="bread-crumbs-container">
+		<ul class="bread-crumbs">
+			<li class="bread-crumb"><a class="bread-crumb__link" href="index.php">Главная</a></li>
+			<li class="bread-crumb">
+				<a class="bread-crumb__link" href="catalog.php<?=$subLink?>">
+					Каталог
+				</a>
+			</li>
+			<li class="bread-crumb">
+				<a class="bread-crumb__link" href="catalog.php<?=$subLinkWithCat?>">
+					<?=$catId ? $cats[array_search($catId, array_column($cats, "id"))]["name"] : $cats[array_search($catMainId, array_column($cats, "id"))]["name"]?>
+				</a>
+			</li>
+			<li class="bread-crumb bread-crumb_current"><?=$productName?></li>;
+		</ul>
+	</nav>
+<?endif?>
 <?if(!empty($good)):?>
 	<section class="product">
 		<h1 class="product__info-block-part product__headline"><?=$productName?></h1>
@@ -82,7 +79,7 @@
 		</article>
 	</section>
 <?else:?>
-	<h2>Товар не найден. Попробуйте вернуться на страницу
+	<h2>Попробуйте вернуться на страницу
 		<a href="catalog.php<?=$subLink?>">каталога</a>.
 	</h2>
 <?endif?>

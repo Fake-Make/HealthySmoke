@@ -67,39 +67,64 @@
 	
 	echo changeTitle(ob_get_clean());
 ?>
-<h1 class="invisible">Каталог товаров</h1>
-<nav class="bread-crumbs-container">
-	<ul class="bread-crumbs">
-		<li class="bread-crumb"><a class="bread-crumb__link" href="index.php">Главная</a></li>
-		<?
-			// Если определена категория
-			if(!is_null($catId) && $catName) {
-				echo '<li class="bread-crumb"><a class="bread-crumb__link" href="catalog.php' . ($linkWithCosts ? '?' . $linkWithCosts : '') . '">Каталог</a></li>';
-				// Если просматривается продукт
-				echo
-					'<li class="bread-crumb">' .
-					$catName .
-					'</li>';
-			}	else {
-				echo '<li class="bread-crumb">Каталог</li>';
-			}
-		?>		
+<?if(!empty($goods)):?>
+	<h1 class="invisible">Каталог товаров</h1>
+	<nav class="bread-crumbs-container">
+		<ul class="bread-crumbs">
+			<li class="bread-crumb"><a class="bread-crumb__link" href="index.php">Главная</a></li>
+			<?
+				// Если определена категория
+				if(!is_null($catId) && $catName) {
+					echo '<li class="bread-crumb"><a class="bread-crumb__link" href="catalog.php' . ($linkWithCosts ? '?' . $linkWithCosts : '') . '">Каталог</a></li>';
+					// Если просматривается продукт
+					echo
+						'<li class="bread-crumb">' .
+							$catName .
+						'</li>';
+				}	else {
+					echo '<li class="bread-crumb">Каталог</li>';
+				}
+			?>		
+		</ul>
+	</nav>
+	<form class="search-filter" id="catalog-page__search-filter-1" action="catalog.php" method="GET">
+		<span class="search-filter__item">
+			<label class="search-filter__label" for="cost-from">Цена</label>
+			<input class="search-filter__input" step="0.01" type="number" min="0" name="cost-from" id="cost-from" placeholder="от" <?=is_null($minCost) ? '' : 'value="' . $minCost . '"'?>>
+		</span>
+		<span class="search-filter__item">
+			<label class="search-filter__label" for="cost-to">—</label>
+			<input class="search-filter__input" step="0.01" type="number" min="0" name="cost-to" id="cost-to" placeholder="до" <?=is_null($maxCost) ? '' : 'value="' . $maxCost . '"'?>>
+		</span>
+		<?=$catId ? '<input type="hidden" name="category" value="' . $catId. '">' : ''?>
+		<input class="form-submit search-filter__apply" type="submit" value="Применить">
+	</form>
+	<ul class="categories categories__reposition">
+		<?foreach ($goods as $item):?>
+			<?
+				$img = $item["img"] ? $item["img"] : "img/no-image.jpg";
+				$alt = $item["img"] ? $img : "Изображение отсутствует";
+			?>
+			<li class="category good-piece">
+				<a class="category__link" href="product.php<?=$subLink ? $subLink . '&id=' . $item["id"] : '?id=' . $item["id"]?>">
+					<img class="category__image good__image" src="<?=$img?>" alt="<?=$alt?>">
+					<span class="category__name-container good_name"><span class="category__name-template"><?=$item["name"]?></span></span>
+				</a>
+				<span class="good-price good_price">
+					<?=$item["price"]?> <small class="good-price__currency">руб.</small>
+				</span>
+				<form method="POST">
+					<input type="hidden" name="itemAmount" value="1">
+					<input type="hidden" name="id" value="<?=$item["id"]?>">
+					<button class="good-to-cart good_to-cart">в корзину</button>
+				</form>
+			</li>
+		<?endforeach?>
 	</ul>
-</nav>
-<form class="search-filter" id="catalog-page__search-filter-1" action="catalog.php" method="GET">
-	<span class="search-filter__item">
-		<label class="search-filter__label" for="cost-from">Цена</label>
-		<input class="search-filter__input" step="0.01" type="number" min="0" name="cost-from" id="cost-from" placeholder="от" <?=is_null($minCost) ? '' : 'value="' . $minCost . '"'?>>
-	</span>
-	<span class="search-filter__item">
-		<label class="search-filter__label" for="cost-to">—</label>
-		<input class="search-filter__input" step="0.01" type="number" min="0" name="cost-to" id="cost-to" placeholder="до" <?=is_null($maxCost) ? '' : 'value="' . $maxCost . '"'?>>
-	</span>
-	<?=$catId ? '<input type="hidden" name="category" value="' . $catId. '">' : ''?>
-	<input class="form-submit search-filter__apply" type="submit" value="Применить">
-</form>
-<?
-	if(empty($goods)) {
+	<?makePaginator(PAGINATOR_ELEMENTS, $page, $maxPage)?>
+<?else:?>
+	<?
+		echo '<h1>Ошибка 404: товаров не найдено!</h1>';
 		if($catId && !$catName)
 			echo
 				'<h2>Выбранной категории не существует :(</h2>
@@ -109,33 +134,7 @@
 			echo
 				'<h2>Товаров с такими параметрами не найдено :(</h2>
 				<p>Возможно, вы задали слишком строгие критерии фильтрации. Попробуйте 
-					<a href="catalog.php">сбросить параметры</a> и поискать ещё раз.</p>';
-	}			
-?>
-<ul class="categories categories__reposition">
-	<?foreach ($goods as $item):?>
-		<?
-			$img = $item["img"] ? $item["img"] : "img/no-image.jpg";
-			$alt = $item["img"] ? $img : "Изображение отсутствует";
-		?>
-		<li class="category good-piece">
-			<a class="category__link" href="product.php<?=$subLink ? $subLink . '&id=' . $item["id"] : '?id=' . $item["id"]?>">
-				<img class="category__image good__image" src="<?=$img?>" alt="<?=$alt?>">
-				<span class="category__name-container good_name"><span class="category__name-template"><?=$item["name"]?></span></span>
-			</a>
-			<span class="good-price good_price">
-				<?=$item["price"]?> <small class="good-price__currency">руб.</small>
-			</span>
-			<form method="POST">
-				<input type="hidden" name="itemAmount" value="1">
-				<input type="hidden" name="id" value="<?=$item["id"]?>">
-				<button class="good-to-cart good_to-cart">в корзину</button>
-			</form>
-		</li>
-	<?endforeach?>
-</ul>
-<?
-	if(!empty($goods))
-		makePaginator(PAGINATOR_ELEMENTS, $page, $maxPage)
-?>
+					<a href="catalog.php">сбросить параметры</a> и поискать ещё раз.</p>';			
+	?>
+<?endif?>
 <?require_once "template/footer.php"?>
