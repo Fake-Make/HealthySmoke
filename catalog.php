@@ -18,7 +18,7 @@
 	$catId = !empty($_GET["category"]) ? validNaturalNumber($_GET["category"]) : NULL;
 	// Валидация фильтра цены
 	$maxCost = !empty($_GET["cost-to"]) ? validPositiveFloat($_GET["cost-to"]) : NULL;
-	$minCost = !empty($_GET["cost-from"]) ? validPositiveFloat($_GET["cost-from"]) : (is_null($maxCost) ? NULL : 0);
+	$minCost = !empty($_GET["cost-from"]) ? validPositiveFloat($_GET["cost-from"]) : NULL;
 	// Создание ссылочной конструкции
 	$linkWithCat = $catId ? "category=$catId" : "";
 	$linkWithCosts = $minCost ? "cost-from=$minCost" : "";
@@ -108,7 +108,7 @@
 			// Нужно знать, сколько всего страниц, для пагинатора и корректировки текущей страницы
 			// Взятие максимального числа страниц из БД
 			$sqlReq = "SELECT count(*) FROM goods ";
-			$sqlReqWithCost = "price " . (is_null($maxCost) ? "> $minCost " : "BETWEEN $minCost AND $maxCost ");
+			$sqlReqWithCost = "price " . (is_null($maxCost) ? "> $minCost " : (is_null($minCost) ? "< $maxCost " : "BETWEEN $minCost AND $maxCost "));
 			$sqlReqWithCats = 
 				"INNER JOIN goodToCategories ON goods.id = goodToCategories.goodID
 					WHERE categoryID = $catId ";
@@ -132,7 +132,7 @@
 			if(is_null($catId)) {
 				if(!is_null($minCost) || !is_null($maxCost))
 					$sqlReq .= "WHERE " . $sqlReqWithCost;
-				$sqlReq .= "LIMIT $offset, " . MAX_GOODS_ON_PAGE;
+				$sqlReq .= "LIMIT " . ($offset ? "$offset, " : "") . MAX_GOODS_ON_PAGE;
 			} else {
 				$sqlReq .= $sqlReqWithCats;
 				if(!is_null($minCost) || !is_null($maxCost))
