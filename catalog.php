@@ -1,10 +1,8 @@
 <?require_once("template/header.php")?>
 <?
-	// Если пришёл id новости, значит подобрать данные для вывода одной новости
-	$id = !empty($_GET["id"]) ? validNaturalNumber($_GET["id"]) : NULL;
-	// Взятие новости из БД (раньше было одной функцией)
 	$title = "Каталог товаров - Company";
-		
+	
+	// Получение id категории и её имени
 	$catId = !empty($_GET["category"]) ? validNaturalNumber($_GET["category"]) : NULL;
 	$catName = NULL;
 	if(false !== (array_search($catId, array_column($cats, "id"))))
@@ -12,21 +10,27 @@
 	// Валидация фильтра цены
 	$maxCost = !empty($_GET["cost-to"]) ? validPositiveFloat($_GET["cost-to"]) : NULL;
 	$minCost = !empty($_GET["cost-from"]) ? validPositiveFloat($_GET["cost-from"]) : NULL;
+	if(!is_null($maxCost) && $minCost > $maxCost)
+		$maxCost = $minCost;
 	// Сохраняем и текущую страницу при переходе от каталога к товару
 	// Нужно знать, сколько всего страниц, для пагинатора и корректировки текущей страницы
 	// Взятие максимального числа страниц из БД
 	$sqlReq = "SELECT count(*) FROM goods ";
+	// С учётом цены
 	$sqlReqWithCost = "price " . (is_null($maxCost) ? ">= $minCost " : (is_null($minCost) ? "<= $maxCost " : "BETWEEN $minCost AND $maxCost "));
 	$sqlReqWithCats = 
 		"INNER JOIN goodToCategories ON goods.id = goodToCategories.goodID
 			WHERE categoryID = $catId ";
+	// С учётом категории
 	if($catId)
 		$sqlReq .= $sqlReqWithCats;
 	if(!is_null($minCost) || !is_null($maxCost))
 		$sqlReq .= ($catId ? "AND " : "WHERE ") . $sqlReqWithCost;
+	// Получение максимального количества страниц
 	$maxPage = ceil(mysqli_fetch_row(mysqli_query($db, $sqlReq))["0"] / MAX_GOODS_ON_PAGE);
 	if($maxPage < 1)
 		$maxPage = 1;
+	// Наконец получение текущей страницы
 	$page = validNaturalNumber($_GET["page"]);
 	if($page > $maxPage)
 		$page = 1;
@@ -40,17 +44,10 @@
 		$subLink .= ($subLink ? "&" : "") . "page=$page";
 	if($subLink)
 		$subLink = '?' . $subLink;
-	if(!is_null($maxCost) && $minCost > $maxCost)
-		$maxCost = $minCost;
-
-	// Перенаправление на страницу товара
-	if ($id)
-		header('Location: product.php' . ($subLink ? $subLink . '&' : '?') . "id=$id");
-	// Если пришла категория, то фильтруем товары
-	// Иначе выводим все подряд
 	
 	// Взятие товаров из БД (было одной функцией)
-	// Запрос не сложный, но его конструирование - это сущий геморрой
+	// Если пришла категория, то фильтруем товары
+	// Иначе выводим все подряд
 	$offset = ($page - 1) * MAX_GOODS_ON_PAGE;
 	$sqlReq = "SELECT id, name, price, img FROM goods ";
 	if(is_null($catId)) {
@@ -63,8 +60,8 @@
 			$sqlReq .= "AND " . $sqlReqWithCost;
 		$sqlReq .= "LIMIT $offset, " . MAX_GOODS_ON_PAGE;
 	}
-	$goods = mysqli_fetch_all(mysqli_query($db, $sqlReq), MYSQLI_ASSOC);
-	
+
+	$goods = mysqli_fetch_all(mysqli_query($db, $sqlReq), MYSQLI_ASSOC);	
 	echo changeTitle(ob_get_clean());
 ?>
 <?if(!empty($goods)):?>

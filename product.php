@@ -36,21 +36,12 @@
 		$subLinkWithCat .= ($subLinkWithCat ? "&" : "?") . $linkWithCat;
 	echo changeTitle(ob_get_clean());
 ?>
-<?
-	if($productName)
-		echo '<h1 class="invisible">' . $productName . ' - купить онлайн в интернет-магазине Company</h1>';
-	else
-		echo '<h1>Товар не найден :(</h1>';
-?>
 <?if($productName):?>
+	<h1 class="invisible"><?="$productName - купить онлайн в интернет-магазине Company"?></h1>
 	<nav class="bread-crumbs-container">
 		<ul class="bread-crumbs">
 			<li class="bread-crumb"><a class="bread-crumb__link" href="index.php">Главная</a></li>
-			<li class="bread-crumb">
-				<a class="bread-crumb__link" href="catalog.php<?=$subLink?>">
-					Каталог
-				</a>
-			</li>
+			<li class="bread-crumb"><a class="bread-crumb__link" href="catalog.php<?=$subLink?>">Каталог</a></li>
 			<li class="bread-crumb">
 				<a class="bread-crumb__link" href="catalog.php<?=$subLinkWithCat?>">
 					<?=$catId ? $cats[array_search($catId, array_column($cats, "id"))]["name"] : $cats[array_search($catMainId, array_column($cats, "id"))]["name"]?>
@@ -59,8 +50,6 @@
 			<li class="bread-crumb bread-crumb_current"><?=$productName?></li>;
 		</ul>
 	</nav>
-<?endif?>
-<?if(!empty($good)):?>
 	<section class="product">
 		<h1 class="product__info-block-part product__headline"><?=$productName?></h1>
 		<img class="product__image" src="<?=$img?>" alt="<?=$alt?>">
@@ -79,6 +68,7 @@
 		</article>
 	</section>
 <?else:?>
+	<h1>Товар не найден :(</h1>
 	<h2>Попробуйте вернуться на страницу
 		<a href="catalog.php<?=$subLink?>">каталога</a>.
 	</h2>
