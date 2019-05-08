@@ -23,4 +23,4 @@
 		}
 	?>
 </ul>
-<?require_once "template/sidebarAndFooter.php"?>
+<?require_once "template/footer.php"?>

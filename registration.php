@@ -62,4 +62,4 @@
 		<input class="form-submit data-send form-submit__registration" type="submit" value="Зарегистрироваться">
 	</form>
 </section>
-<?require_once "template/sidebarAndFooter.php"?>
+<?require_once "template/footer.php"?>
