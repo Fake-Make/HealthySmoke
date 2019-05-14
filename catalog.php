@@ -7,6 +7,8 @@
 	$catName = NULL;
 	if(false !== (array_search($catId, array_column($cats, "id"))))
 		$catName = $cats[array_search($catId, array_column($cats, "id"))]["name"];
+	if($catId && !$catName)
+		header("Location: 404.php?error=1");
 	// Валидация фильтра цены
 	$maxCost = !empty($_GET["cost-to"]) ? validPositiveFloat($_GET["cost-to"]) : NULL;
 	$minCost = !empty($_GET["cost-from"]) ? validPositiveFloat($_GET["cost-from"]) : NULL;
@@ -61,7 +63,7 @@
 		$sqlReq .= "LIMIT $offset, " . MAX_GOODS_ON_PAGE;
 	}
 
-	$goods = mysqli_fetch_all(mysqli_query($db, $sqlReq), MYSQLI_ASSOC);	
+	$goods = mysqli_fetch_all(mysqli_query($db, $sqlReq), MYSQLI_ASSOC);
 	echo changeTitle(ob_get_clean());
 ?>
 <?if(!empty($goods)):?>
@@ -120,18 +122,8 @@
 	</ul>
 	<?makePaginator(PAGINATOR_ELEMENTS, $page, $maxPage)?>
 <?else:?>
-	<?
-		echo '<h1>Ошибка 404: товаров не найдено!</h1>';
-		if($catId && !$catName)
-			echo
-				'<h2>Выбранной категории не существует :(</h2>
-				<p>Возможно, вы попали сюда по ошибке. Попробуйте посмотреть
-					<a href="catalog.php">все товары</a>.</p>';				
-		else
-			echo
-				'<h2>Товаров с такими параметрами не найдено :(</h2>
-				<p>Возможно, вы задали слишком строгие критерии фильтрации. Попробуйте 
-					<a href="catalog.php">сбросить параметры</a> и поискать ещё раз.</p>';			
-	?>
+	<h1>Ошибка 404: товаров не найдено!</h1>
+	<h2>Товаров с такими параметрами не найдено :(</h2>
+	<p>Возможно, вы задали слишком строгие критерии фильтрации. Попробуйте <a href="catalog.php">сбросить параметры</a> и поискать ещё раз.</p>
 <?endif?>
 <?require_once("template/footer.php")?>
