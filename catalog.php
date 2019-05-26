@@ -17,22 +17,19 @@
 		$maxCost = $minCost;
 	
 	// 1.3. МАКСИМАЛЬНОЕ ЧИСЛО СТРАНИЦ
-	// Построение запроса
-	$sqlReq = "SELECT count(*) FROM goods ";
-	// Учитываем цену
-	$sqlReqWithCost = "price " .
-		(is_null($maxCost) ? ">= $minCost " : (is_null($minCost) ? "<= $maxCost " : "BETWEEN $minCost AND $maxCost "));
-	$sqlReqWithCats = 
-		"INNER JOIN goodToCategories ON goods.id = goodToCategories.goodID
-			WHERE categoryID = $catId ";
+	// Конструируем основное тело запроса с учётом ограничений фильтра
+	$sqlReq = "";
 	// Учитываем категорию
 	if($catId)
-		$sqlReq .= $sqlReqWithCats;
+		$sqlReq .=
+			"INNER JOIN goodToCategories ON goods.id = goodToCategories.goodID
+			WHERE categoryID = $catId ";
+	// Учитываем цену
 	if(!is_null($minCost) || !is_null($maxCost))
-		$sqlReq .= ($catId ? "AND " : "WHERE ") . $sqlReqWithCost;
+		$sqlReq .= ($catId ? "AND " : "WHERE ") . "price " .
+		(is_null($maxCost) ? ">= $minCost " : (is_null($minCost) ? "<= $maxCost " : "BETWEEN $minCost AND $maxCost "));
 	// Выполнение запроса
-	echo "<br>REQ1: $sqlReq<br>";
-	$maxPage = ceil(mysqli_fetch_row(mysqli_query($db, $sqlReq))["0"] / MAX_GOODS_ON_PAGE);
+	$maxPage = ceil(mysqli_fetch_row(mysqli_query($db, "SELECT count(*) FROM goods " . $sqlReq))["0"] / MAX_GOODS_ON_PAGE);
 	if($maxPage < 1)
 		$maxPage = 1;
 
@@ -42,19 +39,10 @@
 		$page = 1;
 	
 	// 2. ПОСТРОЕНИЕ ЗАПРОСА
+	// Пользуемся уже имеющимся телом запроса
 	$offset = ($page - 1) * MAX_GOODS_ON_PAGE;
-	$sqlReq = "SELECT id, name, price, img FROM goods ";
-	if(is_null($catId)) {
-		if(!is_null($minCost) || !is_null($maxCost))
-			$sqlReq .= "WHERE " . $sqlReqWithCost;
-		$sqlReq .= "LIMIT " . ($offset ? "$offset, " : "") . MAX_GOODS_ON_PAGE;
-	} else {
-		$sqlReq .= $sqlReqWithCats;
-		if(!is_null($minCost) || !is_null($maxCost))
-			$sqlReq .= "AND " . $sqlReqWithCost;
-		$sqlReq .= "LIMIT $offset, " . MAX_GOODS_ON_PAGE;
-	}
-	echo "<br>REQ2: $sqlReq<br>";
+	$sqlReq = "SELECT id, name, price, img FROM goods " . $sqlReq .
+	"LIMIT " . ($offset ? "$offset, " : "") . MAX_GOODS_ON_PAGE;
 	$goods = mysqli_fetch_all(mysqli_query($db, $sqlReq), MYSQLI_ASSOC);
 
 	// 3. ПОСТРОЕНИЕ ССЫЛОЧНОЙ КОНСТРУКЦИИ ДЛЯ СОХРАНЕНИЯ ФИЛЬТРОВ
