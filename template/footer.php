@@ -9,7 +9,7 @@
 							$SBCatName = $item["name"];
 							$SBCatId = $item["id"];
 							// Если активная категория является текущей
-							if($catId === $SBCatId) {
+							if($catId == $SBCatId) {
 								echo
 									'<li class="catalog-list__item catalog-list__item_active">
 										<span class="catalog-list__link">' . $SBCatName . '</a>
