@@ -57,7 +57,7 @@
 	// Отрисовщик пагинатора
 	function makePaginator($show, $cur, $max) {
 		echo '<ul class="paginator catalog-page__paginator">';
-		$thisScript = preg_replace('!(&page=\d)*|(page=\d&?)*!', '' , $_SERVER["REQUEST_URI"]);
+		$thisScript = preg_replace('!(&page=\d)*|(\?page=\d&?)*!', '' , $_SERVER["REQUEST_URI"]);
 		$thisScript .= (false === strpos($thisScript, '?')) ? '?' : '&';
 		echo
 			'<li class="paginator__elem paginator__elem_prev">'
