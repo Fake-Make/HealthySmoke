@@ -16,7 +16,7 @@
 	// Возвращает SQL/XSS-безопасную входную строку, если она содержит хотя бы один непробельный символ
 	// Иначе возвращает NULL
 	function validAnyString($str) {
-		return strlen(trim($str)) ? addslashes(htmlspecialchars($s)) : NULL;
+		return strlen(trim($str)) ? addslashes(htmlspecialchars($str)) : NULL;
 	}
 
 	// Возвращает натуральное число, если его возможно получить из строки

@@ -59,18 +59,18 @@
 <section class="feedback-form">
 	<h2 class="feedback-form__headline">Форма обратной связи</h2>
 	<?
+		// Валидация, отправка email, занесение в БД
 		if(!empty($_POST)):
-			// Валидация полей
+			// Валидация
 			$fName = validAnyString($_POST["feedback-author"]);
 			$fEmail = validEmail($_POST["email"]);
 			$fPhone = validPhone($_POST["phone"]);
 			$fMessage = validAnyString($_POST["feedback-text"]);
-			// Флаг отсутствия ошибок
 			if($fSummary = $fName && $fEmail && $fMessage) {
-				// Отправка сообщения
+				// Отправка email-сообщения
 				$message = "Пользователем " . $fName . " было отправлено обращение: \r\n" .
 					$fMessage . "\r\nОтветить можно по email: " . $fEmail . 
-					($fPhone ? " или по телефону: " . $fPhone . ".\r\n" : ".\r\n");
+					($fPhone ? " или по телефону: " . $fPhone : "") . ".\r\n";
 				if($fSummary = $messageSent = mail(TEST_MAIL, "Пользовательское обращение", $message)) {
 					// Добавление в базу данных
 					$sqlReq = "INSERT INTO appeals (userName, email, " . 
@@ -86,12 +86,11 @@
 	<?if($_SESSION['feedback'] === 'sent'):?>
 		<p>Благодарим за ваше письмо. Мы свяжемся с вами в ближайшее время!</p>
 	<?else:?>
+		<p class="feedback-form__hint">
+			<span class="required-star">*</span> — обязательные для заполнения поля
+		</p>
 		<?
-			echo
-				'<p class="feedback-form__hint">
-					<span class="required-star">*</span> — обязательные для заполнения поля
-				</p>';
-			// Если пришли ошибочки
+			// Если пришли пользователь что-то ввёл и неправильно
 			if(!empty($_POST) && !$fSummary) {
 				echo '<aside class="error-box error-text">';
 				if(!$fName)
@@ -110,11 +109,11 @@
 							Поле «Телефон» должно соответствовать примеру: 7 999 111 22 33
 						</p>';
 				if(!$fMessage)
-						echo
-							'<p class="error-message">
-								Поле обращения должно быть заполнено
-							</p>';
-				if($fName && $fEmail && $fMessage && (empty($_POST["phone"]) || !empty($_POST["phone"]) && $fPhone) && false === $messageSent)
+					echo
+						'<p class="error-message">
+							Поле обращения должно быть заполнено
+						</p>';
+				if(false === $messageSent)
 					echo
 						'<p class="error-message">
 							На сервере произошла ошибка: ваше письмо не отправлено! Попробуйте ещё раз.
