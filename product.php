@@ -1,30 +1,36 @@
 <?require_once("template/header.php")?>
 <?
-	// Если пришёл id, значит подобрать данные для вывода одного товара
-	$id = !empty($_GET["id"]) ? validNaturalNumber($_GET["id"]) : NULL;
-	// Взятие товара из БД (раньше было одной функцией)
-	if ($id)
+	// 1. ВАЛИДАЦИЯ
+	// NB! Как и было предложено, на странице продукта валидируется только id
+	if ($id = !empty($_GET["id"]) ? validNaturalNumber($_GET["id"]) : NULL) {
+		// 2. ПОСТРОЕНИЕ ЗАПРОСА
 		$good = mysqli_fetch_assoc(mysqli_query($db, "SELECT id, name, price, description, img, mainCategoryID from goods WHERE id=$id"));
-	if(!empty($good)) {
+		// Ну вот как он такой сюда пришёл? Гоните его, презирайте его, насмехайтесь над ним
+		if(empty($good))
+			header("Location: 404.php");
+		// Всё хорошо, работаем в штатном режиме
 		$img = $good["img"] ? $good["img"] : "img/no-image.jpg";
 		$alt = $good["img"] ? $img : "Изображение отсутствует";
 		$productName = $good["name"];
 		$price = $good["price"];
 		$desc = $good["description"];
+		// У товаров есть основная категория. Она нужна, если мы пришли из общего поиска
 		$catMainId = $good["mainCategoryID"];
-		// Взять название и цену товара
-		$title = "$productName — купить за $price руб. в интернет-магазине Company";
 	}	else
 		header("Location: 404.php");
-	// Как и было предложено: на странице продукта валидируется только id
-	$catId = $_GET["category"];
-	$maxCost = $_GET["cost-to"];
+	
+	// Что не пришло - будет NULL, даже если не инициализировать переменные
 	$minCost = $_GET["cost-from"];
-	// Создание ссылочной конструкции
+	$maxCost = $_GET["cost-to"];
+	$catId = $_GET["category"];
 	$page = $_GET["page"];
-	$linkWithCat = $catId ? "category=$catId" : "category=$catMainId";
+
+	// 3. ПОСТРОЕНИЕ ССЫЛКИ $subLink для сохранения фильтров
+	// Сначала соберём параметры: категорию и цены
+	$linkWithCat = "category=" . ($catId ? $catId : $catMainId);
 	$linkWithCosts = $minCost ? "cost-from=$minCost" : "";
 	$linkWithCosts .= $maxCost ? ($linkWithCosts ? "&" : "") . "cost-to=$maxCost" : "";
+	// Теперь нужно склеить всё правильны образом
 	$subLink = $linkWithCosts;
 	if (1 != $page)
 		$subLink .= ($subLink ? "&" : "") . "page=$page";
@@ -34,6 +40,9 @@
 	$subLinkWithCat = $subLink;
 	if ($linkWithCat)
 		$subLinkWithCat .= ($subLinkWithCat ? "&" : "?") . $linkWithCat;
+
+	// 4. ВЫВОД СТРАНИЦЫ
+	$title = "$productName — купить за $price руб. в интернет-магазине Company";
 	echo changeTitle(ob_get_clean());
 ?>
 <h1 class="invisible"><?="$productName - купить онлайн в интернет-магазине Company"?></h1>
@@ -43,10 +52,12 @@
 		<li class="bread-crumb"><a class="bread-crumb__link" href="catalog.php<?=$subLink?>">Каталог</a></li>
 		<li class="bread-crumb">
 			<a class="bread-crumb__link" href="catalog.php<?=$subLinkWithCat?>">
-				<?=$catId ? $cats[array_search($catId, array_column($cats, "id"))]["name"] : $cats[array_search($catMainId, array_column($cats, "id"))]["name"]?>
+				<?=$catId ?
+					$cats[array_search($catId, array_column($cats, "id"))]["name"] :
+					$cats[array_search($catMainId, array_column($cats, "id"))]["name"]?>
 			</a>
 		</li>
-		<li class="bread-crumb bread-crumb_current"><?=$productName?></li>;
+		<li class="bread-crumb bread-crumb_current"><?=$productName?></li>
 	</ul>
 </nav>
 <section class="product">
