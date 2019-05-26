@@ -8,7 +8,7 @@
 	if(false !== (array_search($catId, array_column($cats, "id"))))
 		$catName = $cats[array_search($catId, array_column($cats, "id"))]["name"];
 	if($catId && !$catName)
-		header("Location: 404.php?error=1");
+		header("Location: 404.php");
 	// Валидация фильтра цены
 	$maxCost = !empty($_GET["cost-to"]) ? validPositiveFloat($_GET["cost-to"]) : NULL;
 	$minCost = !empty($_GET["cost-from"]) ? validPositiveFloat($_GET["cost-from"]) : NULL;

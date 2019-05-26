@@ -15,7 +15,7 @@
 		// Взять название и цену товара
 		$title = "$productName — купить за $price руб. в интернет-магазине Company";
 	}	else
-		header("Location: 404.php?error=2");
+		header("Location: 404.php");
 	// Как и было предложено: на странице продукта валидируется только id
 	$catId = $_GET["category"];
 	$maxCost = $_GET["cost-to"];
