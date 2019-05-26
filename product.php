@@ -25,7 +25,7 @@
 	$catId = $_GET["category"];
 	$page = $_GET["page"];
 
-	// 3. ПОСТРОЕНИЕ ССЫЛКИ $subLink для сохранения фильтров
+	// 3. ПОСТРОЕНИЕ ССЫЛОЧНОЙ КОНСТРУКЦИИ $subLink ДЛЯ СОХРАНЕНИЯ ФИЛЬТРОВ
 	// Сначала соберём параметры: категорию и цены
 	$linkWithCat = "category=" . ($catId ? $catId : $catMainId);
 	$linkWithCosts = $minCost ? "cost-from=$minCost" : "";

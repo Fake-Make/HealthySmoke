@@ -1,55 +1,47 @@
 <?require_once("template/header.php")?>
 <?
-	$title = "Каталог товаров - Company";
-	
-	// Получение id категории и её имени
+	// 1. ВАЛИДАЦИЯ
+	// 1.1. КАТЕГОРИЯ
 	$catId = !empty($_GET["category"]) ? validNaturalNumber($_GET["category"]) : NULL;
-	$catName = NULL;
-	if(false !== (array_search($catId, array_column($cats, "id"))))
-		$catName = $cats[array_search($catId, array_column($cats, "id"))]["name"];
+	$catName = false !== (array_search($catId, array_column($cats, "id"))) ?
+		$cats[array_search($catId, array_column($cats, "id"))]["name"] :
+		NULL;
+	// Если названия категории не нашлось, то категории с таким id нет
 	if($catId && !$catName)
 		header("Location: 404.php");
-	// Валидация фильтра цены
+	
+	// 1.2. ФИЛЬТР ЦЕНЫ
 	$maxCost = !empty($_GET["cost-to"]) ? validPositiveFloat($_GET["cost-to"]) : NULL;
 	$minCost = !empty($_GET["cost-from"]) ? validPositiveFloat($_GET["cost-from"]) : NULL;
-	if(!is_null($maxCost) && $minCost > $maxCost)
+	if(!is_null($maxCost) && !is_null($minCost) && $minCost > $maxCost)
 		$maxCost = $minCost;
-	// Сохраняем и текущую страницу при переходе от каталога к товару
-	// Нужно знать, сколько всего страниц, для пагинатора и корректировки текущей страницы
-	// Взятие максимального числа страниц из БД
+	
+	// 1.3. МАКСИМАЛЬНОЕ ЧИСЛО СТРАНИЦ
+	// Построение запроса
 	$sqlReq = "SELECT count(*) FROM goods ";
-	// С учётом цены
-	$sqlReqWithCost = "price " . (is_null($maxCost) ? ">= $minCost " : (is_null($minCost) ? "<= $maxCost " : "BETWEEN $minCost AND $maxCost "));
+	// Учитываем цену
+	$sqlReqWithCost = "price " .
+		(is_null($maxCost) ? ">= $minCost " : (is_null($minCost) ? "<= $maxCost " : "BETWEEN $minCost AND $maxCost "));
 	$sqlReqWithCats = 
 		"INNER JOIN goodToCategories ON goods.id = goodToCategories.goodID
 			WHERE categoryID = $catId ";
-	// С учётом категории
+	// Учитываем категорию
 	if($catId)
 		$sqlReq .= $sqlReqWithCats;
 	if(!is_null($minCost) || !is_null($maxCost))
 		$sqlReq .= ($catId ? "AND " : "WHERE ") . $sqlReqWithCost;
-	// Получение максимального количества страниц
+	// Выполнение запроса
+	echo "<br>REQ1: $sqlReq<br>";
 	$maxPage = ceil(mysqli_fetch_row(mysqli_query($db, $sqlReq))["0"] / MAX_GOODS_ON_PAGE);
 	if($maxPage < 1)
 		$maxPage = 1;
-	// Наконец получение текущей страницы
+
+	// 1.4. ТЕКУЩАЯ СТРАНИЦА
 	$page = validNaturalNumber($_GET["page"]);
 	if($page > $maxPage)
 		$page = 1;
-	// Создание ссылочной конструкции
-	$linkWithCat = $catId ? "category=$catId" : "";
-	$linkWithCosts = $minCost ? "cost-from=$minCost" : "";
-	$linkWithCosts .= $maxCost ? ($linkWithCosts ? "&" : "") . "cost-to=$maxCost" : "";
-	$subLink = $linkWithCat;
-	$subLink .= ($subLink ? "&" : "") . $linkWithCosts;
-	if (1 != $page)
-		$subLink .= ($subLink ? "&" : "") . "page=$page";
-	if($subLink)
-		$subLink = '?' . $subLink;
 	
-	// Взятие товаров из БД (было одной функцией)
-	// Если пришла категория, то фильтруем товары
-	// Иначе выводим все подряд
+	// 2. ПОСТРОЕНИЕ ЗАПРОСА
 	$offset = ($page - 1) * MAX_GOODS_ON_PAGE;
 	$sqlReq = "SELECT id, name, price, img FROM goods ";
 	if(is_null($catId)) {
@@ -62,8 +54,22 @@
 			$sqlReq .= "AND " . $sqlReqWithCost;
 		$sqlReq .= "LIMIT $offset, " . MAX_GOODS_ON_PAGE;
 	}
-
+	echo "<br>REQ2: $sqlReq<br>";
 	$goods = mysqli_fetch_all(mysqli_query($db, $sqlReq), MYSQLI_ASSOC);
+
+	// 3. ПОСТРОЕНИЕ ССЫЛОЧНОЙ КОНСТРУКЦИИ $subLink ДЛЯ СОХРАНЕНИЯ ФИЛЬТРОВ
+	$linkWithCat = $catId ? "category=$catId" : "";
+	$linkWithCosts = $minCost ? "cost-from=$minCost" : "";
+	$linkWithCosts .= $maxCost ? ($linkWithCosts ? "&" : "") . "cost-to=$maxCost" : "";
+	$subLink = $linkWithCat;
+	$subLink .= ($subLink ? "&" : "") . $linkWithCosts;
+	if (1 != $page)
+		$subLink .= ($subLink ? "&" : "") . "page=$page";
+	if($subLink)
+		$subLink = '?' . $subLink;
+
+	// 4. ВЫВОД СТРАНИЦЫ
+	$title = "Каталог товаров - Company";
 	echo changeTitle(ob_get_clean());
 ?>
 <?if(!empty($goods)):?>
@@ -74,10 +80,13 @@
 			<?
 				// Если определена категория
 				if(!is_null($catId) && $catName) {
-					echo '<li class="bread-crumb"><a class="bread-crumb__link" href="catalog.php' . ($linkWithCosts ? '?' . $linkWithCosts : '') . '">Каталог</a></li>';
-					// Если просматривается продукт
 					echo
-						'<li class="bread-crumb">' .
+						'<li class="bread-crumb">
+							<a class="bread-crumb__link" href="catalog.php' . ($linkWithCosts ? '?' . $linkWithCosts : '') . '">
+								Каталог
+							</a>
+						</li>
+						<li class="bread-crumb">' .
 							$catName .
 						'</li>';
 				}	else {
@@ -100,13 +109,9 @@
 	</form>
 	<ul class="categories categories__reposition">
 		<?foreach($goods as $item):?>
-			<?
-				$img = $item["img"] ? $item["img"] : "img/no-image.jpg";
-				$alt = $item["img"] ? $img : "Изображение отсутствует";
-			?>
 			<li class="category good-piece">
 				<a class="category__link" href="product.php<?=$subLink ? $subLink . '&id=' . $item["id"] : '?id=' . $item["id"]?>">
-					<img class="category__image good__image" src="<?=$img?>" alt="<?=$alt?>">
+					<img class="category__image good__image" src="<?=$item["img"] ? $item["img"] : "img/no-image.jpg"?>" alt="<?=$item["img"] ? $img : "Изображение отсутствует"?>">
 					<span class="category__name-container good_name"><span class="category__name-template"><?=$item["name"]?></span></span>
 				</a>
 				<span class="good-price good_price">
@@ -122,7 +127,7 @@
 	</ul>
 	<?makePaginator(PAGINATOR_ELEMENTS, $page, $maxPage)?>
 <?else:?>
-	<h1>Ошибка 404: товаров не найдено!</h1>
+	<h1>Ошибка поиска!</h1>
 	<h2>Товаров с такими параметрами не найдено :(</h2>
 	<p>Возможно, вы задали слишком строгие критерии фильтрации. Попробуйте <a href="catalog.php">сбросить параметры</a> и поискать ещё раз.</p>
 <?endif?>
