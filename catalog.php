@@ -57,11 +57,13 @@
 	echo "<br>REQ2: $sqlReq<br>";
 	$goods = mysqli_fetch_all(mysqli_query($db, $sqlReq), MYSQLI_ASSOC);
 
-	// 3. ПОСТРОЕНИЕ ССЫЛОЧНОЙ КОНСТРУКЦИИ $subLink ДЛЯ СОХРАНЕНИЯ ФИЛЬТРОВ
-	$linkWithCat = $catId ? "category=$catId" : "";
+	// 3. ПОСТРОЕНИЕ ССЫЛОЧНОЙ КОНСТРУКЦИИ ДЛЯ СОХРАНЕНИЯ ФИЛЬТРОВ
+	// Оформим параметры фильтра
 	$linkWithCosts = $minCost ? "cost-from=$minCost" : "";
 	$linkWithCosts .= $maxCost ? ($linkWithCosts ? "&" : "") . "cost-to=$maxCost" : "";
-	$subLink = $linkWithCat;
+	// Затем перейдём к категории
+	$subLink = $catId ? "category=$catId" : "";
+	// Осталось правильно всё совместить
 	$subLink .= ($subLink ? "&" : "") . $linkWithCosts;
 	if (1 != $page)
 		$subLink .= ($subLink ? "&" : "") . "page=$page";
