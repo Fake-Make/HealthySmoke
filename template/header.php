@@ -6,11 +6,11 @@
 	// Т.к. категорий не должно быть много, то сразу подцепляем и ссылки на изображения
 	// Помимо прочего не переопределяем подменю после инициализации меню, чтобы избежать
 	// избыточных обращений к массиву массива
-	$db = mysqli_connect(DB_HOST, DB_LOGIN, DB_PASSWORD, DB_NAME) or die ('Not connected: ' . mysql_error());
+	$db = mysqli_connect(DB_HOST, DB_LOGIN, DB_PASSWORD, DB_NAME) or die ('Not connected: ' . mysqli_error());
 	// Взятие категорий из БД (раньше было одной функцией)
 	$sqlReq = "SELECT id, name, img from categories";
 	$cats = mysqli_fetch_all(mysqli_query($db, $sqlReq), MYSQLI_ASSOC);
-	foreach ($cats as $item) {
+	foreach($cats as $item) {
 		$categoriesSubMenu[] = [
 			"name"=>$item["name"],
 			"href"=>"catalog.php?category=" . $item["id"]
@@ -26,9 +26,12 @@
 		["name"=>"Доставка и оплата", "href"=>"paydelivery.php"],
 		["name"=>"Контакты", "href"=>"contacts.php"]
 	];
+	// Заголовок, главный скрипт, текущий скрипт
 	$title = "Интернет-магазин электронных сигарет - Company";
 	$mainPageScript = $menu["0"]["href"];
 	$thisScript = $_SERVER["SCRIPT_NAME"];
+	// Флаг, показывающий, что мы не на главной странице
+	$isNotMainPage = false === strpos($thisScript, $mainPageScript);
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -47,8 +50,7 @@
 		<div class="wrapper">
 			<aside class="header-top">
 				<?
-					// Флаг, показывающий, что мы не на главной странице
-					$isNotMainPage = false === strpos($thisScript, $mainPageScript);
+					// Делать ли лого ссылкой или просто блоком
 					echo $isNotMainPage ? 
 						'<a class="header-logo header-logo__link" href="index.php">' :
 						'<div class="header-logo">';
@@ -82,6 +84,7 @@
 					<input class="user-info__link user-info__link_hover" type="submit" name="submit" value="Войти">
 				</form>
 				<?
+					// Если мы на странице регистрации, то не ссылаемся на саму себя
 					echo false !== strpos($_SERVER["SCRIPT_NAME"], "registration.php") ?
 						'<span class="user-info__link user-info__link_reposition">Регистрация</span>' :
 						'<a class="user-info__link user-info__link_hover user-info__link_reposition" href="registration.php">Регистрация</a>';
@@ -89,41 +92,46 @@
 				<span class="cart-label">В <a class="cart-label__link" href="#">корзине</a> товаров - <b>12</b></span>
 			</div>
 		</div>
-		<?
-			echo
-				'<nav class="header-nav">
-					<div class="wrapper">
-						<span class="menu-toggler">Меню</span>
-						<ul class="menu-togglable">';
-			foreach ($menu as $item) {
-				$menuItemName = $item["name"];
-				$menuItemHref = $item["href"];
-				// Флаг, показывающий, что текущий элемент меню - есть текущая страница
-				$isCurrentPage = false !== strpos($thisScript, $menuItemHref);
-				echo '<li class="header-nav-item"><span>';
-				// Если есть под-меню
-				if(isset($item["sub-menu"])) {
-					echo '<span class="header-nav-item__container-for-link">' .
-						($isCurrentPage ?
-							'<span class="header-nav-item__link header-nav-item__link_current">' . $menuItemName . '</span>' :
-							'<a class="header-nav-item__link" href="' . $menuItemHref . '">' . $menuItemName . '</a>') .
-						'</span><ul class="sub-menu">';
+		<nav class="header-nav">
+			<div class="wrapper">
+				<span class="menu-toggler">Меню</span>
+				<ul class="menu-togglable">
+					<?
+						// Вывод навигационного меню
+						foreach($menu as $item) {
+							$menuItemName = $item["name"];
+							$menuItemHref = $item["href"];
+							// Флаг, показывающий, что текущий элемент меню - есть текущая страница
+							$isCurrentPage = false !== strpos($thisScript, $menuItemHref);
+							echo '<li class="header-nav-item"><span>';
+							// Если есть под-меню
+							if(isset($item["sub-menu"])) {
+								echo 
+									'<span class="header-nav-item__container-for-link">' .
+										($isCurrentPage ?
+											'<span class="header-nav-item__link header-nav-item__link_current">' . $menuItemName . '</span>' :
+											'<a class="header-nav-item__link" href="' . $menuItemHref . '">' . $menuItemName . '</a>') .
+									'</span>
+									<ul class="sub-menu">';
 
-					foreach($item["sub-menu"] as $subItem) {
-						$menuSubItemName = $subItem["name"];
-						$menuSubItemHref = $subItem["href"];
-						echo '<li class="sub-menu__list-item"><a class="sub-menu__link" href="' . $menuSubItemHref . '">' . $menuSubItemName . '</a></li>';
-					}
-					echo '</ul>';
-				} else {
-					echo $isCurrentPage ?
-						'<span class="header-nav-item__link header-nav-item__link_current">' . $menuItemName . '</span>' :
-						'<a class="header-nav-item__link" href="' . $menuItemHref . '">' . $menuItemName . '</a>';
-				}
-				echo '</span></li>';
-			}
-			echo '</ul></div></nav>';
-		?>
+								// Вывод элементов под-меню
+								foreach($item["sub-menu"] as $subItem) {
+									$menuSubItemName = $subItem["name"];
+									$menuSubItemHref = $subItem["href"];
+									echo '<li class="sub-menu__list-item"><a class="sub-menu__link" href="' . $menuSubItemHref . '">' . $menuSubItemName . '</a></li>';
+								}
+								echo '</ul>';
+							} else {
+								echo $isCurrentPage ?
+									'<span class="header-nav-item__link header-nav-item__link_current">' . $menuItemName . '</span>' :
+									'<a class="header-nav-item__link" href="' . $menuItemHref . '">' . $menuItemName . '</a>';
+							}
+							echo '</span></li>';
+						}
+					?>
+				</ul>
+			</div>
+		</nav>
 	</header>
 	<div class="content">
 		<div class="wrapper content__wrapper">

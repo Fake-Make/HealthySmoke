@@ -99,7 +99,7 @@
 		<input class="form-submit search-filter__apply" type="submit" value="Применить">
 	</form>
 	<ul class="categories categories__reposition">
-		<?foreach ($goods as $item):?>
+		<?foreach($goods as $item):?>
 			<?
 				$img = $item["img"] ? $item["img"] : "img/no-image.jpg";
 				$alt = $item["img"] ? $img : "Изображение отсутствует";

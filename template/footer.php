@@ -4,15 +4,17 @@
 				<h2 class="sidebar__headline">Каталог</h2>
 				<ul class="catalog-list">
 					<?
-						foreach ($cats as $item) {
+						// Вывод категорий в сайдбаре
+						foreach($cats as $item) {
 							$SBCatName = $item["name"];
 							$SBCatId = $item["id"];
-							if(!is_null($catId) && $catId == $SBCatId)
+							// Если активная категория является текущей
+							if($catId === $SBCatId) {
 								echo
 									'<li class="catalog-list__item catalog-list__item_active">
 										<span class="catalog-list__link">' . $SBCatName . '</a>
 									</li>';
-							else
+							} else {
 								echo
 									'<li class="catalog-list__item">
 										<a class="catalog-list__link" href="catalog.php?category=' . $SBCatId .
@@ -20,6 +22,7 @@
 											(isset($maxCost) && !is_null($maxCost) ? '&cost-to=' . $maxCost : '') .
 										'">' . $SBCatName . '</a>
 									</li>';
+							}
 						}
 					?>
 				</ul>
@@ -28,8 +31,10 @@
 				<h2 class="sidebar__headline news__headline">Новости</h2>
 				<ul class="news-list">
 					<?
+						// Можно было взять новости и header'е, но мы бы делали лишнюю работу
+						// при возникновении ошибок до загрузки footer'а
 						$news = getNewsByPages(MAX_NEWS_ON_SIDEBAR);
-						foreach ($news as $item) :
+						foreach($news as $item):
 					?>
 						<li class="news-item">
 							<a class="news-item__link" href="news.php?id=<?=$item["id"]?>">
@@ -43,7 +48,7 @@
 			</section>
 		</div>
 		<?
-			if(false !== strpos($thisScript, 'index') && is_file(INCLUDE_AREAS_PATH . 'index_include.php'))
+			if(!$isNotMainPage && is_file(INCLUDE_AREAS_PATH . 'index_include.php'))
 				include(INCLUDE_AREAS_PATH . 'index_include.php');
 		?>
 	</div>
@@ -61,7 +66,7 @@
 		<nav class="footer-nav">
 			<ul class="footer-nav__list">
 				<?
-					foreach ($menu as $item) {
+					foreach($menu as $item) {
 						$menuItemName = $item["name"];
 						$menuItemHref = $item["href"];
 						echo

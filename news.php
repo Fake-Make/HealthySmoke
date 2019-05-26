@@ -46,7 +46,7 @@
 			if($page > $maxPage)
 				$page = 1;
 			$news = getNewsByPages(MAX_NEWS_ON_PAGE, $page);
-			foreach ($news as $item) {
+			foreach($news as $item) {
 				echo 
 					'<li class="news-item">
 						<a class="news-item__link" href="news.php?id=' . $item["id"] . '">' .

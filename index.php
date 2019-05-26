@@ -10,7 +10,7 @@
 	<?
 		// Категории уже получены в конфиге
 		// Было нужно для меню
-		foreach ($cats as $item) {
+		foreach($cats as $item) {
 			$img = $item["img"] ? $item["img"] : "img/no-image.jpg";
 			$alt = $item["img"] ? $img : "Изображение категории отсутствует";
 			echo
