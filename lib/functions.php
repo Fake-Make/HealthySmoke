@@ -8,8 +8,7 @@
 			(is_null($page) ? "$size" : "$offset, $size");
 		global $db;
 
-		$sqlRes = mysqli_query($db, $sqlReq);
-		return mysqli_fetch_all($sqlRes, MYSQLI_ASSOC);
+		return mysqli_fetch_all(mysqli_query($db, $sqlReq), MYSQLI_ASSOC);
 	}
 	
 	/***********************Функции не связанные с БД***************************/
@@ -17,10 +16,7 @@
 	// Возвращает SQL/XSS-безопасную входную строку, если она содержит хотя бы один непробельный символ
 	// Иначе возвращает NULL
 	function validAnyString($str) {
-		if(!isset($str))
-			return NULL;
-		$spaces = [" ", "\r", "\n", "\t"];
-		return strlen(str_replace($spaces, "", $str)) ? addslashes(htmlspecialchars($str)) : NULL;
+		return strlen(trim($str)) ? addslashes(htmlspecialchars($s)) : NULL;
 	}
 
 	// Возвращает натуральное число, если его возможно получить из строки
@@ -38,34 +34,33 @@
 	// Возвращает валидный email, если возможно такое преобразование
 	// Иначе возвращает NULL
 	function validEmail($str) {
-		if(!isset($str))
-			return NULL;
-		$symbols = [" ", "\r", "\n", "\t"];
-		$str = str_replace($symbols, "", $str);
+		$str = trim($str);
 		return preg_match("!^[A-Za-z0-9]+(\.[A-Za-z0-9]+)*@[A-Za-z0-9]+(\.[A-Za-z0-9]+)*$!", $str) ? $str : NULL;
 	}
+
 	// Возвращает валидный номер телефона, если возможно такое преобразование
 	// Иначе возвращает NULL
 	function validPhone($str) {
-		if(!isset($str))
-			return NULL;
-		$symbols = [" ", "\r", "\n", "\t", "+", "-", "(", ")"];
-		$str = str_replace($symbols, "", $str);
+		$symbols = ["+", "-", "(", ")"];
+		$str = str_replace($symbols, "", trim($str));
 		return preg_match("!^[0-9]{11,13}$!", $str) ? $str : NULL;
 	}
 
 	// Отрисовщик пагинатора
 	function makePaginator($show, $cur, $max) {
-		echo '<ul class="paginator catalog-page__paginator">';
+		// Текущая ссылка без GET-параметра page
 		$thisScript = preg_replace('!(&page=\d)*|(\?page=\d&?)*!', '' , $_SERVER["REQUEST_URI"]);
 		$thisScript .= (false === strpos($thisScript, '?')) ? '?' : '&';
-		echo
-			'<li class="paginator__elem paginator__elem_prev">'
-				. ($cur != 1 ? '<a href="' . $thisScript . 'page=' . ($cur - 1) .
-				'" class="paginator__link">Предыдущая страница</a>' : '') .
-			'</li>';
 		// Количество отображаемых элементов в пагинаторе
 		$shift = ($show - 1) / 2;
+
+		echo
+			'<ul class="paginator catalog-page__paginator">' .
+				'<li class="paginator__elem paginator__elem_prev">'
+					. ($cur != 1 ? '<a href="' . $thisScript . 'page=' . ($cur - 1) .
+					'" class="paginator__link">Предыдущая страница</a>' : '') .
+				'</li>';
+		
 		// Мы слишком слева
 		if($cur - $shift < 1) {
 			if($show > $max)
@@ -102,7 +97,11 @@
 					echo '<li class="paginator__elem"><a href="' . $thisScript . 'page=' . $i . '" class="paginator__link">' . $i . '</a></li>';
 			}
 		}
-		echo '<li class="paginator__elem paginator__elem_next">' . ($cur != $max ? '<a href="' . $thisScript . 'page=' . ($cur + 1) . '" class="paginator__link">Следующая страница</a>' : '') . '</li></ul>';
+		echo
+				'<li class="paginator__elem paginator__elem_next">' .
+					($cur != $max ? '<a href="' . $thisScript . 'page=' . ($cur + 1) . '" class="paginator__link">Следующая страница</a>' : '') .
+				'</li>
+			</ul>';
 	}
 
 	// Функция для замены текста в header'е после его создания
