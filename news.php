@@ -37,7 +37,10 @@
 		$page = validNaturalNumber($_GET["page"]);
 		if($page > $maxPage)
 			$page = 1;
-		$news = getNewsByPages(MAX_NEWS_ON_PAGE, $page);
+		
+		$offset = ($page - 1) * $size;
+		$sqlReq = "SELECT id, anounce, dt FROM news ORDER BY dt DESC LIMIT $offset, " . MAX_NEWS_ON_PAGE;
+		$news = mysqli_fetch_all(mysqli_query($db, $sqlReq), MYSQLI_ASSOC);
 	?>
 	<h1 class="invisible">Архив новостей</h1>
 	<nav class="bread-crumbs-container">

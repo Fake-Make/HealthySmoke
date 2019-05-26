@@ -33,7 +33,9 @@
 					<?
 						// Можно было взять новости и header'е, но мы бы делали лишнюю работу
 						// при возникновении ошибок до загрузки footer'а
-						$news = getNewsByPages(MAX_NEWS_ON_SIDEBAR);
+						$sqlReq = "SELECT id, anounce, dt FROM news ORDER BY dt DESC LIMIT " . MAX_NEWS_ON_SIDEBAR;
+						$news = mysqli_fetch_all(mysqli_query($db, $sqlReq), MYSQLI_ASSOC);
+						
 						foreach($news as $item):
 					?>
 						<li class="news-item">

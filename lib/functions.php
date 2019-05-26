@@ -1,18 +1,4 @@
 <?
-	/************************Функции связанные с БД*****************************/
-	
-	// Выборка size последних новостей для page-той страницы
-	function getNewsByPages($size, $page = NULL) {
-		$offset = ($page - 1) * $size;
-		$sqlReq = "SELECT id, anounce, dt FROM news ORDER BY dt DESC LIMIT " .
-			(is_null($page) ? "$size" : "$offset, $size");
-		global $db;
-
-		return mysqli_fetch_all(mysqli_query($db, $sqlReq), MYSQLI_ASSOC);
-	}
-	
-	/***********************Функции не связанные с БД***************************/
-
 	// Возвращает SQL/XSS-безопасную входную строку, если она содержит хотя бы один непробельный символ
 	// Иначе возвращает NULL
 	function validAnyString($str) {
