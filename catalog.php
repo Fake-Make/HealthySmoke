@@ -67,22 +67,16 @@
 	<nav class="bread-crumbs-container">
 		<ul class="bread-crumbs">
 			<li class="bread-crumb"><a class="bread-crumb__link" href="index.php">Главная</a></li>
-			<?
-				// Если определена категория
-				if(!is_null($catId) && $catName) {
-					echo
-						'<li class="bread-crumb">
-							<a class="bread-crumb__link" href="catalog.php' . ($linkWithCosts ? '?' . $linkWithCosts : '') . '">
-								Каталог
-							</a>
-						</li>
-						<li class="bread-crumb">' .
-							$catName .
-						'</li>';
-				}	else {
-					echo '<li class="bread-crumb">Каталог</li>';
-				}
-			?>		
+			<?if(!is_null($catId) && $catName):?>
+				<li class="bread-crumb">
+					<a class="bread-crumb__link" href="catalog.php">
+						Каталог
+					</a>
+				</li>
+				<li class="bread-crumb"><?=$catName?></li>
+			<?else:?>
+				<li class="bread-crumb">Каталог</li>
+			<?endif?>
 		</ul>
 	</nav>
 	<form class="search-filter" id="catalog-page__search-filter-1" action="catalog.php" method="GET">
