@@ -5,7 +5,7 @@
 				<ul class="catalog-list">
 					<?
 						// Вывод категорий в сайдбаре
-						foreach($cats as $item) {
+						foreach($cats as $item):
 							$SBCatName = $item["name"];
 							$SBCatId = $item["id"];
 							// Если активная категория является текущей
@@ -23,7 +23,7 @@
 										'">' . $SBCatName . '</a>
 									</li>';
 							}
-						}
+						endforeach;
 					?>
 				</ul>
 			</section>
@@ -35,9 +35,8 @@
 						// при возникновении ошибок до загрузки footer'а
 						$sqlReq = "SELECT id, anounce, dt FROM news ORDER BY dt DESC LIMIT " . MAX_NEWS_ON_SIDEBAR;
 						$news = mysqli_fetch_all(mysqli_query($db, $sqlReq), MYSQLI_ASSOC);
-						
-						foreach($news as $item):
 					?>
+					<?foreach($news as $item):?>
 						<li class="news-item">
 							<a class="news-item__link" href="news.php?id=<?=$item["id"]?>">
 								<?=$item["anounce"]?>
@@ -68,16 +67,14 @@
 		<nav class="footer-nav">
 			<ul class="footer-nav__list">
 				<?
-					foreach($menu as $item) {
-						$menuItemName = $item["name"];
-						$menuItemHref = $item["href"];
+					// Вывод нижнего меню
+					foreach($menu as $item)
 						echo
 							'<li class="footer-nav__list-item">' .
-								(false !== strpos($thisScript, $menuItemHref) ?
-									'<span class="footer-nav__link">' . $menuItemName . '</span>' :
-									'<a class="footer-nav__link" href="' . $menuItemHref . '">' . $menuItemName . '</a>') .
+								(false !== strpos($thisScript, $item["href"]) ?
+									'<span class="footer-nav__link">' . $item["name"] . '</span>' :
+									'<a class="footer-nav__link" href="' . $item["href"] . '">' . $item["name"] . '</a>') .
 							'</li>';
-					}
 				?>
 			</ul>
 		</nav>

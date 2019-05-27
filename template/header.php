@@ -98,7 +98,7 @@
 				<ul class="menu-togglable">
 					<?
 						// Вывод навигационного меню
-						foreach($menu as $item) {
+						foreach($menu as $item):
 							$menuItemName = $item["name"];
 							$menuItemHref = $item["href"];
 							// Флаг, показывающий, что текущий элемент меню - есть текущая страница
@@ -115,11 +115,13 @@
 									<ul class="sub-menu">';
 
 								// Вывод элементов под-меню
-								foreach($item["sub-menu"] as $subItem) {
-									$menuSubItemName = $subItem["name"];
-									$menuSubItemHref = $subItem["href"];
-									echo '<li class="sub-menu__list-item"><a class="sub-menu__link" href="' . $menuSubItemHref . '">' . $menuSubItemName . '</a></li>';
-								}
+								foreach($item["sub-menu"] as $subItem)
+									echo
+										'<li class="sub-menu__list-item">
+											<a class="sub-menu__link" href="' . $subItem["href"] . '">' .
+												$subItem["name"] .
+											'</a>
+										</li>';
 								echo '</ul>';
 							} else {
 								echo $isCurrentPage ?
@@ -127,7 +129,7 @@
 									'<a class="header-nav-item__link" href="' . $menuItemHref . '">' . $menuItemName . '</a>';
 							}
 							echo '</span></li>';
-						}
+						endforeach;
 					?>
 				</ul>
 			</div>

@@ -21,7 +21,7 @@
 	// Иначе возвращает NULL
 	function validEmail($str) {
 		$str = trim($str);
-		return preg_match("!^[A-Za-z0-9]+(\.[A-Za-z0-9]+)*@[A-Za-z0-9]+(\.[A-Za-z0-9]+)*$!", $str) ? $str : NULL;
+		return preg_match("!^[A-Za-z0-9\-]+(\.[A-Za-z0-9\-]+)*@[A-Za-z0-9\-]+(\.[A-Za-z0-9\-]+)*$!", $str) ? $str : NULL;
 	}
 
 	// Возвращает валидный номер телефона, если возможно такое преобразование
