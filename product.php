@@ -2,7 +2,7 @@
 <?
 	// 1. ВАЛИДАЦИЯ
 	// NB! Как и было предложено, на странице продукта валидируется только id
-	if ($id = !empty($_GET["id"]) ? validNaturalNumber($_GET["id"]) : NULL) {
+	if ($id = (isset($_GET["id"]) ? validNaturalNumber($_GET["id"]) : NULL)) {
 		// 2. ПОСТРОЕНИЕ ЗАПРОСА
 		$good = mysqli_fetch_assoc(mysqli_query($db, "SELECT id, name, price, description, img, mainCategoryID from goods WHERE id=$id"));
 		// Ну вот как он такой сюда пришёл? Гоните его, презирайте его, насмехайтесь над ним
@@ -32,7 +32,7 @@
 	$linkWithCosts .= $maxCost ? ($linkWithCosts ? "&" : "") . "cost-to=$maxCost" : "";
 	// Теперь нужно склеить всё правильны образом
 	$subLink = $linkWithCosts;
-	if (1 != $page)
+	if ($page && 1 != $page)
 		$subLink .= ($subLink ? "&" : "") . "page=$page";
 	if($subLink)
 		$subLink = '?' . $subLink;
@@ -62,7 +62,7 @@
 </nav>
 <section class="product">
 	<h1 class="product__info-block-part product__headline"><?=$productName?></h1>
-	<img class="product__image" src="<?=$img?>" alt="<?=$alt?>">
+	<img class="product__image" src="<?=$img?>" alt="<?=$good["img"] ? $good["img"] : "Изображение отсутствует";?>">
 	<span class="good-price good_price product__info-block-part product__info-price"><?=$price?> <small class="good-price__currency">руб.</small></span>
 	<form class="product__info-block-part product__form" name="product-page__product-to-cart-form" method="POST">
 		<span class="amount-tubmler product__amount-tumbler">

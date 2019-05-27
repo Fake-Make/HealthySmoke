@@ -1,8 +1,8 @@
 <?require_once("template/header.php")?>
 <?
-	$title = "Контактная информация ООО «Company»";
 	// Открываем сессию или проверяем существование таковой
 	session_start();
+	$title = "Контактная информация ООО «Company»";
 	echo changeTitle(ob_get_clean());
 ?>
 <h1 class="contacts-page__main-headline">Контакты</h1>
@@ -61,18 +61,18 @@
 	<?
 		// Валидация, отправка email, занесение в БД
 		if(!empty($_POST)):
-			// Валидация
+			// 1. ВАЛИДАЦИЯ
 			$fName = validAnyString($_POST["feedback-author"]);
 			$fEmail = validEmail($_POST["email"]);
 			$fPhone = validPhone($_POST["phone"]);
 			$fMessage = validAnyString($_POST["feedback-text"]);
 			if($fSummary = $fName && $fEmail && $fMessage) {
-				// Отправка email-сообщения
+				// 2. ОТПРАВКА СООБЩЕНИЯ
 				$message = "Пользователем " . $fName . " было отправлено обращение: \r\n" .
 					$fMessage . "\r\nОтветить можно по email: " . $fEmail . 
 					($fPhone ? " или по телефону: " . $fPhone : "") . ".\r\n";
 				if($fSummary = $messageSent = mail(TEST_MAIL, "Пользовательское обращение", $message)) {
-					// Добавление в базу данных
+					// 3. ЗАНЕСЕНИЕ В БД
 					$sqlReq = "INSERT INTO appeals (userName, email, " . 
 						($fPhone ? "phone, " : "") . "message) VALUES ('" . 
 						$fName . "', '" . $fEmail . "', '" .
@@ -90,7 +90,7 @@
 			<span class="required-star">*</span> — обязательные для заполнения поля
 		</p>
 		<?
-			// Если пришли пользователь что-то ввёл и неправильно
+			// 4. ВЫВОД ОШИБОК ПЕРЕД ФОРМОЙ
 			if(!empty($_POST) && !$fSummary) {
 				echo '<aside class="error-box error-text">';
 				if(!$fName)

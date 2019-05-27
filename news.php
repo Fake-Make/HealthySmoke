@@ -1,7 +1,7 @@
 <?require_once("template/header.php")?>
 <?
 	// 1. ВАЛИДАЦИЯ GET'ов
-	if($id = isset($_GET["id"]) ? validNaturalNumber($_GET["id"]) : NULL) {
+	if($id = (isset($_GET["id"]) ? validNaturalNumber($_GET["id"]) : NULL)) {
 		$oneNews = mysqli_fetch_assoc(mysqli_query($db, "SELECT header, content, dt FROM news WHERE id=$id"));
 		// Либо выкидываем на 404
 		if(empty($oneNews))
@@ -32,6 +32,7 @@
 	<?
 		// 2. ПОСТРОЕНИЕ ЗАПРОСА
 		// Взятие максимального числа новостей из БД
+		// Хорошо бы разместить это в валидации, но если пришёл id, то это лишнее
 		$sqlReq = "SELECT count(*) FROM news";
 		$maxPage = ceil(mysqli_fetch_row(mysqli_query($db, $sqlReq))["0"] / MAX_NEWS_ON_PAGE);
 		$page = validNaturalNumber($_GET["page"]);

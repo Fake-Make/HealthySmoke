@@ -3,16 +3,16 @@
 	// 1. ВАЛИДАЦИЯ
 	// 1.1. КАТЕГОРИЯ
 	$catId = !empty($_GET["category"]) ? validNaturalNumber($_GET["category"]) : NULL;
-	$catName = false !== (array_search($catId, array_column($cats, "id"))) ?
-		$cats[array_search($catId, array_column($cats, "id"))]["name"] :
+	$catName = false !== ($catIndex = (array_search($catId, array_column($cats, "id")))) ?
+		$cats[$catIndex]["name"] :
 		NULL;
 	// Если названия категории не нашлось, то категории с таким id нет
 	if($catId && !$catName)
 		header("Location: 404.php");
 	
 	// 1.2. ФИЛЬТР ЦЕНЫ
-	$maxCost = !empty($_GET["cost-to"]) ? validPositiveFloat($_GET["cost-to"]) : NULL;
-	$minCost = !empty($_GET["cost-from"]) ? validPositiveFloat($_GET["cost-from"]) : NULL;
+	$maxCost = isset($_GET["cost-to"]) ? validPositiveFloat($_GET["cost-to"]) : NULL;
+	$minCost = isset($_GET["cost-from"]) ? validPositiveFloat($_GET["cost-from"]) : NULL;
 	if(!is_null($maxCost) && !is_null($minCost) && $minCost > $maxCost)
 		$maxCost = $minCost;
 	
