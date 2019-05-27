@@ -17,10 +17,9 @@
 							} else {
 								echo
 									'<li class="catalog-list__item">
-										<a class="catalog-list__link" href="catalog.php?category=' . $SBCatId .
-											(isset($minCost) && !is_null($minCost) ? '&cost-from=' . $minCost : '') .
-											(isset($maxCost) && !is_null($maxCost) ? '&cost-to=' . $maxCost : '') .
-										'">' . $SBCatName . '</a>
+										<a class="catalog-list__link" href="catalog.php?category=' . $SBCatId . '">' .
+											$SBCatName .
+										'</a>
 									</li>';
 							}
 						endforeach;
