@@ -1,8 +1,14 @@
 <?
 	// Возвращает SQL/XSS-безопасную входную строку, если она содержит хотя бы один непробельный символ
 	// Иначе возвращает NULL
-	function validAnyString($str) {
-		return strlen(trim($str)) ? addslashes(htmlspecialchars($str)) : NULL;
+	function validAnyString($str, $db = NULL) {
+		return strlen(trim($str)) ?
+			// Если передали указатель на соединение с БД
+			// То валидируем строку и по отношению к БД
+			($db ?
+				mysqli_real_escape_string($db, htmlspecialchars($str)) :
+				addslashes(htmlspecialchars($str))) :
+			NULL;
 	}
 
 	// Возвращает натуральное число, если его возможно получить из строки
@@ -19,7 +25,7 @@
 
 	// Возвращает валидный email, если возможно такое преобразование
 	// Иначе возвращает NULL
-	function validEmail($str) {
+	function validEmail($str, $db = NULL) {
 		$str = trim($str);
 		return preg_match("!^[A-Za-z0-9\-]+(\.[A-Za-z0-9\-]+)*@[A-Za-z0-9\-]+(\.[A-Za-z0-9\-]+)*$!", $str) ? $str : NULL;
 	}

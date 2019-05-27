@@ -62,10 +62,10 @@
 		// Валидация, отправка email, занесение в БД
 		if(!empty($_POST)):
 			// 1. ВАЛИДАЦИЯ
-			$fName = validAnyString($_POST["feedback-author"]);
+			$fName = validAnyString($_POST["feedback-author"], $db);
 			$fEmail = validEmail($_POST["email"]);
 			$fPhone = validPhone($_POST["phone"]);
-			$fMessage = validAnyString($_POST["feedback-text"]);
+			$fMessage = validAnyString($_POST["feedback-text"], $db);
 			if($fSummary = $fName && $fEmail && $fMessage) {
 				// 2. ОТПРАВКА СООБЩЕНИЯ
 				$message = "Пользователем " . $fName . " было отправлено обращение: \r\n" .
