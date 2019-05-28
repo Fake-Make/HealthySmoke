@@ -62,6 +62,6 @@
 			</li>
 		<?endforeach?>
 	</ul>
-	<?makePaginator(PAGINATOR_ELEMENTS, $page, $maxPage)?>
+	<?=makePaginator(PAGINATOR_ELEMENTS, $page, $maxPage)?>
 <?endif?>
 <?require_once("template/footer.php")?>

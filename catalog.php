@@ -106,10 +106,10 @@
 			</li>
 		<?endforeach?>
 	</ul>
-	<?makePaginator(PAGINATOR_ELEMENTS, $page, $maxPage)?>
+	<?=makePaginator(PAGINATOR_ELEMENTS, $page, $maxPage)?>
 <?else:?>
 	<h1>Ошибка поиска!</h1>
 	<h2>Товаров с такими параметрами не найдено :(</h2>
-	<p>Возможно, вы задали слишком строгие критерии фильтрации. Попробуйте <a href="catalog.php">сбросить параметры</a> и поискать ещё раз.</p>
+	<p>Возможно, вы задали слишком строгие критерии фильтрации. Попробуйте <a href="catalog.php<?=$catId ? "?category=$catId" : ""?>">сбросить параметры</a> и поискать ещё раз.</p>
 <?endif?>
 <?require_once("template/footer.php")?>
