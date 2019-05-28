@@ -10,7 +10,7 @@
 	// Взятие категорий из БД (раньше было одной функцией)
 	$sqlReq = "SELECT id, name, img from categories";
 	$cats = mysqli_fetch_all(mysqli_query($db, $sqlReq), MYSQLI_ASSOC);
-	foreach($cats as $item) {
+	foreach ($cats as $item) {
 		$categoriesSubMenu[] = [
 			"name"=>$item["name"],
 			"href"=>"catalog.php?category=" . $item["id"]
@@ -98,14 +98,14 @@
 				<ul class="menu-togglable">
 					<?
 						// Вывод навигационного меню
-						foreach($menu as $item):
+						foreach ($menu as $item):
 							$menuItemName = $item["name"];
 							$menuItemHref = $item["href"];
 							// Флаг, показывающий, что текущий элемент меню - есть текущая страница
 							$isCurrentPage = false !== strpos($thisScript, $menuItemHref);
 							echo '<li class="header-nav-item"><span>';
 							// Если есть под-меню
-							if(isset($item["sub-menu"])) {
+							if (isset($item["sub-menu"])) {
 								echo 
 									'<span class="header-nav-item__container-for-link">' .
 										($isCurrentPage ?
@@ -115,7 +115,7 @@
 									<ul class="sub-menu">';
 
 								// Вывод элементов под-меню
-								foreach($item["sub-menu"] as $subItem)
+								foreach ($item["sub-menu"] as $subItem)
 									echo
 										'<li class="sub-menu__list-item">
 											<a class="sub-menu__link" href="' . $subItem["href"] . '">' .

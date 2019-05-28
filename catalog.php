@@ -8,35 +8,35 @@
 			$cats[$catIndex]["name"] :
 			NULL;
 	// Если названия категории не нашлось, то категории с таким id нет
-	if($catId && !$catName)
+	if ($catId && !$catName)
 		header("Location: 404.php");
 	
 	// 1.2. ФИЛЬТР ЦЕНЫ
 	$maxCost = isset($_GET["cost-to"]) ? validPositiveFloat($_GET["cost-to"]) : NULL;
 	$minCost = isset($_GET["cost-from"]) ? validPositiveFloat($_GET["cost-from"]) : NULL;
-	if(!is_null($maxCost) && !is_null($minCost) && $minCost > $maxCost)
+	if (!is_null($maxCost) && !is_null($minCost) && $minCost > $maxCost)
 		$maxCost = $minCost;
 	
 	// 1.3. МАКСИМАЛЬНОЕ ЧИСЛО СТРАНИЦ
 	// Конструируем основное тело запроса с учётом ограничений фильтра
 	$sqlReq = "";
 	// Учитываем категорию
-	if($catId)
+	if ($catId)
 		$sqlReq .=
 			"INNER JOIN goodToCategories ON goods.id = goodToCategories.goodID
 			WHERE categoryID = $catId ";
 	// Учитываем цену
-	if(!is_null($minCost) || !is_null($maxCost))
+	if (!is_null($minCost) || !is_null($maxCost))
 		$sqlReq .= ($catId ? "AND " : "WHERE ") . "price " .
 		(is_null($maxCost) ? ">= $minCost " : (is_null($minCost) ? "<= $maxCost " : "BETWEEN $minCost AND $maxCost "));
 	// Выполнение запроса
 	$maxPage = ceil(mysqli_fetch_row(mysqli_query($db, "SELECT count(*) FROM goods " . $sqlReq))["0"] / MAX_GOODS_ON_PAGE);
-	if($maxPage < 1)
+	if ($maxPage < 1)
 		$maxPage = 1;
 
 	// 1.4. ТЕКУЩАЯ СТРАНИЦА
 	$page = validNaturalNumber($_GET["page"]);
-	if($page > $maxPage)
+	if ($page > $maxPage)
 		$page = 1;
 	
 	// 2. ПОСТРОЕНИЕ ЗАПРОСА
@@ -56,24 +56,20 @@
 	$subLink .= ($subLink ? "&" : "") . $linkWithCosts;
 	if (1 != $page)
 		$subLink .= ($subLink ? "&" : "") . "page=$page";
-	if($subLink)
+	if ($subLink)
 		$subLink = '?' . $subLink;
 
 	// 4. ВЫВОД СТРАНИЦЫ
 	$title = "Каталог товаров - Company";
 	echo changeTitle(ob_get_clean());
 ?>
-<?if(!empty($goods)):?>
+<?if (!empty($goods)):?>
 	<h1 class="invisible">Каталог товаров</h1>
 	<nav class="bread-crumbs-container">
 		<ul class="bread-crumbs">
 			<li class="bread-crumb"><a class="bread-crumb__link" href="index.php">Главная</a></li>
-			<?if(!is_null($catId) && $catName):?>
-				<li class="bread-crumb">
-					<a class="bread-crumb__link" href="catalog.php">
-						Каталог
-					</a>
-				</li>
+			<?if (!is_null($catId) && $catName):?>
+				<li class="bread-crumb"><a class="bread-crumb__link" href="catalog.php">Каталог</a></li>
 				<li class="bread-crumb"><?=$catName?></li>
 			<?else:?>
 				<li class="bread-crumb">Каталог</li>
@@ -93,7 +89,7 @@
 		<input class="form-submit search-filter__apply" type="submit" value="Применить">
 	</form>
 	<ul class="categories categories__reposition">
-		<?foreach($goods as $item):?>
+		<?foreach ($goods as $item):?>
 			<li class="category good-piece">
 				<a class="category__link" href="product.php<?=$subLink ? $subLink . '&id=' . $item["id"] : '?id=' . $item["id"]?>">
 					<img class="category__image good__image" src="<?=$item["img"] ? $item["img"] : "img/no-image.jpg"?>" alt="<?=$item["img"] ? $img : "Изображение отсутствует"?>">

@@ -27,7 +27,7 @@
 	$good = mysqli_fetch_assoc(mysqli_query($db, $sqlReq));
 
 	// Если результат пуст
-	if(empty($good))
+	if (empty($good))
 			header("Location: 404.php");
 	// Получение данных
 	$img = $good["img"] ? $good["img"] : "img/no-image.jpg";
@@ -53,7 +53,7 @@
 	$subLink = $linkWithCosts;
 	if ($page && 1 != $page)
 		$subLink .= ($subLink ? "&" : "") . "page=$page";
-	if($subLink)
+	if ($subLink)
 		$subLink = '?' . $subLink;
 	// Создание альтернативной ссылки с категорией
 	$subLinkWithCat = $subLink;

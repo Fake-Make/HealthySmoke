@@ -60,18 +60,18 @@
 	<h2 class="feedback-form__headline">Форма обратной связи</h2>
 	<?
 		// Валидация, отправка email, занесение в БД
-		if(!empty($_POST)):
+		if (!empty($_POST)):
 			// 1. ВАЛИДАЦИЯ
 			$fName = validAnyString($_POST["feedback-author"], $db);
 			$fEmail = validEmail($_POST["email"]);
 			$fPhone = validPhone($_POST["phone"]);
 			$fMessage = validAnyString($_POST["feedback-text"], $db);
-			if($fSummary = $fName && $fEmail && $fMessage) {
+			if ($fSummary = $fName && $fEmail && $fMessage) {
 				// 2. ОТПРАВКА СООБЩЕНИЯ
 				$message = "Пользователем " . $fName . " было отправлено обращение: \r\n" .
 					$fMessage . "\r\nОтветить можно по email: " . $fEmail . 
 					($fPhone ? " или по телефону: " . $fPhone : "") . ".\r\n";
-				if($fSummary = $messageSent = mail(TEST_MAIL, "Пользовательское обращение", $message)) {
+				if ($fSummary = $messageSent = mail(TEST_MAIL, "Пользовательское обращение", $message)) {
 					// 3. ЗАНЕСЕНИЕ В БД
 					$sqlReq = "INSERT INTO appeals (userName, email, " . 
 						($fPhone ? "phone, " : "") . "message) VALUES ('" . 
@@ -83,7 +83,7 @@
 			}
 		endif;
 	?>
-	<?if($_SESSION['feedback'] === 'sent'):?>
+	<?if ($_SESSION['feedback'] === 'sent'):?>
 		<p>Благодарим за ваше письмо. Мы свяжемся с вами в ближайшее время!</p>
 	<?else:?>
 		<p class="feedback-form__hint">
@@ -91,29 +91,29 @@
 		</p>
 		<?
 			// 4. ВЫВОД ОШИБОК ПЕРЕД ФОРМОЙ
-			if(!empty($_POST) && !$fSummary) {
+			if (!empty($_POST) && !$fSummary) {
 				echo '<aside class="error-box error-text">';
-				if(!$fName)
+				if (!$fName)
 					echo
 						'<p class="error-message">
 							Поле «Имя» должно быть заполнено
 						</p>';
-				if(!$fEmail)
+				if (!$fEmail)
 					echo
 						'<p class="error-message">
-							Поле «Электронная почта» должно быть заполнено <?=empty($_POST["email"]) ? "" : "корректно"?>
-						</p>';
-				if(!empty($_POST["phone"]) && !$fPhone)
+							Поле «Электронная почта» должно быть заполнено' . empty($_POST["email"]) ? '' : 'корректно' .
+						'</p>';
+				if (!empty($_POST["phone"]) && !$fPhone)
 					echo
 						'<p class="error-message">
 							Поле «Телефон» должно соответствовать примеру: 7 999 111 22 33
 						</p>';
-				if(!$fMessage)
+				if (!$fMessage)
 					echo
 						'<p class="error-message">
 							Поле обращения должно быть заполнено
 						</p>';
-				if(false === $messageSent)
+				if (false === $messageSent)
 					echo
 						'<p class="error-message">
 							На сервере произошла ошибка: ваше письмо не отправлено! Попробуйте ещё раз.

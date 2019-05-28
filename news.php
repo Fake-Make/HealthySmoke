@@ -1,10 +1,10 @@
 <?require_once("template/header.php")?>
 <?
 	// 1. ВАЛИДАЦИЯ GET'ов
-	if($id = (isset($_GET["id"]) ? validNaturalNumber($_GET["id"]) : NULL)) {
+	if ($id = (isset($_GET["id"]) ? validNaturalNumber($_GET["id"]) : NULL)) {
 		$oneNews = mysqli_fetch_assoc(mysqli_query($db, "SELECT header, content, dt FROM news WHERE id=$id"));
 		// Либо выкидываем на 404
-		if(empty($oneNews))
+		if (empty($oneNews))
 			header("Location: 404.php");
 		// Либо получаем информацию по новости
 		$newsHeader = $oneNews["header"];
@@ -15,7 +15,7 @@
 		$title = "Новости - Company";
 	echo changeTitle(ob_get_clean());
 ?>
-<?if(!empty($oneNews)):?>
+<?if (!empty($oneNews)):?>
 	<nav class="bread-crumbs-container product__bread-crumbs">
 		<ul class="bread-crumbs">
 			<li class="bread-crumb"><a class="bread-crumb__link" href="index.php">Главная</a></li>
@@ -36,7 +36,7 @@
 		$sqlReq = "SELECT count(*) FROM news";
 		$maxPage = ceil(mysqli_fetch_row(mysqli_query($db, $sqlReq))["0"] / MAX_NEWS_ON_PAGE);
 		$page = validNaturalNumber($_GET["page"]);
-		if($page > $maxPage)
+		if ($page > $maxPage)
 			$page = 1;
 		
 		$offset = ($page - 1) * $size;
@@ -51,7 +51,7 @@
 		</ul>
 	</nav>
 	<ul class="news-list">
-		<?foreach($news as $item):?>
+		<?foreach ($news as $item):?>
 			<li class="news-item">
 				<a class="news-item__link" href="news.php?id=<?=$item["id"]?>">
 					<?=$item["anounce"]?>
