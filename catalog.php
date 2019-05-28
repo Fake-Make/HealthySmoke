@@ -3,9 +3,10 @@
 	// 1. ВАЛИДАЦИЯ
 	// 1.1. КАТЕГОРИЯ
 	$catId = !empty($_GET["category"]) ? validNaturalNumber($_GET["category"]) : NULL;
-	$catName = false !== ($catIndex = (array_search($catId, array_column($cats, "id")))) ?
-		$cats[$catIndex]["name"] :
-		NULL;
+	$catName = 
+		false !== ($catIndex = (array_search($catId, array_column($cats, "id")))) ?
+			$cats[$catIndex]["name"] :
+			NULL;
 	// Если названия категории не нашлось, то категории с таким id нет
 	if($catId && !$catName)
 		header("Location: 404.php");

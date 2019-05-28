@@ -1,29 +1,48 @@
 <?require_once("template/header.php")?>
 <?
 	// 1. ВАЛИДАЦИЯ
-	// NB! Как и было предложено, на странице продукта валидируется только id
-	if ($id = (isset($_GET["id"]) ? validNaturalNumber($_GET["id"]) : NULL)) {
-		// 2. ПОСТРОЕНИЕ ЗАПРОСА
-		$good = mysqli_fetch_assoc(mysqli_query($db, "SELECT id, name, price, description, img, mainCategoryID from goods WHERE id=$id"));
-		// Ну вот как он такой сюда пришёл? Гоните его, презирайте его, насмехайтесь над ним
-		if(empty($good))
-			header("Location: 404.php");
-		// Всё хорошо, работаем в штатном режиме
-		$img = $good["img"] ? $good["img"] : "img/no-image.jpg";
-		$alt = $good["img"] ? $img : "Изображение отсутствует";
-		$productName = $good["name"];
-		$price = $good["price"];
-		$desc = $good["description"];
-		// У товаров есть основная категория. Она нужна, если мы пришли из общего поиска
-		$catMainId = $good["mainCategoryID"];
-	}	else
+	// 1.1. КАТЕГОРИЯ
+	$catId = isset($_GET["category"]) ? validNaturalNumber($_GET["category"]) : NULL;
+	// Если категория пришла, но не существует
+	if ($catId && false === array_search($catId, array_column($cats, "id")))
 		header("Location: 404.php");
+
+	// 1.2. ID ТОВАРА
+	$id = isset($_GET["id"]) ? validNaturalNumber($_GET["id"]) : NULL;
+	// Если не пришёл id товара
+	if (is_null($id))
+		header("Location: 404.php");
+
+	// 2. ПОСТРОЕНИЕ ЗАПРОСА ДАННЫХ
+	// Если категория не пришла, потребуется основная категория товара
+	$sqlReq = "SELECT id, name, price, description, img" . (is_null($catId) ? ", mainCategoryID " : " ") . "from goods ";
+	// Если категория пришла, то нужно убедиться, что товар принадлежит этой категории
+	if (!is_null($catId))
+		$sqlReq .= "INNER JOIN goodToCategories ON goods.id = goodToCategories.goodID ";
+	$sqlReq .= "WHERE id=$id" . 
+		(!is_null($catId) ? " AND categoryID=$catId" : "");
 	
-	// Что не пришло - будет NULL, даже если не инициализировать переменные
-	$minCost = $_GET["cost-from"];
-	$maxCost = $_GET["cost-to"];
-	$catId = $_GET["category"];
-	$page = $_GET["page"];
+	if (!is_null($catId))
+		$sqlReq .= " AND categoryID=$catId";
+	$good = mysqli_fetch_assoc(mysqli_query($db, $sqlReq));
+
+	// Если результат пуст
+	if(empty($good))
+			header("Location: 404.php");
+	// Получение данных
+	$img = $good["img"] ? $good["img"] : "img/no-image.jpg";
+	$alt = $good["img"] ? $img : "Изображение отсутствует";
+	$productName = $good["name"];
+	$price = $good["price"];
+	$desc = $good["description"];
+	if (is_null($catId))
+		$catMainId = $good["mainCategoryID"];
+
+	// 1.3. ФИЛЬТРЫ ЦЕНЫ
+	$minCost = isset($_GET["cost-from"]) ? validPositiveFloat($_GET["cost-from"]) : NULL;
+	$maxCost = isset($_GET["cost-to"]) ? validPositiveFloat($_GET["cost-to"]) : NULL;
+	// 1.4. СТРАНИЦА
+	$page = isset($_GET["page"]) ? validNaturalNumber($_GET["page"]) : NULL;
 
 	// 3. ПОСТРОЕНИЕ ССЫЛОЧНОЙ КОНСТРУКЦИИ $subLink ДЛЯ СОХРАНЕНИЯ ФИЛЬТРОВ
 	// Сначала соберём параметры: категорию и цены
