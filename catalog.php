@@ -53,11 +53,13 @@
 	// Затем перейдём к категории
 	$subLink = $catId ? "category=$catId" : "";
 	// Осталось правильно всё совместить
-	$subLink .= ($subLink ? "&" : "") . $linkWithCosts;
+	if ($linkWithCosts)
+		$subLink .= ($subLink ? "&" : "") . $linkWithCosts;
 	if (1 != $page)
 		$subLink .= ($subLink ? "&" : "") . "page=$page";
 	if ($subLink)
 		$subLink = '?' . $subLink;
+	echo "<br>SAAAP: $subLink<br>";
 
 	// 4. ВЫВОД СТРАНИЦЫ
 	$title = "Каталог товаров - Company";
