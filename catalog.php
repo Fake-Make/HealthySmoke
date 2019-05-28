@@ -59,7 +59,6 @@
 		$subLink .= ($subLink ? "&" : "") . "page=$page";
 	if ($subLink)
 		$subLink = '?' . $subLink;
-	echo "<br>SAAAP: $subLink<br>";
 
 	// 4. ВЫВОД СТРАНИЦЫ
 	$title = "Каталог товаров - Company";
